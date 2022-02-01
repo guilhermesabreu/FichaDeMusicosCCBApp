@@ -1,0 +1,21 @@
+<hr>
+<h1 style="color: #3397ea!important; text-align: center;">Ficha de Músicos CCB</h1>
+<body class="text-center" data-gr-c-s-loaded="true">
+  <form [formGroup]="registerForm" class="form-signin senha1" #loginForm="ngForm" (ngSubmit)="login()">
+    <img class="mb-4" src="../../../assets/login_icon.png" alt="" width="72" height="72">
+    <label for="username" class="sr-only">Usuário</label>
+    <input class="form-control" type="text" formControlName="userName"
+          [ngClass]="{'is-invalid': registerForm.get('userName')!.errors &&
+                                    registerForm.get('userName')!.touched}"
+          placeholder="Usuário"/>
+    <label for="password" class="sr-only">Password</label>
+    <input class="form-control" style="margin-bottom: 10px;" id="senha" type="password" formControlName="password"
+          [ngClass]="{'is-invalid': registerForm.get('password')!.errors &&
+                                    registerForm.get('password')!.touched}"
+          placeholder="Password"/>
+          <i class="far fa-eye" id="toggleSenha"  (click)="visualizarSenha()"></i>
+    <button [disabled]="!loginForm.valid" style="background-color: #e67e22; color:#000000;" class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+    <p class="mt-5 mb-3 text-muted">Não tem login? Cadastre-se abaixo</p>
+    <button class="btn btn-lg btn-link btn-block" (click)="router.navigate(['/user/registrationAdm'])">Cadastro</button>
+  </form>  
+</body>
