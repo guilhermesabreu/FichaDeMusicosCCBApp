@@ -3,10 +3,10 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-app.use(express.static(__dirname + '/dist/FichaDeMusicosCCBApp'));
+app.use(express.static(__dirname + '/dist/Ficha-De-Musicos-CCBApp'));
 
 app.get('/*', (req, res) => {
-    res.sendFile(__dirname + '/dist/FichaDeMusicosCCBApp/index.html');
+    res.sendFile(__dirname + '/dist/Ficha-De-Musicos-CCBApp/index.html');
 })
 
 
