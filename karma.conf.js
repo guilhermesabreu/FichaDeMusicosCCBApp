@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/ficha-de-musicos-ccbapp'),
+      dir: require('path').join(__dirname, './coverage/FichaDeMusicosCCBApp'),
       subdir: '.',
       reporters: [
         { type: 'html' },
