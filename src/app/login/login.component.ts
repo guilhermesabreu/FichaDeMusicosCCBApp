@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.validation();
     if (localStorage.getItem('token') !== null) {
-      this.router.navigate(['/listaAdms']);
+      this.router.navigate(['/login']);
     }
   }
 

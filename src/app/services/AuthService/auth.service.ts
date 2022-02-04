@@ -24,16 +24,18 @@ export class AuthService {
       })
       );
     }
-
-    registroPessoa(model: Pessoa) {
-      return this.http.post(`${this.baseURLPessoa}`, model);
-    }
-
-    atualizarPessoa(model: Pessoa){
-      return this.http.put(`${this.baseURLPessoa}`, model);
-    }
-
-    deletarPessoa(userName: string) {
-      return this.http.delete(`${this.baseURLPessoa}/${userName}`);
+    
+    roleMatch(allowedRoles:any): boolean {
+      var isMatch = false;
+      var payLoad = JSON.parse(window.atob(localStorage.getItem('token')!.split('.')[1]));
+      var userRole = payLoad.role;
+      allowedRoles.forEach((element: any) => {
+        if(userRole == element){
+          isMatch = true;
+          return false;
+        }
+        return true;
+      });
+      return isMatch;
     }
 }
