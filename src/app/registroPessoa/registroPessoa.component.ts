@@ -15,7 +15,13 @@ export class RegistroPessoaComponent implements OnInit {
 
   datePickerConfig!: Partial<BsDatepickerConfig>;
   registerForm!: FormGroup;
-  _encarregadoLocal = '';
+  instrumentos = ['viola','violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
+                  'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
+                  'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+  _condicaoSelecionada = '';
+  mostraEncarregadoLocal = false;
+  mostraEncarregadoRegional = false;
+
   results!: string[];
   constructor(
     public pessoaService: PessoaService,
@@ -29,19 +35,22 @@ export class RegistroPessoaComponent implements OnInit {
     this.validation();
   }
 
-  get encarregadoLocal(): string {
-    return this._encarregadoLocal;
+  get condicaoSelecionada(): string {
+    return this._condicaoSelecionada;
   }
 
-  set encarregadoLocal(value: string) {
-    this._encarregadoLocal = value;
+  set condicaoSelecionada(value: string) {
+    switch(value){
+      case 'instrutor': this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = true; break;
+      case 'encarregado': this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false; break;
+      case 'regional': this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false; break;
+    }     
   }
 
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query)
     .subscribe(
       (res: any) => {
-        console.log(res);
         this.results = res;
       }, error => {
         if(error.status === 400){
@@ -49,9 +58,24 @@ export class RegistroPessoaComponent implements OnInit {
         }else{
           this.toastr.error(error.error);
         }
-        // console.clear();
+        console.clear();
       });
     }
+
+    autoCompleteEncarregadoRegional(event: any) {
+      this.pessoaService.buscarEncarregadoRegional(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if(error.status === 400){
+            this.toastr.warning(error.error);  
+          }else{
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+      }
 
   validation() {
     this.registerForm = this.fb.group({
@@ -85,6 +109,22 @@ export class RegistroPessoaComponent implements OnInit {
         confirmSenhaCtrl!.setErrors(null);
       }
     }
+  }
+
+  visualizarPrimeiraSenha(){
+    const password = document.querySelector('#senha1');
+    const toggle = document.querySelector('#toggle1');
+    const type = password!.getAttribute('type') === 'password' ? 'text' : 'password';
+    password!.setAttribute('type', type);
+    toggle!.classList.toggle('fa-eye-slash');
+  }
+
+  visualizarSegundaSenha(){
+    const password = document.querySelector('#senha2');
+    const toggle = document.querySelector('#toggle2');
+    const type = password!.getAttribute('type') === 'password' ? 'text' : 'password';
+    password!.setAttribute('type', type);
+    toggle!.classList.toggle('fa-eye-slash');
   }
   
 }
