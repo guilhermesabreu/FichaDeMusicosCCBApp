@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { defineLocale, ptBrLocale } from 'ngx-bootstrap/chronos';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/AuthService/auth.service';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
+defineLocale('pt-br', ptBrLocale); 
 
 @Component({
   selector: 'app-registroPessoa',
@@ -24,14 +26,16 @@ export class RegistroPessoaComponent implements OnInit {
 
   results!: string[];
   constructor(
+    private localeService: BsLocaleService,
     public pessoaService: PessoaService,
     public router: Router
     , private toastr: ToastrService
     , public fb: FormBuilder) { 
-      this.datePickerConfig = Object.assign({}, {containerClass: 'theme-orange'});
+      localeService.use('pt-br');
+      this.datePickerConfig = Object.assign({}, {containerClass: 'theme-blue' });
     }
-
-  ngOnInit() {
+    
+    ngOnInit() {
     this.validation();
   }
 

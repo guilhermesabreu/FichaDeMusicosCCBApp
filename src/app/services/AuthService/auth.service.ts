@@ -12,6 +12,10 @@ export class AuthService {
   decodedToken: any;
   constructor(private http: HttpClient) { }
 
+  despertarServidor(){
+    return this.http.get(`${this.baseURLPessoa}/despertador`);    
+  }
+
   login(model: any) {
     return this.http
     .post(`${this.baseURLPessoa}/login`, model).pipe(

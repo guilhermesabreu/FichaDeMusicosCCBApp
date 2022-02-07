@@ -26,10 +26,20 @@ export class LoginComponent implements OnInit {
     , public fb: FormBuilder) { }
 
   ngOnInit() {
+    this.despertarServidor();
     this.validation();
     if (localStorage.getItem('token') !== null) {
       this.router.navigate(['/login']);
     }
+  }
+
+  despertarServidor(){
+    this.authService.despertarServidor()
+    .subscribe(
+      () => {
+      }, error => {
+          this.toastr.error('Servidor indisponível !');
+      });
   }
 
   visualizarSenha() {
