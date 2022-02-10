@@ -11,9 +11,7 @@ export class PessoaService {
   constructor(private http: HttpClient) { }
 
   buscarEncarregadoLocal(text: string) {
-    var a = this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-local?text=${text}`);
-    console.log(a);
-    return a;
+    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-local?text=${text}`);
   }
 
   buscarEncarregadoRegional(text: string) {

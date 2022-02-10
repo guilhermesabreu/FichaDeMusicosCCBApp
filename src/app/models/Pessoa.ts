@@ -1,9 +1,11 @@
 export class Pessoa {
     constructor() {}
+    userName!: string;
+    password!: string;
     nome!: string;
-    apelidoInstrutor!: string;
-    apelidoEncarregado!: string;
-    apelidoEncRegional!: string;
+    instrutor!: string;
+    encarregadoLocal!: string;
+    encarregadoRegional!: string;
     regiao!: string;
     regional!: string;
     celular!: string;

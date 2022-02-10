@@ -16,17 +16,39 @@
           class="invalid-feedback">
           Nome Completo é obrigatório.
         </div>
+        <div *ngIf="registerForm.get('nome')!.hasError('minlength') &&
+            registerForm.get('nome')!.touched"
+            class="invalid-feedback">
+            Deve conter no mínimo 10 caracters
+        </div>
+      </div>
+      <div class="form-group required"> 
+        <label for="">Comum:</label>
+        <input class="form-control" type="text" formControlName="comum"
+          [ngClass]="{ 'is-invalid': registerForm.get('comum')!.errors && 
+                                     registerForm.get('comum')!.touched}"
+          placeholder="Insira a sua Região ex: Brás" />
+        <div *ngIf="registerForm.get('comum')!.hasError('required') &&
+                    registerForm.get('comum')!.touched"
+          class="invalid-feedback">
+          Comum é obrigatória.
+        </div>
       </div>
       <div class="form-group required"> 
         <label for="">Região:</label>
         <input class="form-control" type="text" formControlName="regiao"
           [ngClass]="{ 'is-invalid': registerForm.get('regiao')!.errors && 
                                      registerForm.get('regiao')!.touched}"
-          placeholder="Insira a sua Região ex: São Vicente-SP" />
+          placeholder="Insira sua Cidade e UF ex: São Vicente-SP" />
         <div *ngIf="registerForm.get('regiao')!.hasError('required') &&
                     registerForm.get('regiao')!.touched"
           class="invalid-feedback">
           Região é obrigatória.
+        </div>
+        <div *ngIf="registerForm.get('regiao')!.hasError('pattern') &&
+            registerForm.get('regiao')!.touched"
+            class="invalid-feedback">
+            Cidade e UF devem estar separadas por (-)
         </div>
       </div>
       <div class="form-group">
@@ -65,6 +87,11 @@
           class="invalid-feedback">
           E-mail é obrigatório.
         </div>
+        <div *ngIf="registerForm.get('email')!.hasError('email') &&
+            registerForm.get('email')!.touched"
+            class="invalid-feedback">
+            E-mail com formato inválido 
+        </div>
       </div>
 
       <div class="form-group">
@@ -76,6 +103,7 @@
         <div *ngIf="registerForm.get('dataNascimento')!.hasError('required')
         && registerForm.get('dataNascimento')!.touched" class="invalid-feedback">
         Data de nascimento é obrigatória.
+        </div>
       </div>
 
       <div class="form-group">
@@ -87,9 +115,9 @@
         <div *ngIf="registerForm.get('dataInicio')!.hasError('required')
         && registerForm.get('dataInicio')!.touched" class="invalid-feedback">
         Data de início na aulinha é obrigatória.
+        </div>
       </div>
-      
-      <br>
+
       <div class="form-group">
         <label for="">Condição:</label>
         <select class="form-control" id="select" 
@@ -107,25 +135,26 @@
           Condição é obrigatória.
         </div>
       </div>
+
       <div *ngIf="mostraEncarregadoLocal" class="form-group">
           <label>Encarregado Local:</label><br>
-          <p-autoComplete formControlName="apelidoEncarregado" 
+          <p-autoComplete formControlName="encarregadoLocal" 
           placeholder="Insira um encarregado local" [suggestions]="results" 
           [style]="{height:'40px'}"
           (completeMethod)="autoCompleteEncarregadoLocal($event)"></p-autoComplete>
-          <div *ngIf="registerForm.get('apelidoEncarregado')!.hasError('required')
-          && registerForm.get('apelidoEncarregado')!.touched" class="invalid-feedback">
+          <div *ngIf="registerForm.get('encarregadoLocal')!.hasError('required')
+          && registerForm.get('encarregadoLocal')!.touched" class="invalid-feedback">
           Encarregado Local é obrigatório.          
           </div>
-        </div>
+      </div>
         
       <div *ngIf="mostraEncarregadoRegional" class="form-group">
         <label>Encarregado Regional:</label><br>
-        <p-autoComplete formControlName="apelidoEncRegional" [style]="{height:'40px'}"
+        <p-autoComplete formControlName="encarregadoRegional" [style]="{height:'40px'}"
         placeholder="Insira um encarregado regional" [suggestions]="results" (completeMethod)="autoCompleteEncarregadoRegional($event)">
-      </p-autoComplete> 
-        <div *ngIf="registerForm.get('apelidoEncRegional')!.hasError('required')
-        && registerForm.get('apelidoEncRegional')!.touched" class="invalid-feedback">
+        </p-autoComplete> 
+        <div *ngIf="registerForm.get('encarregadoRegional')!.hasError('required')
+        && registerForm.get('encarregadoRegional')!.touched" class="invalid-feedback">
         Encarregado Regional é obrigatório.          
         </div>  
       </div>
@@ -135,11 +164,13 @@
       <select class="form-control" type="text" formControlName="instrumento"
         [ngClass]="{'is-invalid': registerForm.get('instrumento')!.errors &&
                                   registerForm.get('instrumento')!.touched}"
-        [(ngModel)]="instrumentos"
+        
         placeholder="Escolha seu instrumento">
         <option>nenhum</option>
-        <option *ngFor="let obj of instrumentos">{{obj}}</option>
-      </select>
+        <option [value]="obj" *ngFor="let obj of instrumentos">
+          {{obj}}
+        </option>
+        </select>
       <div *ngIf="registerForm.get('instrumento')!.hasError('required') &&
                   registerForm.get('instrumento')!.touched"
         class="invalid-feedback">
@@ -173,6 +204,7 @@
             class="invalid-feedback">
             Deve conter no mínimo 4 caracters
             </div>
+          
           <div *ngIf="registerForm.get('passwords.password')!.hasError('required') &&
                       registerForm.get('passwords.password')!.touched"
             class="invalid-feedback">
@@ -188,21 +220,22 @@
                          && registerForm.get('passwords.confirmPassword')!.touched }"
             placeholder="Confirme a Senha" />
             <i class="far fa-eye" id="toggle2" (click)="visualizarSegundaSenha()"></i>
-          <div *ngIf="registerForm.get('passwords.confirmPassword')!.hasError('required') &&
+            <div *ngIf="registerForm.get('passwords.confirmPassword')!.hasError('required') &&
                       registerForm.get('passwords.confirmPassword')!.touched"
             class="invalid-feedback">
             Confirme a Senha
-          </div>
-          <div *ngIf="registerForm.get('passwords.confirmPassword')!.hasError('mismatch') 
+            </div>
+            <div *ngIf="registerForm.get('passwords.confirmPassword')!.hasError('mismatch') 
                       && registerForm.get('passwords.confirmPassword')!.touched"
             class="invalid-feedback">
             Confirmação não confere
-          </div>
+            </div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-8 offset-md-2">
-          <button class="btn btn-lg btn-success btn-block" [disabled]="!registerForm.valid">Registar</button>
+          <button class="btn btn-lg btn-success btn-block" (click)="registrarPessoa()" [disabled]="!registerForm.valid">Registar</button>
         </div>
       </div>
+    </form>
     </div>

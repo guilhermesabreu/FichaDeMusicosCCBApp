@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { defineLocale, ptBrLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
+import { Pessoa } from '../models/Pessoa';
 import { AuthService } from '../services/AuthService/auth.service';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
 defineLocale('pt-br', ptBrLocale); 
@@ -15,6 +16,7 @@ defineLocale('pt-br', ptBrLocale);
 })
 export class RegistroPessoaComponent implements OnInit {
 
+  pessoa!: Pessoa;
   datePickerConfig!: Partial<BsDatepickerConfig>;
   registerForm!: FormGroup;
   instrumentos = ['viola','violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
@@ -83,25 +85,45 @@ export class RegistroPessoaComponent implements OnInit {
 
   validation() {
     this.registerForm = this.fb.group({
-      nome: ['', Validators.required],
-      apelidoInstrutor: ['', Validators.required],
-      apelidoEncarregado: ['', Validators.required],
-      apelidoEncRegional: ['', Validators.required],
-      regiao: ['', Validators.required],
+      nome: ['', [Validators.required, Validators.minLength(10)]],
+      encarregadoLocal: ['', Validators.required],
+      encarregadoRegional: ['', Validators.required],
+      regiao: ['', [Validators.required, Validators.pattern('^.*\- ?[a-zA-Z]*')]],
       regional: ['', Validators.required],
-      celular: ['', Validators.required, Validators.call],
-      email: ['', Validators.required, Validators.email],
+      celular: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', Validators.required],
       dataInicio: ['', Validators.required],
       comum: ['', Validators.required],
       instrumento: ['', Validators.required],
       condicao: ['', Validators.required],
       userName: ['', Validators.required],
-        passwords: this.fb.group({
-          password: ['', [Validators.required, Validators.minLength(4)]],
-          confirmPassword: ['', Validators.required]
-        }, { validator: this.compararSenhas })
+        passwords: this.fb.group({ 
+          password: ['', [Validators.required, Validators.minLength(4)]], 
+          confirmPassword: ['', Validators.required]}, { validator: this.compararSenhas })
     });
+  }
+
+  registrarPessoa() {
+    if (this.registerForm.valid) {
+      var dadosForm = Object.assign({}, this.registerForm.value);
+      this.pessoa = dadosForm;
+      this.pessoa.password = dadosForm.passwords.password;
+      this.pessoaService.registroPessoa(this.pessoa)
+        .subscribe(
+          () => {
+            this.toastr.success('Pessoa registrada com sucesso !');
+            this.router.navigate(['/login']);
+          }, error => {
+            if(error.status === 400){
+              this.toastr.warning(error.error);  
+            }else{
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
+
+    }
   }
 
   compararSenhas(fb: FormGroup) {
