@@ -142,10 +142,6 @@
           placeholder="Insira um encarregado local" [suggestions]="results" 
           [style]="{height:'40px'}"
           (completeMethod)="autoCompleteEncarregadoLocal($event)"></p-autoComplete>
-          <div *ngIf="registerForm.get('encarregadoLocal')!.hasError('required')
-          && registerForm.get('encarregadoLocal')!.touched" class="invalid-feedback">
-          Encarregado Local é obrigatório.          
-          </div>
       </div>
         
       <div *ngIf="mostraEncarregadoRegional" class="form-group">
@@ -153,10 +149,6 @@
         <p-autoComplete formControlName="encarregadoRegional" [style]="{height:'40px'}"
         placeholder="Insira um encarregado regional" [suggestions]="results" (completeMethod)="autoCompleteEncarregadoRegional($event)">
         </p-autoComplete> 
-        <div *ngIf="registerForm.get('encarregadoRegional')!.hasError('required')
-        && registerForm.get('encarregadoRegional')!.touched" class="invalid-feedback">
-        Encarregado Regional é obrigatório.          
-        </div>  
       </div>
 
     <div class="form-group">

@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Pessoa } from '../models/Pessoa';
 import { AuthService } from '../services/AuthService/auth.service';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
-defineLocale('pt-br', ptBrLocale); 
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-registroPessoa',
@@ -19,9 +19,9 @@ export class RegistroPessoaComponent implements OnInit {
   pessoa!: Pessoa;
   datePickerConfig!: Partial<BsDatepickerConfig>;
   registerForm!: FormGroup;
-  instrumentos = ['viola','violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
-                  'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
-                  'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+  instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
+    'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
+    'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
   _condicaoSelecionada = '';
   mostraEncarregadoLocal = false;
   mostraEncarregadoRegional = false;
@@ -32,12 +32,12 @@ export class RegistroPessoaComponent implements OnInit {
     public pessoaService: PessoaService,
     public router: Router
     , private toastr: ToastrService
-    , public fb: FormBuilder) { 
-      localeService.use('pt-br');
-      this.datePickerConfig = Object.assign({}, {containerClass: 'theme-blue' });
-    }
-    
-    ngOnInit() {
+    , public fb: FormBuilder) {
+    localeService.use('pt-br');
+    this.datePickerConfig = Object.assign({}, { containerClass: 'theme-blue' });
+  }
+
+  ngOnInit() {
     this.validation();
   }
 
@@ -46,48 +46,51 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   set condicaoSelecionada(value: string) {
-    switch(value){
-      case 'instrutor': this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = true; break;
-      case 'encarregado': this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false; break;
-      case 'regional': this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false; break;
-    }     
+    switch (value) {
+      case 'instrutor': 
+      this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = true; break;
+      case 'encarregado': this.registerForm.patchValue({encarregadoLocal: '' });
+      this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false; break;
+      case 'regional': this.registerForm.patchValue({encarregadoLocal: '', encarregadoRegional: '' });
+      this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false; break;
+    }
   }
 
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query)
-    .subscribe(
-      (res: any) => {
-        this.results = res;
-      }, error => {
-        if(error.status === 400){
-          this.toastr.warning(error.error);  
-        }else{
-          this.toastr.error(error.error);
-        }
-        console.clear();
-      });
-    }
-
-    autoCompleteEncarregadoRegional(event: any) {
-      this.pessoaService.buscarEncarregadoRegional(event.query)
       .subscribe(
         (res: any) => {
           this.results = res;
         }, error => {
-          if(error.status === 400){
-            this.toastr.warning(error.error);  
-          }else{
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
             this.toastr.error(error.error);
           }
           console.clear();
         });
-      }
+  }
+
+  autoCompleteEncarregadoRegional(event: any) {
+    this.pessoaService.buscarEncarregadoRegional(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
 
   validation() {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(10)]],
-      encarregadoLocal: ['', Validators.required],
-      encarregadoRegional: ['', Validators.required],
+      encarregadoLocal: [''],
+      encarregadoRegional: [''],
       regiao: ['', [Validators.required, Validators.pattern('^.*\- ?[a-zA-Z]*')]],
       regional: ['', Validators.required],
       celular: ['', Validators.required],
@@ -98,9 +101,10 @@ export class RegistroPessoaComponent implements OnInit {
       instrumento: ['', Validators.required],
       condicao: ['', Validators.required],
       userName: ['', Validators.required],
-        passwords: this.fb.group({ 
-          password: ['', [Validators.required, Validators.minLength(4)]], 
-          confirmPassword: ['', Validators.required]}, { validator: this.compararSenhas })
+      passwords: this.fb.group({
+        password: ['', [Validators.required, Validators.minLength(4)]],
+        confirmPassword: ['', Validators.required]
+      }, { validator: this.compararSenhas })
     });
   }
 
@@ -115,9 +119,9 @@ export class RegistroPessoaComponent implements OnInit {
             this.toastr.success('Pessoa registrada com sucesso !');
             this.router.navigate(['/login']);
           }, error => {
-            if(error.status === 400){
-              this.toastr.warning(error.error);  
-            }else{
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
               this.toastr.error(error.error);
             }
             console.clear();
@@ -137,7 +141,7 @@ export class RegistroPessoaComponent implements OnInit {
     }
   }
 
-  visualizarPrimeiraSenha(){
+  visualizarPrimeiraSenha() {
     const password = document.querySelector('#senha1');
     const toggle = document.querySelector('#toggle1');
     const type = password!.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -145,12 +149,12 @@ export class RegistroPessoaComponent implements OnInit {
     toggle!.classList.toggle('fa-eye-slash');
   }
 
-  visualizarSegundaSenha(){
+  visualizarSegundaSenha() {
     const password = document.querySelector('#senha2');
     const toggle = document.querySelector('#toggle2');
     const type = password!.getAttribute('type') === 'password' ? 'text' : 'password';
     password!.setAttribute('type', type);
     toggle!.classList.toggle('fa-eye-slash');
   }
-  
+
 }
