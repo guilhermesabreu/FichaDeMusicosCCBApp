@@ -16,11 +16,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistroPessoaComponent } from './registroPessoa/registroPessoa.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { PessoaService } from './services/PessoaService/pessoa.service';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [		
     AppComponent,
     LoginComponent,
+    NavComponent,
       RegistroPessoaComponent
    ],
   imports: [

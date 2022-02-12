@@ -6,3 +6,14 @@
 @import '../node_modules/primeng/resources/themes/lara-light-blue/theme.css';
 @import '../node_modules/primeng/resources/primeng.min.css';
 /* You can add global styles to this file, and also import other style files */
+
+.bg-dark {
+    background-color: #ac663e !important;
+    margin:0;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus {
+    color: #ac663e !important;
+    background-color: #ffffff !important;
+    border-color: #832f00 !important;
+}

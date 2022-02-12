@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { map, Observable } from 'rxjs';
 import { Pessoa } from 'src/app/models/Pessoa';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,9 @@ export class AuthService {
 
   baseURLPessoa = 'https://fichademusicosccbapi.herokuapp.com/api/v1/pessoas';
   decodedToken: any;
-  constructor(private http: HttpClient) { }
+  jwtHelper = new JwtHelperService();
+  constructor(private http: HttpClient
+             ,private router: Router) { }
 
   despertarServidor(){
     return this.http.get(`${this.baseURLPessoa}/despertador`);    
@@ -41,5 +45,20 @@ export class AuthService {
         return true;
       });
       return isMatch;
+    }
+
+    loggedIn() {
+      const token = localStorage.getItem('token');
+      var urlPrincipal = this.router.url.indexOf("login");
+      
+      if(urlPrincipal > 0){
+        return false;
+      }
+      else if(!this.jwtHelper.isTokenExpired(token!)){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
 }
