@@ -17,12 +17,15 @@ import { RegistroPessoaComponent } from './registroPessoa/registroPessoa.compone
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { PessoaService } from './services/PessoaService/pessoa.service';
 import { NavComponent } from './nav/nav.component';
+import { FooterComponent } from './footer/footer.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [		
     AppComponent,
     LoginComponent,
     NavComponent,
+    FooterComponent,
       RegistroPessoaComponent
    ],
   imports: [
@@ -43,7 +46,9 @@ import { NavComponent } from './nav/nav.component';
        provide: HTTP_INTERCEPTORS,
        useClass: AuthInterceptor,
        multi: true
-    }],
+    },
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
