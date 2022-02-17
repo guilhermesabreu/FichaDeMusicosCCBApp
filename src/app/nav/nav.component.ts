@@ -62,6 +62,11 @@ export class NavComponent implements OnInit {
       showMenu() {
         return this.router.url !== "/login";
       }
+
+      showSubItem():string{
+        console.log('role: ', sessionStorage.getItem('role'));
+        return sessionStorage.getItem('role')!.toString();
+      }
       
       // obterUsuarios() {
       //   this.admService.listaDeAdms().subscribe(

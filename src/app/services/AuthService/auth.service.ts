@@ -39,6 +39,7 @@ export class AuthService {
       var userRole = payLoad.role;
       allowedRoles.forEach((element: any) => {
         if(userRole == element){
+          sessionStorage.setItem('role', payLoad.role);
           isMatch = true;
           return false;
         }

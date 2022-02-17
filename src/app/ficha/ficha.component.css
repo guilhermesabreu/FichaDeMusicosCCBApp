@@ -1,0 +1,11 @@
+.tab{
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #fff;
+    background-attachment: fixed;
+    padding-top: 100px;
+    padding-bottom: 300px;
+    padding-right: 0;
+    width: 100%;
+}

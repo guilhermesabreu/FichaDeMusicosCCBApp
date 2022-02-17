@@ -5,8 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
-import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -19,15 +20,19 @@ import { PessoaService } from './services/PessoaService/pessoa.service';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { DatePipe } from '@angular/common';
+import { FichaComponent } from './ficha/ficha.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     LoginComponent,
     NavComponent,
     FooterComponent,
-      RegistroPessoaComponent
-   ],
+    RegistroPessoaComponent,
+    FichaComponent
+  ],
   imports: [
     AppRoutingModule,
     ReactiveFormsModule,
@@ -38,14 +43,16 @@ import { DatePipe } from '@angular/common';
     BsDatepickerModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     PessoaService,
     {
-       provide: HTTP_INTERCEPTORS,
-       useClass: AuthInterceptor,
-       multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     },
     DatePipe
   ],

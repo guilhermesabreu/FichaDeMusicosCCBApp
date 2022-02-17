@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.usuario)
       .subscribe(
         () => {
-          // this.router.navigate(['/agendamentosUser']);
           this.toastr.success('Logado com sucesso !');
+          this.router.navigate(['/ficha']);
         }, error => {
           if(error.status === 400){
             this.toastr.warning(error.error);  

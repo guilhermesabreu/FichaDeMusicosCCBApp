@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
+import { FichaComponent } from './ficha/ficha.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroPessoaComponent } from './registroPessoa/registroPessoa.component';
 
@@ -7,6 +9,7 @@ import { RegistroPessoaComponent } from './registroPessoa/registroPessoa.compone
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
   {path: 'registroPessoa', component: RegistroPessoaComponent },
+  {path: 'ficha', component: FichaComponent, canActivate: [AuthGuard], data: {permittedRoles:['INSTRUTOR', 'REGIONAL', 'ENCARREGADO']} },
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: '**', redirectTo: 'login', pathMatch: 'full'}
 ];
