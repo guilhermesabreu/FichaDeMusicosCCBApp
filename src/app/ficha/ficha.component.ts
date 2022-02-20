@@ -47,10 +47,11 @@ export class FichaComponent implements OnInit {
     var condicao = sessionStorage.getItem('role');
     var apelido = sessionStorage.getItem('username');
     var lParametros = "";
-    lParametros += condicao === 'ENCARREGADO' ? 'ApelidoEncarregado= ' + apelido
+    lParametros += condicao === 'ENCARREGADO' ? 'ApelidoEncarregado=' + apelido
       : condicao === 'REGIONAL' ? 'ApelidoEncarregadoRegional=' + apelido
         : condicao === 'INSTRUTOR' ? 'ApelidoInstrutor=' + apelido : '';
     lParametros += opcaoRole === '' || opcaoRole === undefined || opcaoRole === null ? '&Condicao=ALUNO' : '&Condicao=' + opcaoRole;
+    console.log(lParametros);
     this.pessoaService.listaDeMusicos(lParametros)
       .subscribe(
         (res: Pessoa[]) => {
