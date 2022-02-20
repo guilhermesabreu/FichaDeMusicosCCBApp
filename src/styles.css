@@ -12,8 +12,4 @@
     margin:0;
 }
 
-.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-success:focus, .btn-success:active:focus {
-    color: #ac663e !important;
-    background-color: #ffffff !important;
-    border-color: #832f00 !important;
-}
+

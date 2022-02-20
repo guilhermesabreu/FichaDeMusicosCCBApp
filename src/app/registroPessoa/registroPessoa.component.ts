@@ -28,6 +28,7 @@ export class RegistroPessoaComponent implements OnInit {
 
   results!: string[];
   constructor(
+    public authService: AuthService,
     private localeService: BsLocaleService,
     public pessoaService: PessoaService,
     public router: Router
@@ -38,7 +39,17 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.despertarServidor();
     this.validation();
+  }
+
+  despertarServidor(){
+    this.authService.despertarServidor()
+    .subscribe(
+      () => {
+      }, error => {
+          this.toastr.error('Servidor indisponível !');
+      });
   }
 
   get condicaoSelecionada(): string {

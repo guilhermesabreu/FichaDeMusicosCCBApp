@@ -26,8 +26,8 @@ export class AuthService {
       map((response: any) => {
         const user = response;
         if (user) {
-          localStorage.setItem('token', JSON.stringify(user.token));
-          sessionStorage.setItem('username', JSON.stringify(user.user));
+          localStorage.setItem('token', JSON.stringify(user.token).slice(1, -1));
+          sessionStorage.setItem('username', JSON.stringify(user.user).slice(1, -1));
         }
       })
       );

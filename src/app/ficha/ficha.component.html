@@ -1,7 +1,7 @@
 <div class="tab">
-  <tabset [justified]="true">
-    <tab heading="Justified">Justified content</tab>
-    <tab heading="SJ">Short Labeled Justified content</tab>
-    <tab heading="Long Justified">Long Labeled Justified content</tab>
+  <h1 style="color: #994803!important; text-align: center;">{{condicaoTitulo}}</h1>
+  <tabset [justified]="true" >
+    <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas" heading="{{alf}}">
+    </tab>
   </tabset>
 </div>

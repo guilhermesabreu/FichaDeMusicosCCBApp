@@ -10,23 +10,23 @@
           {{userName()}}
         </a>
         <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
-          style="position: absolute !important;">
-          <a *ngIf="showSubItem() === 'REGIONAL' ||  showSubItem() === 'ENCARREGADO' || showSubItem() === 'INSTRUTOR'" class="dropdown-item" style="cursor: pointer">
+          style="position: absolute !important; color:#994803!important;">
+          <a (click)="listarAlunos()" *ngIf="showSubItem() === 'REGIONAL' ||  showSubItem() === 'ENCARREGADO' || showSubItem() === 'INSTRUTOR'" class="dropdown-item" style="cursor: pointer">
             Alunos
           </a>
-          <a *ngIf="showSubItem() === 'REGIONAL' ||  showSubItem() === 'ENCARREGADO'" class="dropdown-item" style="cursor: pointer">
+          <a class="opcao" (click)="listarInstrutores()" *ngIf="showSubItem() === 'REGIONAL' ||  showSubItem() === 'ENCARREGADO'" class="dropdown-item" style="cursor: pointer">
             Instrutores
           </a>
-          <a *ngIf="showSubItem() === 'REGIONAL'" class="dropdown-item" style="cursor: pointer">
+          <a class="opcao" (click)="listarEncarregados()" *ngIf="showSubItem() === 'REGIONAL'" class="dropdown-item" style="cursor: pointer">
             Encarregados
           </a>
-          <a class="dropdown-item" style="cursor: pointer">
+          <a class="opcao" class="dropdown-item" style="cursor: pointer">
             Contato
           </a>
-          <a class="dropdown-item" style="cursor: pointer">
+          <a class="opcao" class="dropdown-item" style="cursor: pointer">
             Perfil
           </a>
-          <a class="dropdown-item" (click)="logOut()" style="cursor: pointer">
+          <a class="opcao" class="dropdown-item" (click)="logOut()" style="cursor: pointer">
             Sair
           </a>
         </div>

@@ -23,6 +23,7 @@ import { DatePipe } from '@angular/common';
 import { FichaComponent } from './ficha/ficha.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { EventEmitterService } from './event-emmiter/event-emitter.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     TabsModule.forRoot()
   ],
   providers: [
+    EventEmitterService,
     PessoaService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -9,3 +9,19 @@
     padding-right: 0;
     width: 100%;
 }
+
+::ng-deep .customClass > a.active  {
+    background-color: #faeadb !important;
+    color: #994803!important;
+    font-weight: 700;
+    border-bottom: none !important;
+    outline: 0 !important; 
+}
+
+::ng-deep .customClass > a {
+    background-color: #fff6ee !important;
+    color: #966942 !important;
+    font-weight: 700;
+    border-bottom: none !important;
+    outline: 0 !important; 
+}
