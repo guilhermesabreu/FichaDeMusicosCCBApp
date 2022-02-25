@@ -118,11 +118,12 @@ export class RegistroPessoaComponent implements OnInit {
       }, { validator: this.compararSenhas })
     });
   }
-
+  
   registrarPessoa() {
     if (this.registerForm.valid) {
       var dadosForm = Object.assign({}, this.registerForm.value);
       this.pessoa = dadosForm;
+      this.pessoa.apelidoInstrutor = dadosForm.condicao === 'instrutor' ? dadosForm.userName : '';
       this.pessoa.password = dadosForm.passwords.password;
       this.pessoaService.registroPessoa(this.pessoa)
         .subscribe(

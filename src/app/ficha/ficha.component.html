@@ -1,7 +1,185 @@
 <div class="tab">
   <h1 style="color: #994803!important; text-align: center;">{{condicaoTitulo}}</h1>
-  <tabset [justified]="true" >
-    <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas" heading="{{alf}}">
+  <tabset [justified]="true">
+    <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
+      <carousel [interval]="0">
+        <div *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf">
+          <slide *ngIf="pes.nome.substring(0,1) === alf" style="background-color: #faeadb;">
+            <div class="text-center wrapper">
+              <img *ngIf="pes.condicao === 'aluno'" (click)="abrirModalAluno(pes, modalAluno)" class="photo"
+                src="../../assets/aluno.png" alt="first slide" style="display: block; width: 20%; margin-left: 40%;">
+              <img *ngIf="pes.condicao === 'instrutor'" class="photo" src="../../assets/instrutor.png" alt="first slide"
+                style="display: block; width: 20%; margin-left: 40%;">
+              <img *ngIf="pes.condicao === 'encarregado'" class="photo" src="../../assets/encarregado.jpg"
+                alt="first slide" style="display: block; width: 20%; margin-left: 40%;">
+            </div>
+          </slide>
+        </div>
+      </carousel>
     </tab>
   </tabset>
+</div>
+
+<div bsModal #modalAluno="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Aluno
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalAluno.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <accordion>
+          <form [formGroup]="registerFormAluno">
+            <accordion-group heading="Dados Pessoais">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Nome Completo:</strong>
+                      {{registerFormAluno.value.nome}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Instrutor:</strong>
+                      {{registerFormAluno.value.instrutor}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Encarregado Local:</strong>
+                      {{registerFormAluno.value.encarregadoLocal}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Encarregado Regional:</strong>
+                      {{registerFormAluno.value.encarregadoRegional}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Região:</strong> {{registerFormAluno.value.regiao}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Regional:</strong>
+                      {{registerFormAluno.value.regional}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Celular:</strong> {{registerFormAluno.value.celular}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">E-mail:</strong> {{registerFormAluno.value.email}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Data de Nascimento:</strong>
+                      {{registerFormAluno.value.dataNascimento}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Data de Início:</strong>
+                      {{registerFormAluno.value.dataInicio}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Comum:</strong> {{registerFormAluno.value.comum}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Instrumento:</strong>
+                      {{registerFormAluno.value.instrumento}}</label>
+                  </div>
+                </div>
+              </div>
+            </accordion-group>
+            <accordion-group heading="Ocorrências">
+              <div class="table-responsive">
+                <div class="container">
+                  <div class="row">
+                    <table class="table table-bordered text-center">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Método</th>
+                          <th>Lição</th>
+                          <th>Data Ocorrência</th>
+                          <th>Observação</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let oco of listarOcorrenciasPorAluno(registerFormAluno.value)">
+                          <td>{{oco.nomeMetodo}}</td>
+                          <td>{{oco.numeroLicao}}</td>
+                          <td>{{oco.dataOcorrencia}}</td>
+                          <td>{{oco.observacaoInstrutor}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot *ngIf="!listarOcorrenciasPorAluno(registerFormAluno.value)">
+                        <tr>
+                          <td colspan="7" class="text-center">
+                            <h4>
+                              Este aluno ainda não contém ocorrências!
+                            </h4>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </accordion-group>
+            <accordion-group heading="Hinos">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Número do hino:</strong></label>
+                      <select class="form-control" type="text">
+                        <option [value]="obj" *ngFor="let obj of listarHinosPorAluno(registerFormAluno.value)">
+                          {{obj.numeroHino+" - "+obj.vozHino}}
+                        </option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+            </accordion-group>
+          </form>
+        </accordion>
+      </div>
+    </div>
+  </div>
 </div>

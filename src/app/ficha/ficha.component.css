@@ -25,3 +25,15 @@
     border-bottom: none !important;
     outline: 0 !important; 
 }
+
+.wrapper{
+    margin: 100px auto;
+    overflow: hidden;
+}
+
+.photo{
+    width: 30%;
+    cursor: pointer;
+    transition: 0.5s;
+    clip-path: circle();
+}

@@ -10,6 +10,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 import { AppComponent } from './app.component';
+import {PessoasPelaPrimeiraLetraDoNomePipe} from './helps/PessoasPelaPrimeiraLetraDoNome.pipe';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +25,9 @@ import { FichaComponent } from './ficha/ficha.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { EventEmitterService } from './event-emmiter/event-emitter.service';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { EventEmitterService } from './event-emmiter/event-emitter.service';
     NavComponent,
     FooterComponent,
     RegistroPessoaComponent,
-    FichaComponent
+    FichaComponent,
+    PessoasPelaPrimeiraLetraDoNomePipe
   ],
   imports: [
     AppRoutingModule,
@@ -46,7 +51,10 @@ import { EventEmitterService } from './event-emmiter/event-emitter.service';
     BrowserAnimationsModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    CarouselModule.forRoot(),
+    AccordionModule.forRoot()
   ],
   providers: [
     EventEmitterService,
