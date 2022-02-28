@@ -11,4 +11,11 @@ export class HinoService {
   
   constructor(private http: HttpClient) { }
 
+  salvarHino(hino: any){
+    return this.http.post<Hino>(`${this.baseURLHino}`, hino);
+  }
+
+  deletarHino(idHino: number) {
+    return this.http.delete(`${this.baseURLHino}/${idHino}`);
+  }
 }

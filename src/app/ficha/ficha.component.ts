@@ -4,9 +4,10 @@ import { EventEmitterService } from '../event-emmiter/event-emitter.service';
 import { Pessoa } from '../models/Pessoa';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ocorrencia } from '../models/Ocorrencia';
 import { Hino } from '../models/Hino';
+import { HinoService } from '../services/HinoService/Hino.service';
 
 @Component({
   selector: 'app-ficha',
@@ -19,15 +20,20 @@ export class FichaComponent implements OnInit {
 
   condicaoTitulo!: string;
   pessoas!: Pessoa[];
+  hino!: Hino;
   alfabetoPessoas!: string[];
   registerFormAluno!: FormGroup;
   registerFormOcorrencia!: FormGroup;
   registerFormHino!: FormGroup;
-  
+  hinoParaExcluir = '';
+  idHino!: number;
+  idPessoa!: number;
+
   constructor(
     private fb: FormBuilder,
     private eventEmitterService: EventEmitterService,
     public pessoaService: PessoaService,
+    public hinoService: HinoService,
     private modalService: BsModalService,
     private toastr: ToastrService
   ) { }
@@ -79,16 +85,16 @@ export class FichaComponent implements OnInit {
     });
 
     this.registerFormHino = this.fb.group({
-      numeroHino: [''],
-      vozHino: ['']
+      numeroHino: ['', Validators.required],
+      vozHino: ['', Validators.required],
     });
   }
 
-  listarOcorrenciasPorAluno(pessoa: Pessoa) : Ocorrencia[]{
+  listarOcorrenciasPorAluno(pessoa: Pessoa): Ocorrencia[] {
     return pessoa.ocorrencias;
   }
 
-  listarHinosPorAluno(pessoa: Pessoa) : Hino[]{
+  listarHinosPorAluno(pessoa: Pessoa): Hino[] {
     return pessoa.hinos;
   }
 
@@ -115,7 +121,84 @@ export class FichaComponent implements OnInit {
         });
   }
 
+  registrarHino(modalNovoHino: any) {
+    modalNovoHino.show();
+  }
+
+  removerHino(modalRemoverHino: any) {
+    modalRemoverHino.show();
+    var h = (document.getElementById("hinoSelecionado")) as HTMLSelectElement;
+    var sel = h.selectedIndex;
+    var opt = h.options[sel]
+    this.hinoParaExcluir = opt.text;
+    this.idHino = parseInt(opt.value);
+  }
+
+  confirmarExclusaoHino(modalRemoverHino: any) {
+    if (this.idHino !== null && this.idHino !== undefined && this.idHino > 0) {
+      this.hinoService.deletarHino(this.idHino)
+        .subscribe(
+          () => {
+            this.toastr.success('Hino deletado com sucesso.');
+            this.listarMusicos('ALUNO');
+            this.retirarHinoDoCombo();
+            modalRemoverHino.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
+    }
+    else {
+      this.toastr.error('Hino não localizado na base de dados.')
+    }
+  }
+
+  salvarHino(modalNovoHino: any) {
+    if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
+      if (this.registerFormHino.valid) {
+        this.hino = Object.assign({}, this.registerFormHino.value);
+        var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa };
+        this.hinoService.salvarHino(hinoPost)
+          .subscribe(
+            (hino : Hino) => {
+              this.toastr.success('Hino cadastrado com sucesso.');
+              this.listarMusicos('ALUNO');
+              this.adicionarHinoAoCombo(hino);
+              modalNovoHino.hide();
+            }, error => {
+              if (error.status === 400) {
+                this.toastr.warning(error.error);
+              } else {
+                this.toastr.error(error.error);
+              }
+              console.clear();
+            });
+      }
+    }
+    else {
+      this.toastr.error('Hino não localizado na base de dados.')
+    }
+  }
+
+  retirarHinoDoCombo() {
+    var x = (document.getElementById("hinoSelecionado")) as HTMLSelectElement;
+    x!.remove(x.selectedIndex);
+  }
+
+  adicionarHinoAoCombo(hinoCriado: Hino) {
+    if (this.registerFormHino.valid) {
+      this.hino = Object.assign({}, this.registerFormHino.value);
+      var selectElement = (document.getElementById('hinoSelecionado')) as HTMLSelectElement;
+      selectElement.add(new Option(this.hino.numeroHino+' - '+this.hino.vozHino, hinoCriado.idHino.toString()));
+    }
+  }
+
   abrirModalAluno(pessoa: Pessoa, modalAluno: any) {
+    this.idPessoa = pessoa.id;
     modalAluno.show();
     this.registerFormAluno.patchValue({
       id: pessoa.id,

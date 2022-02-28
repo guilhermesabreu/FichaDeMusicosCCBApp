@@ -21,7 +21,7 @@
 </div>
 
 <div bsModal #modalAluno="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
@@ -167,18 +167,101 @@
               <div class="form-row">
                 <div class="form-group col-md-12">
                   <div class="text-center">
-                    <label><strong style="color:#994803;">Número do hino:</strong></label>
-                      <select class="form-control" type="text">
-                        <option [value]="obj" *ngFor="let obj of listarHinosPorAluno(registerFormAluno.value)">
-                          {{obj.numeroHino+" - "+obj.vozHino}}
-                        </option>
-                      </select>
+                    <label><strong style="color:#994803;">Hinos aprovados:</strong></label>
+                    <select id="hinoSelecionado" class="form-control" type="text">
+                      <option [value]="obj.idHino" *ngFor="let obj of listarHinosPorAluno(registerFormAluno.value)">
+                        {{obj.numeroHino+" - "+obj.vozHino}}
+                      </option>
+                    </select>
                   </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-4 offset-2">
+                  <img src="../../assets/add.png" style="cursor: pointer;"
+                    (click)="registrarHino(modalNovoHino)" />
+                </div>
+                <div class="col-4 offset-2">
+                  <img src="../../assets/remove.png"
+                    style="cursor: pointer;width: 42px;margin-top: 3px;"
+                    (click)="removerHino(modalRemoverHino)" />
                 </div>
               </div>
             </accordion-group>
           </form>
         </accordion>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalNovoHino="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Novo Hino
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalNovoHino.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerFormHino">
+          <div class="form-group">
+            <label for="">Voz do hino:</label>
+            <select class="form-control" id="select" formControlName="vozHino" [ngClass]="{'is-invalid': registerFormHino.get('vozHino')!.errors &&
+            registerFormHino.get('vozHino')!.touched}" placeholder="selecione a voz do hino">
+              <option value="soprano">Soprano</option>
+              <option value="contralto">Contralto</option>
+              <option value="tenor">Tenor</option>
+              <option value="tenor">Baixo</option>
+            </select>
+            <div *ngIf="registerFormHino.get('vozHino')!.hasError('required') &&
+            registerFormHino.get('vozHino')!.touched" class="invalid-feedback">
+              Voz é obrigatória.
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="margin-right:20px" for="">Número do hino:</label>
+            <input style="width:90px" formControlName="numeroHino" [ngClass]="{'is-invalid': registerFormHino.get('numeroHino')!.errors &&
+            registerFormHino.get('numeroHino')!.touched}" placeholder="1 ao 480" type="number" min="1" step="1" max="480">
+            <div *ngIf="registerFormHino.get('numeroHino')!.hasError('required') &&
+            registerFormHino.get('numeroHino')!.touched" class="invalid-feedback">
+              Número é obrigatório.
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+              <button class="btn btn-lg btn-success btn-block"
+                [disabled]="!registerFormHino.valid" (click)="salvarHino(modalNovoHino)">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalRemoverHino="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Tem certeza que deseja remover o hino: <strong style="color:#994803;">{{hinoParaExcluir}}, </strong> deste
+          aluno?
+        </h6>
+        <button type="button" class="close pull-right" (click)="modalRemoverHino.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-md-8 offset-md-2">
+          <button class="btn btn-lg btn-danger btn-block"
+            (click)="confirmarExclusaoHino(modalRemoverHino)">Excluir</button>
+        </div>
       </div>
     </div>
   </div>
