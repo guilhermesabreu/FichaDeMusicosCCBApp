@@ -8,6 +8,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ocorrencia } from '../models/Ocorrencia';
 import { Hino } from '../models/Hino';
 import { HinoService } from '../services/HinoService/Hino.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { OcorrenciaService } from '../services/OcorrenciaService/Ocorrencia.service';
 
 @Component({
   selector: 'app-ficha',
@@ -19,8 +21,11 @@ import { HinoService } from '../services/HinoService/Hino.service';
 export class FichaComponent implements OnInit {
 
   condicaoTitulo!: string;
+  pessoa!: Pessoa;
   pessoas!: Pessoa[];
   hino!: Hino;
+  ocorrencia!: Ocorrencia;
+  ocorrencias!: Ocorrencia[];
   alfabetoPessoas!: string[];
   registerFormAluno!: FormGroup;
   registerFormOcorrencia!: FormGroup;
@@ -29,14 +34,19 @@ export class FichaComponent implements OnInit {
   idHino!: number;
   idPessoa!: number;
 
+  datePickerConfig!: Partial<BsDatepickerConfig>;
+
   constructor(
     private fb: FormBuilder,
     private eventEmitterService: EventEmitterService,
     public pessoaService: PessoaService,
     public hinoService: HinoService,
+    public ocorrenciaService: OcorrenciaService,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) { }
+  ) {
+    this.datePickerConfig = Object.assign({}, {adaptivePosition : true,  containerClass: 'theme-blue', dateInputFormat: 'DD/MM/YYYY' });
+  }
 
   ngOnInit() {
     this.validation();
@@ -78,10 +88,11 @@ export class FichaComponent implements OnInit {
     });
 
     this.registerFormOcorrencia = this.fb.group({
-      dataOcorrencia: [''],
-      numeroLicao: [''],
-      nomeMetodo: [''],
-      observacaoInstrutor: ['']
+      idOcorrencia: [''],
+      dataOcorrencia: ['', Validators.required],
+      numeroLicao: ['', Validators.required],
+      nomeMetodo: ['', Validators.required],
+      observacaoInstrutor: ['', Validators.required]
     });
 
     this.registerFormHino = this.fb.group({
@@ -90,8 +101,23 @@ export class FichaComponent implements OnInit {
     });
   }
 
+  ////////////////////////////////////Listas///////////////////////////////////////
   listarOcorrenciasPorAluno(pessoa: Pessoa): Ocorrencia[] {
-    return pessoa.ocorrencias;
+    this.pessoa = pessoa;
+    this.ocorrencias = this.pessoa.ocorrencias;
+    return this.ocorrencias;
+  }
+
+  editarListaOcorrenciasPorAluno(ocorrencia: Ocorrencia) {
+    ocorrencia.dataOcorrencia = this.toISOFormatDataHora(ocorrencia.dataOcorrencia);
+    var indice = this.ocorrencias.findIndex((obj => obj.idOcorrencia == ocorrencia.idOcorrencia));
+    this.pessoa.ocorrencias[indice] = ocorrencia;
+  }
+
+  toISOFormatDataHora(dateTimeString: string) {
+    const [date, time] = dateTimeString.split(' ');
+    const [DD, MM, YYYY] = date.split('/');
+      return `${MM}/${DD}/${YYYY}`;
   }
 
   listarHinosPorAluno(pessoa: Pessoa): Hino[] {
@@ -121,8 +147,61 @@ export class FichaComponent implements OnInit {
         });
   }
 
-  registrarHino(modalNovoHino: any) {
-    modalNovoHino.show();
+  ////////////////////////////////////Ocorrências/////////////////////////////////
+  ////////////////////////////////////Edição//////////////////////////////////////
+  editarOcorrencia(ocorrencia: Ocorrencia, modalOcorrencia: any) {
+    modalOcorrencia.show();
+    this.registerFormOcorrencia.patchValue({
+      idOcorrencia: ocorrencia.idOcorrencia,
+      nomeMetodo: ocorrencia.nomeMetodo,
+      numeroLicao: ocorrencia.numeroLicao,
+      observacaoInstrutor: ocorrencia.observacaoInstrutor,
+      dataOcorrencia: ocorrencia.dataOcorrencia
+    });
+  }
+
+  
+
+  salvarOcorrencia(modalOcorrencia: any) {
+    if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
+      if (this.registerFormOcorrencia.valid) {
+        this.ocorrencia = Object.assign({}, this.registerFormOcorrencia.value);
+        var ocorrenciaPut = {
+          idOcorrencia: this.ocorrencia.idOcorrencia,
+          nomeMetodo: this.ocorrencia.nomeMetodo,
+          numeroLicao: this.ocorrencia.numeroLicao,
+          observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
+          dataOcorrencia: this.ocorrencia.dataOcorrencia,
+          idPessoa: this.idPessoa
+        };
+        this.ocorrenciaService.editarOcorrencia(ocorrenciaPut)
+          .subscribe(
+            (oco: Ocorrencia) => {
+              this.toastr.success('Ocorrência editada com sucesso.');
+              this.listarMusicos('ALUNO');
+              this.editarListaOcorrenciasPorAluno(oco);
+              console.log('pessoa: ', this.pessoa);
+              modalOcorrencia.hide();
+            }, error => {
+              if (error.status === 400) {
+                this.toastr.warning(error.error);
+              } else {
+                this.toastr.error(error.error);
+              }
+              console.clear();
+            });
+      }
+    }
+    else {
+      this.toastr.error('Hino não localizado na base de dados.')
+    }
+  }
+
+  ////////////////////////////////////Hinos///////////////////////////////////////
+  ////////////////////////////////////Remoção/////////////////////////////////////
+  retirarHinoDoCombo() {
+    var x = (document.getElementById("hinoSelecionado")) as HTMLSelectElement;
+    x!.remove(x.selectedIndex);
   }
 
   removerHino(modalRemoverHino: any) {
@@ -157,6 +236,12 @@ export class FichaComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////Hinos///////////////////////////////////////
+  ////////////////////////////////////Inclusão////////////////////////////////////
+  registrarHino(modalNovoHino: any) {
+    modalNovoHino.show();
+  }
+
   salvarHino(modalNovoHino: any) {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
       if (this.registerFormHino.valid) {
@@ -164,7 +249,7 @@ export class FichaComponent implements OnInit {
         var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa };
         this.hinoService.salvarHino(hinoPost)
           .subscribe(
-            (hino : Hino) => {
+            (hino: Hino) => {
               this.toastr.success('Hino cadastrado com sucesso.');
               this.listarMusicos('ALUNO');
               this.adicionarHinoAoCombo(hino);
@@ -184,16 +269,11 @@ export class FichaComponent implements OnInit {
     }
   }
 
-  retirarHinoDoCombo() {
-    var x = (document.getElementById("hinoSelecionado")) as HTMLSelectElement;
-    x!.remove(x.selectedIndex);
-  }
-
   adicionarHinoAoCombo(hinoCriado: Hino) {
     if (this.registerFormHino.valid) {
       this.hino = Object.assign({}, this.registerFormHino.value);
       var selectElement = (document.getElementById('hinoSelecionado')) as HTMLSelectElement;
-      selectElement.add(new Option(this.hino.numeroHino+' - '+this.hino.vozHino, hinoCriado.idHino.toString()));
+      selectElement.add(new Option(this.hino.numeroHino + ' - ' + this.hino.vozHino, hinoCriado.idHino.toString()));
     }
   }
 

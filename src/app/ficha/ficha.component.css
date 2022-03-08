@@ -37,3 +37,7 @@
     transition: 0.5s;
     clip-path: circle();
 }
+
+.bs-datepicker-container{
+    padding-top: -60px;
+}

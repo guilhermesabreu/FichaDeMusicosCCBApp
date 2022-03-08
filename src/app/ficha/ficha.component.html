@@ -12,7 +12,7 @@
                 style="display: block; width: 20%; margin-left: 40%;">
               <img *ngIf="pes.condicao === 'encarregado'" class="photo" src="../../assets/encarregado.jpg"
                 alt="first slide" style="display: block; width: 20%; margin-left: 40%;">
-                <h3 style="color:#994803;" >{{pes.nome}}</h3>
+              <h3 style="color:#994803;">{{pes.nome}}</h3>
             </div>
           </slide>
         </div>
@@ -140,6 +140,7 @@
                           <th>Lição</th>
                           <th>Data Ocorrência</th>
                           <th>Observação</th>
+                          <th>Ações</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -148,6 +149,14 @@
                           <td>{{oco.numeroLicao}}</td>
                           <td>{{oco.dataOcorrencia}}</td>
                           <td>{{oco.observacaoInstrutor}}</td>
+                          <td>
+                            <div class="btn-group">
+                              <i class="fa fa-edit" tooltip="Editar" (click)="editarOcorrencia(oco, modalOcorrencia)"
+                                style="color: green; cursor: pointer; width: 50px; font-size: larger;"></i>
+                              <!-- <i class="fa fa-eraser" tooltip="Excluir" (click)="excluirOcorrencia(evento, confirm)"
+                                style="color: red; cursor: pointer; width: 50px; font-size: larger;"></i> -->
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                       <tfoot *ngIf="!listarOcorrenciasPorAluno(registerFormAluno.value)">
@@ -179,18 +188,86 @@
               </div>
               <div class="form-row">
                 <div class="col-4 offset-2">
-                  <img src="../../assets/add.png" style="cursor: pointer;"
-                    (click)="registrarHino(modalNovoHino)" />
+                  <img src="../../assets/add.png" style="cursor: pointer;" (click)="registrarHino(modalNovoHino)" />
                 </div>
                 <div class="col-4 offset-2">
-                  <img src="../../assets/remove.png"
-                    style="cursor: pointer;width: 42px;margin-top: 3px;"
+                  <img src="../../assets/remove.png" style="cursor: pointer;width: 42px;margin-top: 3px;"
                     (click)="removerHino(modalRemoverHino)" />
                 </div>
               </div>
             </accordion-group>
           </form>
         </accordion>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalOcorrencia="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Editar Ocorrência
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalOcorrencia.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerFormOcorrencia">
+          <div class="form-group">
+            <input type="hidden" formControlName="idOcorrencia">
+            <label for="">Nome do Método:</label>
+            <input class="form-control" type="text" formControlName="nomeMetodo"
+              [ngClass]="{'is-invalid': registerFormOcorrencia.get('nomeMetodo')!.errors &&
+              registerFormOcorrencia.get('nomeMetodo')!.touched}"
+              placeholder="Insira um nome de método"/>
+            <div *ngIf="registerFormOcorrencia.get('nomeMetodo')!.hasError('required') &&
+            registerFormOcorrencia.get('nomeMetodo')!.touched"
+              class="invalid-feedback">
+              Método é obrigatório.
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="margin-right:20px" for="">Número da Lição:</label>
+            <input style="width:90px" formControlName="numeroLicao" [ngClass]="{'is-invalid': registerFormOcorrencia.get('numeroLicao')!.errors &&
+            registerFormOcorrencia.get('numeroLicao')!.touched}" placeholder="1 ao 480" type="number" min="1" step="1"
+              max="480">
+            <div *ngIf="registerFormOcorrencia.get('numeroLicao')!.hasError('required') &&
+            registerFormOcorrencia.get('numeroLicao')!.touched" class="invalid-feedback">
+              Número da lição é obrigatório.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="">Observação do Instrutor:</label>
+            <textarea maxlength="100" class="form-control" type="text" formControlName="observacaoInstrutor"
+              [ngClass]="{'is-invalid': registerFormOcorrencia.get('observacaoInstrutor')!.errors &&
+              registerFormOcorrencia.get('observacaoInstrutor')!.touched}"
+              placeholder="Insira uma observação"> </textarea>
+            <div *ngIf="registerFormOcorrencia.get('observacaoInstrutor')!.hasError('required') &&
+            registerFormOcorrencia.get('observacaoInstrutor')!.touched"
+              class="invalid-feedback">
+              Observação é obrigatória (Limite de 100 caracteres).
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Data da Ocorrência:</label>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormOcorrencia.get('dataOcorrencia')!.errors 
+           && registerFormOcorrencia.get('dataOcorrencia')!.touched}" formControlName="dataOcorrencia">
+            <div *ngIf="registerFormOcorrencia.get('dataOcorrencia')!.hasError('required')
+        && registerFormOcorrencia.get('dataOcorrencia')!.touched" class="invalid-feedback">
+              Data da Ocorrência é obrigatória.
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+              <button class="btn btn-lg btn-success btn-block" [disabled]="!registerFormOcorrencia.valid"
+                (click)="salvarOcorrencia(modalOcorrencia)">Salvar</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -227,7 +304,8 @@
           <div class="form-group">
             <label style="margin-right:20px" for="">Número do hino:</label>
             <input style="width:90px" formControlName="numeroHino" [ngClass]="{'is-invalid': registerFormHino.get('numeroHino')!.errors &&
-            registerFormHino.get('numeroHino')!.touched}" placeholder="1 ao 480" type="number" min="1" step="1" max="480">
+            registerFormHino.get('numeroHino')!.touched}" placeholder="1 ao 480" type="number" min="1" step="1"
+              max="480">
             <div *ngIf="registerFormHino.get('numeroHino')!.hasError('required') &&
             registerFormHino.get('numeroHino')!.touched" class="invalid-feedback">
               Número é obrigatório.
@@ -235,8 +313,8 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-8 offset-md-2">
-              <button class="btn btn-lg btn-success btn-block"
-                [disabled]="!registerFormHino.valid" (click)="salvarHino(modalNovoHino)">Salvar</button>
+              <button class="btn btn-lg btn-success btn-block" [disabled]="!registerFormHino.valid"
+                (click)="salvarHino(modalNovoHino)">Salvar</button>
             </div>
           </div>
         </form>
