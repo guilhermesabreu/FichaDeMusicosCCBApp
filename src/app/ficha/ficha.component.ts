@@ -10,6 +10,7 @@ import { Hino } from '../models/Hino';
 import { HinoService } from '../services/HinoService/Hino.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { OcorrenciaService } from '../services/OcorrenciaService/Ocorrencia.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ficha',
@@ -31,12 +32,17 @@ export class FichaComponent implements OnInit {
   registerFormOcorrencia!: FormGroup;
   registerFormHino!: FormGroup;
   hinoParaExcluir = '';
+  ocorrenciaParaExcluir = '';
   idHino!: number;
   idPessoa!: number;
+  idOcorrencia!: number;
+  exibeOcorrencia!:boolean;
+  opcaoMudancaOcorrencia!:string;
 
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
   constructor(
+    public dateFormatPipe: DatePipe,
     private fb: FormBuilder,
     private eventEmitterService: EventEmitterService,
     public pessoaService: PessoaService,
@@ -45,7 +51,7 @@ export class FichaComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService
   ) {
-    this.datePickerConfig = Object.assign({}, {adaptivePosition : true,  containerClass: 'theme-blue', dateInputFormat: 'DD/MM/YYYY' });
+    this.datePickerConfig = Object.assign({}, { adaptivePosition: true, containerClass: 'theme-blue', dateInputFormat: 'DD/MM/YYYY' });
   }
 
   ngOnInit() {
@@ -105,19 +111,18 @@ export class FichaComponent implements OnInit {
   listarOcorrenciasPorAluno(pessoa: Pessoa): Ocorrencia[] {
     this.pessoa = pessoa;
     this.ocorrencias = this.pessoa.ocorrencias;
+    this.exibeOcorrencia = this.ocorrencias === undefined ? false : true;
     return this.ocorrencias;
-  }
-
-  editarListaOcorrenciasPorAluno(ocorrencia: Ocorrencia) {
-    ocorrencia.dataOcorrencia = this.toISOFormatDataHora(ocorrencia.dataOcorrencia);
-    var indice = this.ocorrencias.findIndex((obj => obj.idOcorrencia == ocorrencia.idOcorrencia));
-    this.pessoa.ocorrencias[indice] = ocorrencia;
   }
 
   toISOFormatDataHora(dateTimeString: string) {
     const [date, time] = dateTimeString.split(' ');
     const [DD, MM, YYYY] = date.split('/');
-      return `${MM}/${DD}/${YYYY}`;
+    return `${MM}/${DD}/${YYYY}`;
+  }
+
+  transformDate(date:Date) {
+    return this.dateFormatPipe.transform(date, 'MM/dd/yyyy');
   }
 
   listarHinosPorAluno(pessoa: Pessoa): Hino[] {
@@ -149,8 +154,15 @@ export class FichaComponent implements OnInit {
 
   ////////////////////////////////////Ocorrências/////////////////////////////////
   ////////////////////////////////////Edição//////////////////////////////////////
-  editarOcorrencia(ocorrencia: Ocorrencia, modalOcorrencia: any) {
+  editarOcorrenciaNaLista(ocorrencia: Ocorrencia) {
+    ocorrencia.dataOcorrencia = this.toISOFormatDataHora(ocorrencia.dataOcorrencia);
+    var indice = this.ocorrencias.findIndex((obj => obj.idOcorrencia == ocorrencia.idOcorrencia));
+    this.pessoa.ocorrencias[indice] = ocorrencia;
+  }
+
+  preencherModalEdicaoOcorrencia(ocorrencia: Ocorrencia, modalOcorrencia: any) {
     modalOcorrencia.show();
+    this.opcaoMudancaOcorrencia = 'PUT';
     this.registerFormOcorrencia.patchValue({
       idOcorrencia: ocorrencia.idOcorrencia,
       nomeMetodo: ocorrencia.nomeMetodo,
@@ -160,37 +172,110 @@ export class FichaComponent implements OnInit {
     });
   }
 
-  
-
   salvarOcorrencia(modalOcorrencia: any) {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
       if (this.registerFormOcorrencia.valid) {
         this.ocorrencia = Object.assign({}, this.registerFormOcorrencia.value);
-        var ocorrenciaPut = {
-          idOcorrencia: this.ocorrencia.idOcorrencia,
-          nomeMetodo: this.ocorrencia.nomeMetodo,
-          numeroLicao: this.ocorrencia.numeroLicao,
-          observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
-          dataOcorrencia: this.ocorrencia.dataOcorrencia,
-          idPessoa: this.idPessoa
-        };
-        this.ocorrenciaService.editarOcorrencia(ocorrenciaPut)
-          .subscribe(
-            (oco: Ocorrencia) => {
-              this.toastr.success('Ocorrência editada com sucesso.');
-              this.listarMusicos('ALUNO');
-              this.editarListaOcorrenciasPorAluno(oco);
-              console.log('pessoa: ', this.pessoa);
-              modalOcorrencia.hide();
-            }, error => {
-              if (error.status === 400) {
-                this.toastr.warning(error.error);
-              } else {
-                this.toastr.error(error.error);
-              }
-              console.clear();
-            });
+        if(this.opcaoMudancaOcorrencia === 'PUT')
+        {
+          var ocorrenciaPut = {
+            idOcorrencia: this.ocorrencia.idOcorrencia,
+            nomeMetodo: this.ocorrencia.nomeMetodo,
+            numeroLicao: this.ocorrencia.numeroLicao,
+            observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
+            dataOcorrencia: this.ocorrencia.dataOcorrencia,
+            idPessoa: this.idPessoa
+          };
+          this.ocorrenciaService.editarOcorrencia(ocorrenciaPut)
+            .subscribe(
+              (oco: Ocorrencia) => {
+                this.toastr.success('Ocorrência editada com sucesso.');
+                this.listarMusicos('ALUNO');
+                this.editarOcorrenciaNaLista(oco);
+                modalOcorrencia.hide();
+              }, error => {
+                if (error.status === 400) {
+                  this.toastr.warning(error.error);
+                } else {
+                  this.toastr.error(error.error);
+                }
+                console.clear();
+              });
+
+        }else{
+          var ocorrenciaPost = {
+            nomeMetodo: this.ocorrencia.nomeMetodo,
+            numeroLicao: this.ocorrencia.numeroLicao,
+            observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
+            dataOcorrencia: this.transformDate(new Date(this.ocorrencia.dataOcorrencia)),
+            idPessoa: this.idPessoa
+          };
+          this.ocorrenciaService.cadastrarOcorrencia(ocorrenciaPost)
+            .subscribe(
+              (oco: Ocorrencia) => {
+                this.toastr.success('Ocorrência salva com sucesso.');
+                this.listarMusicos('ALUNO');
+                this.incluirOcorrenciasNaLista(oco);
+                modalOcorrencia.hide();
+              }, error => {
+                if (error.status === 400) {
+                  this.toastr.warning(error.error);
+                } else {
+                  this.toastr.error(error.error);
+                }
+                console.clear();
+              });
+        }
       }
+    }
+    else {
+      this.toastr.error('Ocorrência não localizada na base de dados.')
+    }
+  }
+
+  //////////////////////////////////Ocorrências///////////////////////////////////
+  //////////////////////////////////Inclusão//////////////////////////////////////
+  registrarOcorrencia(modalOcorrencia: any){
+    this.registerFormOcorrencia.reset();
+    this.opcaoMudancaOcorrencia = 'POST';
+    modalOcorrencia.show();
+  }
+
+  incluirOcorrenciasNaLista(ocorrencia: Ocorrencia) {
+    ocorrencia.dataOcorrencia = this.toISOFormatDataHora(ocorrencia.dataOcorrencia);
+    this.pessoa.ocorrencias.push(ocorrencia);
+  }
+
+  ///////////////////////////////////Ocorrências//////////////////////////////////
+  //////////////////////////////////Exclusão//////////////////////////////////////
+  retirarOcorrenciaDaTabela() {
+    var indice = this.ocorrencias.findIndex((obj => obj.idOcorrencia == this.idOcorrencia));
+    this.pessoa.ocorrencias.splice(indice, 1);
+  }
+
+  excluirOcorrencia(ocorrencia: Ocorrencia, modalRemoverOcorrencia: any) {
+    modalRemoverOcorrencia.show();
+    this.ocorrenciaParaExcluir = ocorrencia.dataOcorrencia;
+    this.idOcorrencia = ocorrencia.idOcorrencia;
+  }
+
+  confirmarExclusaoOcorrencia(modalRemoverOcorrencia: any) {
+    if (this.idOcorrencia !== null && this.idOcorrencia !== undefined && this.idOcorrencia > 0) {
+      this.ocorrenciaService.deletarOcorrencia(this.idOcorrencia)
+        .subscribe(
+          () => {
+            this.toastr.success('Ocorrência deletada com sucesso.');
+            this.listarMusicos('ALUNO');
+            this.retirarOcorrenciaDaTabela();
+            modalRemoverOcorrencia.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
     }
     else {
       this.toastr.error('Hino não localizado na base de dados.')

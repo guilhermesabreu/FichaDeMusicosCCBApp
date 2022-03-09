@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         () => {
           this.toastr.success('Logado com sucesso !');
+          console.log('bateu');
           this.router.navigate(['/ficha']);
         }, error => {
           if(error.status === 400){

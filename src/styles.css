@@ -34,3 +34,17 @@
  .carousel-indicators{
      z-index: 1; 
  }
+
+ .btn-link{
+    color: #994803;
+    font-weight: 500;
+}
+
+.btn-link:hover{
+    text-decoration: none;
+    color: #5c2b00;
+}
+
+.panel-enabled{
+    text-align: center;   
+}

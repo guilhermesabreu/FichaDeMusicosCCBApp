@@ -28,6 +28,7 @@ import { EventEmitterService } from './event-emmiter/event-emitter.service';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
+    TooltipModule.forRoot(),
     CarouselModule.forRoot(),
     AccordionModule.forRoot()
   ],

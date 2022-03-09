@@ -11,8 +11,16 @@ export class OcorrenciaService {
   
   constructor(private http: HttpClient) { }
 
+  cadastrarOcorrencia(ocorrencia: any){
+    return this.http.post<Ocorrencia>(`${this.baseURLOcorrencia}`, ocorrencia);
+  }
+
   editarOcorrencia(ocorrencia: any){
     return this.http.put<Ocorrencia>(`${this.baseURLOcorrencia}`, ocorrencia);
+  }
+
+  deletarOcorrencia(idOcorrencia: number){
+    return this.http.delete(`${this.baseURLOcorrencia}/${idOcorrencia}`);
   }
 
 }
