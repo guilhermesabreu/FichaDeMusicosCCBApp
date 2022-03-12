@@ -17,6 +17,10 @@ export class PessoaService {
     return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/por-condicao?${lParametros}`);
   }
 
+  buscarInstrutor(text: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-instrutor?text=${text}`);
+  }
+
   buscarEncarregadoLocal(text: string) {
     return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-local?text=${text}`);
   }

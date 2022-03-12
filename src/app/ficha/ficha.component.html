@@ -128,6 +128,17 @@
                   </div>
                 </div>
               </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <i class="fa fa-edit" tooltip="Editar"
+                      style="color: seagreen; cursor: pointer; font-size: xx-large;"
+                      (click)="editarDadosPessoais(registerFormAluno.value, modalDadosPessoais)"></i>
+                    <i class="fa fa-eraser" tooltip="Excluir"
+                      style="color: #ff5151; cursor: pointer; font-size: xx-large; margin-left: 20px;"></i>
+                  </div>
+                </div>
+              </div>
             </accordion-group>
             <accordion-group heading="Ocorrências">
               <div class="table-responsive">
@@ -135,7 +146,7 @@
                   <div class="row">
                     <table class="table table-bordered text-center">
                       <thead class="thead-light">
-                        <tr >
+                        <tr>
                           <th style="display: none;"></th>
                           <th>Método</th>
                           <th>Lição</th>
@@ -153,10 +164,12 @@
                           <td>{{oco.observacaoInstrutor}}</td>
                           <td>
                             <div class="btn-group">
-                              <i class="fa fa-edit" tooltip="Editar" (click)="preencherModalEdicaoOcorrencia(oco, modalOcorrencia)"
+                              <i class="fa fa-edit" tooltip="Editar"
+                                (click)="preencherModalEdicaoOcorrencia(oco, modalOcorrencia)"
                                 style="color: seagreen; cursor: pointer; font-size: larger;"></i>
-                              <i class="fa fa-eraser" tooltip="Excluir" (click)="excluirOcorrencia(oco, modalRemoverOcorrencia)"
-                                style="color: #ff5151; cursor: pointer; font-size: larger;"></i>
+                              <i class="fa fa-eraser" tooltip="Excluir"
+                                (click)="excluirOcorrencia(oco, modalRemoverOcorrencia)"
+                                style="color: #ff5151; cursor: pointer; font-size: larger; margin-left: 10px;"></i>
                             </div>
                           </td>
                         </tr>
@@ -176,8 +189,9 @@
               </div>
               <div class="form-row">
                 <div class="col-6 offset-6">
-                    <i class="fa fa-save" tooltip="Registrar" (click)="registrarOcorrencia(modalOcorrencia)"
-                                style="color: #6c6cff; cursor: pointer; font-size: xx-large;"></i>
+                  <img src="../../assets/add.png" tooltip="Registrar"
+                    style="cursor: pointer; margin-left: -20px;width: 40px;"
+                    (click)="registrarOcorrencia(modalOcorrencia)" />
                 </div>
               </div>
             </accordion-group>
@@ -196,12 +210,12 @@
               </div>
               <div class="form-row">
                 <div class="col-4 offset-3">
-                    <i class="fa fa-save" tooltip="Registrar" (click)="registrarHino(modalNovoHino)" 
-                                style="color: #6c6cff; cursor: pointer; font-size: xx-large;"></i>
+                  <img src="../../assets/add.png" tooltip="Registrar" style="cursor: pointer;width: 40px;"
+                    (click)="registrarHino(modalNovoHino)" />
                 </div>
                 <div class="col-4 offset-1">
                   <i class="fa fa-eraser" tooltip="Excluir" (click)="removerHino(modalRemoverHino)"
-                                style="color: #ff5151; cursor: pointer; font-size: xx-large;"></i>
+                    style="color: #ff5151; cursor: pointer; font-size: xx-large;"></i>
                 </div>
               </div>
             </accordion-group>
@@ -212,26 +226,183 @@
   </div>
 </div>
 
-<div bsModal #modalRemoverOcorrencia="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-aria-labelledby="dialog-sizes-name1">
-<div class="modal-dialog modal-sm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h6 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
-        Tem certeza que deseja remover a ocorrência do dia: <strong style="color:#994803;">{{ocorrenciaParaExcluir}} </strong>
-      </h6>
-      <button type="button" class="close pull-right" (click)="modalRemoverOcorrencia.hide()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group col-md-8 offset-md-2">
-        <button class="btn btn-lg btn-danger btn-block"
-          (click)="confirmarExclusaoOcorrencia(modalRemoverOcorrencia)">Excluir</button>
+<div bsModal #modalDadosPessoais="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #994803 !important; text-align: center;">
+          Dados Pessoais
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalDadosPessoais.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerFormAluno">
+          <div class="form-group required">
+            <label for="">Nome Completo:</label>
+            <input type="text" class="form-control" formControlName="nome"
+              [ngClass]="{'is-invalid': registerFormAluno.get('nome')!.errors && registerFormAluno.get('nome')!.touched }"
+              placeholder="Insira o Nome Completo" />
+            <div *ngIf="registerFormAluno.get('nome')!.hasError('required') &&
+                        registerFormAluno.get('nome')!.touched" class="invalid-feedback">
+              Nome Completo é obrigatório.
+            </div>
+            <div *ngIf="registerFormAluno.get('nome')!.hasError('minlength') &&
+                registerFormAluno.get('nome')!.touched" class="invalid-feedback">
+              Deve conter no mínimo 10 caracters
+            </div>
+          </div>
+          <div class="form-group required">
+            <label for="">Comum:</label>
+            <input class="form-control" type="text" formControlName="comum" [ngClass]="{ 'is-invalid': registerFormAluno.get('comum')!.errors && 
+                                         registerFormAluno.get('comum')!.touched}"
+              placeholder="Insira a sua Região ex: Brás" />
+            <div *ngIf="registerFormAluno.get('comum')!.hasError('required') &&
+                        registerFormAluno.get('comum')!.touched" class="invalid-feedback">
+              Comum é obrigatória.
+            </div>
+          </div>
+          <div class="form-group required">
+            <label for="">Região:</label>
+            <input class="form-control" type="text" formControlName="regiao" [ngClass]="{ 'is-invalid': registerFormAluno.get('regiao')!.errors && 
+                                         registerFormAluno.get('regiao')!.touched}"
+              placeholder="Insira sua Cidade e UF ex: São Vicente-SP" />
+            <div *ngIf="registerFormAluno.get('regiao')!.hasError('required') &&
+                        registerFormAluno.get('regiao')!.touched" class="invalid-feedback">
+              Região é obrigatória.
+            </div>
+            <div *ngIf="registerFormAluno.get('regiao')!.hasError('pattern') &&
+                registerFormAluno.get('regiao')!.touched" class="invalid-feedback">
+              Cidade e UF devem estar separadas por (-)
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="">Regional:</label>
+            <input class="form-control" type="text" formControlName="regional" [ngClass]="{'is-invalid': registerFormAluno.get('regional')!.errors &&
+                                        registerFormAluno.get('regional')!.touched}"
+              placeholder="Insira a sua regional ex: (Litoral Paulista)" />
+            <div *ngIf="registerFormAluno.get('regional')!.hasError('required') &&
+                        registerFormAluno.get('regional')!.touched" class="invalid-feedback">
+              Regional é obrigatória.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="">Celular:</label>
+            <input class="form-control" type="text" formControlName="celular" [ngClass]="{'is-invalid': registerFormAluno.get('celular')!.errors &&
+                                        registerFormAluno.get('celular')!.touched}" placeholder="Insira seu celular" />
+            <div *ngIf="registerFormAluno.get('celular')!.hasError('required') &&
+                        registerFormAluno.get('celular')!.touched" class="invalid-feedback">
+              Celular é obrigatório.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="">E-mail:</label>
+            <input class="form-control" type="text" formControlName="email" [ngClass]="{'is-invalid': registerFormAluno.get('email')!.errors &&
+                                        registerFormAluno.get('email')!.touched}" placeholder="Insira seu e-mail" />
+            <div *ngIf="registerFormAluno.get('email')!.hasError('required') &&
+                        registerFormAluno.get('email')!.touched" class="invalid-feedback">
+              E-mail é obrigatório.
+            </div>
+            <div *ngIf="registerFormAluno.get('email')!.hasError('email') &&
+                registerFormAluno.get('email')!.touched" class="invalid-feedback">
+              E-mail com formato inválido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Data de Nascimento:</label>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormAluno.get('dataNascimento')!.errors 
+               && registerFormAluno.get('dataNascimento')!.touched}" formControlName="dataNascimento">
+
+            <div *ngIf="registerFormAluno.get('dataNascimento')!.hasError('required')
+            && registerFormAluno.get('dataNascimento')!.touched" class="invalid-feedback">
+              Data de nascimento é obrigatória.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Data de Início na aulinha</label><br>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormAluno.get('dataInicio')!.errors 
+            && registerFormAluno.get('dataInicio')!.touched}" formControlName="dataInicio" placeholder="">
+
+            <div *ngIf="registerFormAluno.get('dataInicio')!.hasError('required')
+            && registerFormAluno.get('dataInicio')!.touched" class="invalid-feedback">
+              Data de início na aulinha é obrigatória.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Instrutor:</label><br>
+            <p-autoComplete formControlName="instrutor" placeholder="Insira um Instrutor"
+              [suggestions]="results" [style]="{height:'40px'}" (completeMethod)="autoCompleteInstrutor($event)">
+            </p-autoComplete>
+          </div>
+
+          <div class="form-group">
+            <label>Encarregado Local:</label><br>
+            <p-autoComplete formControlName="encarregadoLocal" placeholder="Insira um encarregado local"
+              [suggestions]="results" [style]="{height:'40px'}" (completeMethod)="autoCompleteEncarregadoLocal($event)">
+            </p-autoComplete>
+          </div>
+
+          <div class="form-group">
+            <label>Encarregado Regional:</label><br>
+            <p-autoComplete formControlName="encarregadoRegional" [style]="{height:'40px'}"
+              placeholder="Insira um encarregado regional" [suggestions]="results"
+              (completeMethod)="autoCompleteEncarregadoRegional($event)">
+            </p-autoComplete>
+          </div>
+
+          <div class="form-group">
+            <label for="">Instrumento:</label>
+            <select class="form-control" type="text" formControlName="instrumento" [ngClass]="{'is-invalid': registerFormAluno.get('instrumento')!.errors &&
+                                      registerFormAluno.get('instrumento')!.touched}" placeholder="Escolha seu instrumento">
+              <option>nenhum</option>
+              <option [value]="obj" *ngFor="let obj of instrumentos">
+                {{obj}}
+              </option>
+            </select>
+            <div *ngIf="registerFormAluno.get('instrumento')!.hasError('required') &&
+                      registerFormAluno.get('instrumento')!.touched" class="invalid-feedback">
+              Instrumento é obrigatório.
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+              <!-- <button class="btn btn-lg btn-success btn-block" (click)="registrarAluno()"
+                [disabled]="!registerFormAluno.valid">Registar</button> -->
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<div bsModal #modalRemoverOcorrencia="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Tem certeza que deseja remover a ocorrência do dia: <strong style="color:#994803;">{{ocorrenciaParaExcluir}}
+          </strong>
+        </h6>
+        <button type="button" class="close pull-right" (click)="modalRemoverOcorrencia.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-md-8 offset-md-2">
+          <button class="btn btn-lg btn-danger btn-block"
+            (click)="confirmarExclusaoOcorrencia(modalRemoverOcorrencia)">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div bsModal #modalOcorrencia="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -251,13 +422,10 @@ aria-labelledby="dialog-sizes-name1">
           <div class="form-group">
             <input type="hidden" formControlName="idOcorrencia">
             <label for="" style="color:#994803;">Nome do Método:</label>
-            <input class="form-control" type="text" formControlName="nomeMetodo"
-              [ngClass]="{'is-invalid': registerFormOcorrencia.get('nomeMetodo')!.errors &&
-              registerFormOcorrencia.get('nomeMetodo')!.touched}"
-              placeholder="Insira um nome de método"/>
+            <input class="form-control" type="text" formControlName="nomeMetodo" [ngClass]="{'is-invalid': registerFormOcorrencia.get('nomeMetodo')!.errors &&
+              registerFormOcorrencia.get('nomeMetodo')!.touched}" placeholder="Insira um nome de método" />
             <div *ngIf="registerFormOcorrencia.get('nomeMetodo')!.hasError('required') &&
-            registerFormOcorrencia.get('nomeMetodo')!.touched"
-              class="invalid-feedback">
+            registerFormOcorrencia.get('nomeMetodo')!.touched" class="invalid-feedback">
               Método é obrigatório.
             </div>
           </div>
@@ -272,13 +440,11 @@ aria-labelledby="dialog-sizes-name1">
           </div>
           <div class="form-group">
             <label for="" style="color:#994803;">Observação do Instrutor:</label>
-            <textarea maxlength="100" class="form-control" type="text" formControlName="observacaoInstrutor"
-              [ngClass]="{'is-invalid': registerFormOcorrencia.get('observacaoInstrutor')!.errors &&
+            <textarea maxlength="100" class="form-control" type="text" formControlName="observacaoInstrutor" [ngClass]="{'is-invalid': registerFormOcorrencia.get('observacaoInstrutor')!.errors &&
               registerFormOcorrencia.get('observacaoInstrutor')!.touched}"
               placeholder="Insira uma observação"> </textarea>
             <div *ngIf="registerFormOcorrencia.get('observacaoInstrutor')!.hasError('required') &&
-            registerFormOcorrencia.get('observacaoInstrutor')!.touched"
-              class="invalid-feedback">
+            registerFormOcorrencia.get('observacaoInstrutor')!.touched" class="invalid-feedback">
               Observação é obrigatória (Limite de 100 caracteres).
             </div>
           </div>
@@ -318,7 +484,7 @@ aria-labelledby="dialog-sizes-name1">
       <div class="modal-body">
         <form [formGroup]="registerFormHino">
           <div class="form-group">
-            <label for=""  style="color:#994803;">Voz do hino:</label>
+            <label for="" style="color:#994803;">Voz do hino:</label>
             <select class="form-control" id="select" formControlName="vozHino" [ngClass]="{'is-invalid': registerFormHino.get('vozHino')!.errors &&
             registerFormHino.get('vozHino')!.touched}" placeholder="selecione a voz do hino">
               <option value="soprano">Soprano</option>

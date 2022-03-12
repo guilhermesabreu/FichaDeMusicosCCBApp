@@ -36,8 +36,9 @@ export class FichaComponent implements OnInit {
   idHino!: number;
   idPessoa!: number;
   idOcorrencia!: number;
-  exibeOcorrencia!:boolean;
-  opcaoMudancaOcorrencia!:string;
+  exibeOcorrencia!: boolean;
+  opcaoMudancaOcorrencia!: string;
+  results!: string[];
 
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
@@ -76,19 +77,19 @@ export class FichaComponent implements OnInit {
   validation() {
     this.registerFormAluno = this.fb.group({
       id: [''],
-      nome: [''],
+      nome: ['', [Validators.required, Validators.minLength(10)]],
       instrutor: [''],
       encarregadoLocal: [''],
       encarregadoRegional: [''],
-      regiao: [''],
-      regional: [''],
-      celular: [''],
-      email: [''],
-      dataNascimento: [''],
-      dataInicio: [''],
-      comum: [''],
-      instrumento: [''],
-      condicao: [''],
+      regiao: ['', [Validators.required, Validators.pattern('^.*\- ?[a-zA-Z]*')]],
+      regional: ['', Validators.required],
+      celular: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      dataNascimento: ['', Validators.required],
+      dataInicio: ['', Validators.required],
+      comum: ['', Validators.required],
+      instrumento: ['', Validators.required],
+      condicao: ['', Validators.required],
       ocorrencias: [''],
       hinos: ['']
     });
@@ -108,6 +109,55 @@ export class FichaComponent implements OnInit {
   }
 
   ////////////////////////////////////Listas///////////////////////////////////////
+  instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
+    'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
+    'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+
+  autoCompleteInstrutor(event: any) {
+    this.pessoaService.buscarInstrutor(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  autoCompleteEncarregadoLocal(event: any) {
+    this.pessoaService.buscarEncarregadoLocal(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  autoCompleteEncarregadoRegional(event: any) {
+    this.pessoaService.buscarEncarregadoRegional(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
   listarOcorrenciasPorAluno(pessoa: Pessoa): Ocorrencia[] {
     this.pessoa = pessoa;
     this.ocorrencias = this.pessoa.ocorrencias;
@@ -121,7 +171,7 @@ export class FichaComponent implements OnInit {
     return `${MM}/${DD}/${YYYY}`;
   }
 
-  transformDate(date:Date) {
+  transformDate(date: Date) {
     return this.dateFormatPipe.transform(date, 'MM/dd/yyyy');
   }
 
@@ -152,6 +202,12 @@ export class FichaComponent implements OnInit {
         });
   }
 
+  //////////////////////////////////Dados Pessoais////////////////////////////////
+  //////////////////////////////////Edição////////////////////////////////////////
+  editarDadosPessoais(dadosPessoais: Pessoa, modalDadosPessoais: any) {
+    modalDadosPessoais.show();
+  }
+
   ////////////////////////////////////Ocorrências/////////////////////////////////
   ////////////////////////////////////Edição//////////////////////////////////////
   editarOcorrenciaNaLista(ocorrencia: Ocorrencia) {
@@ -176,8 +232,7 @@ export class FichaComponent implements OnInit {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
       if (this.registerFormOcorrencia.valid) {
         this.ocorrencia = Object.assign({}, this.registerFormOcorrencia.value);
-        if(this.opcaoMudancaOcorrencia === 'PUT')
-        {
+        if (this.opcaoMudancaOcorrencia === 'PUT') {
           var ocorrenciaPut = {
             idOcorrencia: this.ocorrencia.idOcorrencia,
             nomeMetodo: this.ocorrencia.nomeMetodo,
@@ -202,7 +257,7 @@ export class FichaComponent implements OnInit {
                 console.clear();
               });
 
-        }else{
+        } else {
           var ocorrenciaPost = {
             nomeMetodo: this.ocorrencia.nomeMetodo,
             numeroLicao: this.ocorrencia.numeroLicao,
@@ -235,7 +290,7 @@ export class FichaComponent implements OnInit {
 
   //////////////////////////////////Ocorrências///////////////////////////////////
   //////////////////////////////////Inclusão//////////////////////////////////////
-  registrarOcorrencia(modalOcorrencia: any){
+  registrarOcorrencia(modalOcorrencia: any) {
     this.registerFormOcorrencia.reset();
     this.opcaoMudancaOcorrencia = 'POST';
     modalOcorrencia.show();
