@@ -179,8 +179,12 @@ export class FichaComponent implements OnInit {
     return this.dateFormatPipe.transform(date, 'MM/dd/yyyy');
   }
 
-  transformDateFormater(date: Date) {
-    return this.dateFormatPipe.transform(date, 'dd/MM/yyyy');
+  transformDateFormater(data: any) {
+    var dataConvertida = new Date(data);
+    if(dataConvertida.toString() == 'Invalid Date')
+      return data;
+
+    return this.dateFormatPipe.transform(data, 'dd/MM/yyyy');
   }
 
   listarHinosPorAluno(pessoa: Pessoa): Hino[] {
@@ -199,7 +203,6 @@ export class FichaComponent implements OnInit {
       .subscribe(
         (res: Pessoa[]) => {
           this.pessoas = res;
-          console.log('pessoas: ',this.pessoas);
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {
@@ -225,7 +228,7 @@ export class FichaComponent implements OnInit {
         nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
         encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
         regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-        dataNascimento: this.transformDateFormater(new Date(pessoa.dataNascimento)), dataInicio: this.transformDate(new Date(pessoa.dataInicio)),
+        dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(new Date(pessoa.dataInicio)),
         comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
       };
       this.pessoaService.atualizarPessoa(pessoaPut)
