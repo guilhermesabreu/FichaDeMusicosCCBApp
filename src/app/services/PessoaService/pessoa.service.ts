@@ -33,8 +33,8 @@ export class PessoaService {
     return this.http.post(`${this.baseURLPessoa}`, model);
   }
 
-  atualizarPessoa(model: Pessoa){
-    return this.http.put(`${this.baseURLPessoa}`, model);
+  atualizarPessoa(model: any){
+    return this.http.put<Pessoa>(`${this.baseURLPessoa}`, model);
   }
 
   deletarPessoa(userName: string) {

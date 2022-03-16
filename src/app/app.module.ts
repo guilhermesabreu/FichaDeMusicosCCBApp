@@ -29,6 +29,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FormatarDataPipe } from './helps/FormatarData.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     FooterComponent,
     RegistroPessoaComponent,
     FichaComponent,
-    PessoasPelaPrimeiraLetraDoNomePipe
+    PessoasPelaPrimeiraLetraDoNomePipe,
+    FormatarDataPipe
   ],
   imports: [
     AppRoutingModule,

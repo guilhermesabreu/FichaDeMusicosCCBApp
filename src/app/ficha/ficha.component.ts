@@ -8,9 +8,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ocorrencia } from '../models/Ocorrencia';
 import { Hino } from '../models/Hino';
 import { HinoService } from '../services/HinoService/Hino.service';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { OcorrenciaService } from '../services/OcorrenciaService/Ocorrencia.service';
 import { DatePipe } from '@angular/common';
+import { defineLocale, ptBrLocale } from 'ngx-bootstrap/chronos';
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-ficha',
@@ -50,8 +52,10 @@ export class FichaComponent implements OnInit {
     public hinoService: HinoService,
     public ocorrenciaService: OcorrenciaService,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localeService: BsLocaleService,
   ) {
+    localeService.use('pt-br');
     this.datePickerConfig = Object.assign({}, { adaptivePosition: true, containerClass: 'theme-blue', dateInputFormat: 'DD/MM/YYYY' });
   }
 
@@ -175,6 +179,10 @@ export class FichaComponent implements OnInit {
     return this.dateFormatPipe.transform(date, 'MM/dd/yyyy');
   }
 
+  transformDateFormater(date: Date) {
+    return this.dateFormatPipe.transform(date, 'dd/MM/yyyy');
+  }
+
   listarHinosPorAluno(pessoa: Pessoa): Hino[] {
     return pessoa.hinos;
   }
@@ -191,6 +199,7 @@ export class FichaComponent implements OnInit {
       .subscribe(
         (res: Pessoa[]) => {
           this.pessoas = res;
+          console.log('pessoas: ',this.pessoas);
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {
@@ -206,6 +215,36 @@ export class FichaComponent implements OnInit {
   //////////////////////////////////Edição////////////////////////////////////////
   editarDadosPessoais(dadosPessoais: Pessoa, modalDadosPessoais: any) {
     modalDadosPessoais.show();
+  }
+
+  editarPessoa(modalDadosPessoais: any) {
+    if (this.registerFormAluno.valid) {
+      var pessoa = Object.assign({}, this.registerFormAluno.value);
+      var pessoaPut = {
+        id: this.idPessoa,
+        nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
+        encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
+        regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
+        dataNascimento: this.transformDateFormater(new Date(pessoa.dataNascimento)), dataInicio: this.transformDate(new Date(pessoa.dataInicio)),
+        comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
+      };
+      this.pessoaService.atualizarPessoa(pessoaPut)
+        .subscribe(
+          (pessoa: Pessoa) => {
+            this.toastr.success('Dados pessoais atualizados com sucesso.');
+            this.listarMusicos('ALUNO');
+            modalDadosPessoais.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            // console.clear();
+          });
+    }
+
+
   }
 
   ////////////////////////////////////Ocorrências/////////////////////////////////
