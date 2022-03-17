@@ -30,6 +30,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormatarDataPipe } from './helps/FormatarData.pipe';
+import { FormatarDataInvertidaPipe } from './helps/FormatarDataInvertida.pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FormatarDataPipe } from './helps/FormatarData.pipe';
     RegistroPessoaComponent,
     FichaComponent,
     PessoasPelaPrimeiraLetraDoNomePipe,
-    FormatarDataPipe
+    FormatarDataPipe,
+    FormatarDataInvertidaPipe
   ],
   imports: [
     AppRoutingModule,

@@ -175,13 +175,21 @@ export class FichaComponent implements OnInit {
     return `${MM}/${DD}/${YYYY}`;
   }
 
-  transformDate(date: Date) {
-    return this.dateFormatPipe.transform(date, 'MM/dd/yyyy');
+  transformDate(date: any) {
+    var dataConvertida = new Date(date);
+    console.log('dataInicio: ',dataConvertida);
+    console.log('dataInicio input: ',date);
+    if (dataConvertida.toString() == 'Invalid Date') {
+      return date;
+    }
+    else{
+      return this.dateFormatPipe.transform(date, 'dd/MM/yyyy');
+    }
   }
 
   transformDateFormater(data: any) {
     var dataConvertida = new Date(data);
-    if(dataConvertida.toString() == 'Invalid Date')
+    if (dataConvertida.toString() == 'Invalid Date')
       return data;
 
     return this.dateFormatPipe.transform(data, 'dd/MM/yyyy');
@@ -220,7 +228,7 @@ export class FichaComponent implements OnInit {
     modalDadosPessoais.show();
   }
 
-  editarPessoa(modalDadosPessoais: any) {
+  editarPessoa(modalDadosPessoais: any, modalAluno: any) {
     if (this.registerFormAluno.valid) {
       var pessoa = Object.assign({}, this.registerFormAluno.value);
       var pessoaPut = {
@@ -228,7 +236,7 @@ export class FichaComponent implements OnInit {
         nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
         encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
         regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-        dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(new Date(pessoa.dataInicio)),
+        dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
         comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
       };
       this.pessoaService.atualizarPessoa(pessoaPut)
@@ -237,6 +245,7 @@ export class FichaComponent implements OnInit {
             this.toastr.success('Dados pessoais atualizados com sucesso.');
             this.listarMusicos('ALUNO');
             modalDadosPessoais.hide();
+            modalAluno.hide();
           }, error => {
             if (error.status === 400) {
               this.toastr.warning(error.error);
