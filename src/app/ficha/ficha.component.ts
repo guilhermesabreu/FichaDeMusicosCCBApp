@@ -24,6 +24,7 @@ defineLocale('pt-br', ptBrLocale);
 export class FichaComponent implements OnInit {
 
   condicaoTitulo!: string;
+  pessoaLogada!: Pessoa;
   pessoa!: Pessoa;
   pessoas!: Pessoa[];
   hino!: Hino;
@@ -41,6 +42,9 @@ export class FichaComponent implements OnInit {
   exibeOcorrencia!: boolean;
   opcaoMudancaOcorrencia!: string;
   results!: string[];
+  modoSalvar = 'post';
+  condicaoCarousel!: string;
+  apelidoPessoaLogada!: string;
 
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
@@ -61,21 +65,35 @@ export class FichaComponent implements OnInit {
 
   ngOnInit() {
     this.validation();
+    this.condicaoCarousel = 'ALUNO';
     if (this.eventEmitterService.subsVar == undefined) {
       this.eventEmitterService.subsVar = this.eventEmitterService.
         invokeFirstComponentFunction.subscribe((opcaoRole: string) => {
           if (opcaoRole !== undefined && opcaoRole !== null && opcaoRole !== '') {
             this.listarMusicos(opcaoRole);
             switch (opcaoRole) {
-              case 'ALUNO': this.condicaoTitulo = 'Alunos'; break;
-              case 'INSTRUTOR': this.condicaoTitulo = 'Instrutores'; break;
-              case 'ENCARREGADO': this.condicaoTitulo = 'Encarregados Locais'; break;
+              case 'ALUNO': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Alunos'; break;
+              case 'INSTRUTOR': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Instrutores'; break;
+              case 'ENCARREGADO': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Encarregados Locais'; break;
             }
           }
         });
     }
     this.condicaoTitulo = 'Alunos';
     this.listarMusicos('');
+    this.obterPessoaLogada();
+  }
+
+  //////////////////Verificador de ForBuilder////////////////
+  findInvalidControls(f: FormGroup) {
+    const invalid = [];
+    const controls = f.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    return invalid;
   }
 
   validation() {
@@ -162,6 +180,21 @@ export class FichaComponent implements OnInit {
         });
   }
 
+  obterPessoaLogada() {
+    this.pessoaService.buscarPessoaLogada(this.apelidoPessoaLogada)
+      .subscribe(
+        (res: Pessoa) => {
+          this.pessoaLogada = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
   listarOcorrenciasPorAluno(pessoa: Pessoa): Ocorrencia[] {
     this.pessoa = pessoa;
     this.ocorrencias = this.pessoa.ocorrencias;
@@ -177,12 +210,10 @@ export class FichaComponent implements OnInit {
 
   transformDate(date: any) {
     var dataConvertida = new Date(date);
-    console.log('dataInicio: ',dataConvertida);
-    console.log('dataInicio input: ',date);
     if (dataConvertida.toString() == 'Invalid Date') {
       return date;
     }
-    else{
+    else {
       return this.dateFormatPipe.transform(date, 'dd/MM/yyyy');
     }
   }
@@ -201,11 +232,11 @@ export class FichaComponent implements OnInit {
 
   listarMusicos(opcaoRole: string) {
     var condicao = sessionStorage.getItem('role');
-    var apelido = sessionStorage.getItem('username');
+    this.apelidoPessoaLogada = sessionStorage.getItem('username')!;
     var lParametros = "";
-    lParametros += condicao === 'ENCARREGADO' ? 'ApelidoEncarregado=' + apelido
-      : condicao === 'REGIONAL' ? 'ApelidoEncarregadoRegional=' + apelido
-        : condicao === 'INSTRUTOR' ? 'ApelidoInstrutor=' + apelido : '';
+    lParametros += condicao === 'ENCARREGADO' ? 'ApelidoEncarregado=' + this.apelidoPessoaLogada
+      : condicao === 'REGIONAL' ? 'ApelidoEncarregadoRegional=' + this.apelidoPessoaLogada
+        : condicao === 'INSTRUTOR' ? 'ApelidoInstrutor=' + this.apelidoPessoaLogada : '';
     lParametros += opcaoRole === '' || opcaoRole === undefined || opcaoRole === null ? '&Condicao=ALUNO' : '&Condicao=' + opcaoRole;
     this.pessoaService.listaDeMusicos(lParametros)
       .subscribe(
@@ -223,37 +254,80 @@ export class FichaComponent implements OnInit {
   }
 
   //////////////////////////////////Dados Pessoais////////////////////////////////
-  //////////////////////////////////Edição////////////////////////////////////////
-  editarDadosPessoais(dadosPessoais: Pessoa, modalDadosPessoais: any) {
+  //////////////////////////////////Adição////////////////////////////////////////
+  cadastrarPessoa(modalDadosPessoais: any) {
+    this.registerFormAluno.patchValue({
+      encarregadoLocal: this.pessoaLogada.apelidoEncarregado,
+      encarregadoRegional: this.pessoaLogada.apelidoEncRegional,
+      condicao: this.condicaoCarousel,
+      comum: this.pessoaLogada.comum,
+      regiao: this.pessoaLogada.regiao,
+      regional: this.pessoaLogada.regional,
+    });
+    this.modoSalvar = 'post';
     modalDadosPessoais.show();
   }
 
-  editarPessoa(modalDadosPessoais: any, modalAluno: any) {
+  //////////////////////////////////Dados Pessoais////////////////////////////////
+  //////////////////////////////////Edição////////////////////////////////////////
+  editarDadosPessoais(dadosPessoais: Pessoa, modalDadosPessoais: any) {
+    this.modoSalvar = 'put';
+    modalDadosPessoais.show();
+  }
+
+  salvarPessoa(modalDadosPessoais: any, modalAluno: any) {
+    var pessoa = Object.assign({}, this.registerFormAluno.value);
     if (this.registerFormAluno.valid) {
       var pessoa = Object.assign({}, this.registerFormAluno.value);
-      var pessoaPut = {
-        id: this.idPessoa,
-        nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
-        encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
-        regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-        dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
-        comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
-      };
-      this.pessoaService.atualizarPessoa(pessoaPut)
-        .subscribe(
-          (pessoa: Pessoa) => {
-            this.toastr.success('Dados pessoais atualizados com sucesso.');
-            this.listarMusicos('ALUNO');
-            modalDadosPessoais.hide();
-            modalAluno.hide();
-          }, error => {
-            if (error.status === 400) {
-              this.toastr.warning(error.error);
-            } else {
-              this.toastr.error(error.error);
-            }
-            // console.clear();
-          });
+      if(this.modoSalvar == 'put'){
+        var pessoaPut = {
+          id: this.idPessoa,
+          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
+          encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
+          regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
+          dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
+          comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
+        };
+        this.pessoaService.atualizarPessoa(pessoaPut)
+          .subscribe(
+            (pessoa: Pessoa) => {
+              this.toastr.success('Dados pessoais atualizados com sucesso.');
+              this.listarMusicos('ALUNO');
+              modalDadosPessoais.hide();
+              modalAluno.hide();
+            }, error => {
+              if (error.status === 400) {
+                this.toastr.warning(error.error);
+              } else {
+                this.toastr.error(error.error);
+              }
+              console.clear();
+            });
+      } else if(this.modoSalvar == 'post'){
+        var pessoaPost = {
+          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
+          encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
+          regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
+          dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
+          comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
+        };
+        this.pessoaService.registroPessoa(pessoaPost)
+          .subscribe(
+            (pessoa: Pessoa) => {
+              this.toastr.success('Dados salvos com sucesso.');
+              this.listarMusicos('ALUNO');
+              modalDadosPessoais.hide();
+              modalAluno.hide();
+            }, error => {
+              if (error.status === 400) {
+                this.toastr.warning(error.error);
+              } else {
+                this.toastr.error(error.error);
+              }
+              console.clear();
+            });
+      }
+      
     }
 
 

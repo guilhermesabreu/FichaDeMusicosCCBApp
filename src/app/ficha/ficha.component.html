@@ -1,4 +1,10 @@
+
 <div class="tab">
+  <div class="text-right">
+    <input width="50" type="image"
+        src="../../assets/add.png" (click)="cadastrarPessoa(modalDadosPessoais)"
+        title="Cadastrar" tooltip="Cadastrar">
+  </div>
   <h1 style="color: #994803!important; text-align: center;">{{condicaoTitulo}}</h1>
   <tabset [justified]="true">
     <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
@@ -6,11 +12,11 @@
         <div *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf">
           <slide *ngIf="pes.nome.substring(0,1) === alf" style="background-color: #faeadb;">
             <div class="text-center wrapper">
-              <img *ngIf="pes.condicao === 'aluno'" (click)="abrirModalAluno(pes, modalAluno)" class="photo"
+              <img *ngIf="pes.condicao.toLowerCase() === 'aluno'" (click)="abrirModalAluno(pes, modalAluno)" class="photo"
                 src="../../assets/aluno.png" alt="first slide" style="display: block; width: 20%; margin-left: 40%;">
-              <img *ngIf="pes.condicao === 'instrutor'" class="photo" src="../../assets/instrutor.png" alt="first slide"
+              <img *ngIf="pes.condicao.toLowerCase() === 'instrutor'" class="photo" src="../../assets/instrutor.png" alt="first slide"
                 style="display: block; width: 20%; margin-left: 40%;">
-              <img *ngIf="pes.condicao === 'encarregado'" class="photo" src="../../assets/encarregado.jpg"
+              <img *ngIf="pes.condicao.toLowerCase() === 'encarregado'" class="photo" src="../../assets/encarregado.jpg"
                 alt="first slide" style="display: block; width: 20%; margin-left: 40%;">
               <h3 style="color:#994803;">{{pes.nome}}</h3>
             </div>
@@ -365,7 +371,7 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-8 offset-md-2">
-              <button class="btn btn-lg btn-success btn-block" (click)="editarPessoa(modalDadosPessoais, modalAluno)"
+              <button class="btn btn-lg btn-success btn-block" (click)="salvarPessoa(modalDadosPessoais, modalAluno)"
                 [disabled]="!registerFormAluno.valid">Salvar</button>
             </div>
           </div>

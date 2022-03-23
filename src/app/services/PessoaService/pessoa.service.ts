@@ -13,6 +13,10 @@ export class PessoaService {
 
   constructor(private http: HttpClient) { }
 
+  buscarPessoaLogada(lParametro: string) {
+    return this.http.get<Pessoa>(`${this.baseURLPessoa}/buscar-pessoa-logada?apelido=${lParametro}`);
+  }
+
   listaDeMusicos(lParametros: string) {
     return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/por-condicao?${lParametros}`);
   }
@@ -29,8 +33,8 @@ export class PessoaService {
     return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-regional?text=${text}`);
   }
 
-  registroPessoa(model: Pessoa) {
-    return this.http.post(`${this.baseURLPessoa}`, model);
+  registroPessoa(model: any) {
+    return this.http.post<Pessoa>(`${this.baseURLPessoa}`, model);
   }
 
   atualizarPessoa(model: any){
