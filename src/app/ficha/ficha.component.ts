@@ -45,7 +45,7 @@ export class FichaComponent implements OnInit {
   modoSalvar = 'post';
   condicaoCarousel!: string;
   apelidoPessoaLogada!: string;
-
+  
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
   constructor(
@@ -209,8 +209,7 @@ export class FichaComponent implements OnInit {
   }
 
   transformDate(date: any) {
-    var dataConvertida = new Date(date);
-    if (dataConvertida.toString() == 'Invalid Date') {
+    if(typeof date === 'object'){
       return date;
     }
     else {
@@ -218,12 +217,12 @@ export class FichaComponent implements OnInit {
     }
   }
 
-  transformDateFormater(data: any) {
+  transformDateInvertida(data: any) {
     var dataConvertida = new Date(data);
     if (dataConvertida.toString() == 'Invalid Date')
       return data;
 
-    return this.dateFormatPipe.transform(data, 'dd/MM/yyyy');
+    return this.dateFormatPipe.transform(data, 'MM/dd/yyyy');
   }
 
   listarHinosPorAluno(pessoa: Pessoa): Hino[] {
@@ -241,7 +240,7 @@ export class FichaComponent implements OnInit {
     this.pessoaService.listaDeMusicos(lParametros)
       .subscribe(
         (res: Pessoa[]) => {
-          this.pessoas = res;
+          this.pessoas = res.sort((a, b) => a.nome > b.nome ? 1 : -1);
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {
@@ -285,7 +284,7 @@ export class FichaComponent implements OnInit {
           nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
           encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
           regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-          dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
+          dataNascimento: new Date(this.transformDate(pessoa.dataNascimento)), dataInicio: new Date(this.transformDate(pessoa.dataInicio)),
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
         this.pessoaService.atualizarPessoa(pessoaPut)
@@ -293,8 +292,8 @@ export class FichaComponent implements OnInit {
             (pessoa: Pessoa) => {
               this.toastr.success('Dados pessoais atualizados com sucesso.');
               this.listarMusicos('ALUNO');
+              document.location.reload();
               modalDadosPessoais.hide();
-              modalAluno.hide();
             }, error => {
               if (error.status === 400) {
                 this.toastr.warning(error.error);
@@ -308,7 +307,7 @@ export class FichaComponent implements OnInit {
           nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
           encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
           regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-          dataNascimento: this.transformDateFormater(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
+          dataNascimento: pessoa.dataNascimento, dataInicio: pessoa.dataInicio,
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
         this.pessoaService.registroPessoa(pessoaPost)
@@ -316,6 +315,7 @@ export class FichaComponent implements OnInit {
             (pessoa: Pessoa) => {
               this.toastr.success('Dados salvos com sucesso.');
               this.listarMusicos('ALUNO');
+              document.location.reload();
               modalDadosPessoais.hide();
               modalAluno.hide();
             }, error => {
