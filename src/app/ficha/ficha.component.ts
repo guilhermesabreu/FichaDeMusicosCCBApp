@@ -213,7 +213,10 @@ export class FichaComponent implements OnInit {
       return date;
     }
     else {
-      return this.dateFormatPipe.transform(date, 'dd/MM/yyyy');
+      var dateParts = date.split("/");
+      var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+      // console.log('data a converter: ', this.dateFormatPipe.transform(dateObject, 'dd/MM/yyyy'));
+      return dateObject;
     }
   }
 
@@ -255,6 +258,7 @@ export class FichaComponent implements OnInit {
   //////////////////////////////////Dados Pessoais////////////////////////////////
   //////////////////////////////////Adição////////////////////////////////////////
   cadastrarPessoa(modalDadosPessoais: any) {
+    this.registerFormAluno.reset();
     this.registerFormAluno.patchValue({
       encarregadoLocal: this.pessoaLogada.apelidoEncarregado,
       encarregadoRegional: this.pessoaLogada.apelidoEncRegional,
@@ -278,13 +282,15 @@ export class FichaComponent implements OnInit {
     var pessoa = Object.assign({}, this.registerFormAluno.value);
     if (this.registerFormAluno.valid) {
       var pessoa = Object.assign({}, this.registerFormAluno.value);
+      var condicaoLogada = sessionStorage.getItem('role');
+      var instrutorLogado = condicaoLogada !== 'INSTRUTOR' ? '' : sessionStorage.getItem('username')!; 
       if(this.modoSalvar == 'put'){
         var pessoaPut = {
           id: this.idPessoa,
-          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
+          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: instrutorLogado,
           encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
           regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
-          dataNascimento: new Date(this.transformDate(pessoa.dataNascimento)), dataInicio: new Date(this.transformDate(pessoa.dataInicio)),
+          dataNascimento: this.transformDate(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
         this.pessoaService.atualizarPessoa(pessoaPut)
@@ -304,7 +310,7 @@ export class FichaComponent implements OnInit {
             });
       } else if(this.modoSalvar == 'post'){
         var pessoaPost = {
-          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal,
+          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: instrutorLogado, 
           encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
           regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
           dataNascimento: pessoa.dataNascimento, dataInicio: pessoa.dataInicio,
