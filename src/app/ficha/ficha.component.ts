@@ -299,8 +299,8 @@ export class FichaComponent implements OnInit {
             (pessoa: Pessoa) => {
               this.toastr.success('Dados pessoais atualizados com sucesso.');
               this.listarMusicos('ALUNO');
-              document.location.reload();
               modalDadosPessoais.hide();
+              modalAluno.hide();
             }, error => {
               if (error.status === 400) {
                 this.toastr.warning(error.error);
@@ -322,7 +322,6 @@ export class FichaComponent implements OnInit {
             (pessoa: Pessoa) => {
               this.toastr.success('Dados salvos com sucesso.');
               this.listarMusicos('ALUNO');
-              document.location.reload();
               modalDadosPessoais.hide();
               modalAluno.hide();
             }, error => {
