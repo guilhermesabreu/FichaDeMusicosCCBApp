@@ -41,7 +41,7 @@ export class PessoaService {
     return this.http.put<Pessoa>(`${this.baseURLPessoa}`, model);
   }
 
-  deletarPessoa(userName: string) {
-    return this.http.delete(`${this.baseURLPessoa}/${userName}`);
+  deletarPessoa(idPessoa: number) {
+    return this.http.delete(`${this.baseURLPessoa}/${idPessoa}`);
   }
 }

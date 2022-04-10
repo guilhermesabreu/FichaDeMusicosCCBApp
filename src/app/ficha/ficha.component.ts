@@ -23,6 +23,7 @@ defineLocale('pt-br', ptBrLocale);
 @Injectable()
 export class FichaComponent implements OnInit {
 
+  nomePessoa!: string;
   condicaoTitulo!: string;
   pessoaLogada!: Pessoa;
   pessoa!: Pessoa;
@@ -45,7 +46,7 @@ export class FichaComponent implements OnInit {
   modoSalvar = 'post';
   condicaoCarousel!: string;
   apelidoPessoaLogada!: string;
-  
+
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
   constructor(
@@ -209,7 +210,7 @@ export class FichaComponent implements OnInit {
   }
 
   transformDate(date: any) {
-    if(typeof date === 'object'){
+    if (typeof date === 'object') {
       return date;
     }
     else {
@@ -283,8 +284,8 @@ export class FichaComponent implements OnInit {
     if (this.registerFormAluno.valid) {
       var pessoa = Object.assign({}, this.registerFormAluno.value);
       var condicaoLogada = sessionStorage.getItem('role');
-      var instrutorLogado = condicaoLogada !== 'INSTRUTOR' ? '' : sessionStorage.getItem('username')!; 
-      if(this.modoSalvar == 'put'){
+      var instrutorLogado = condicaoLogada !== 'INSTRUTOR' ? '' : sessionStorage.getItem('username')!;
+      if (this.modoSalvar == 'put') {
         var pessoaPut = {
           id: this.idPessoa,
           nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: instrutorLogado,
@@ -308,9 +309,9 @@ export class FichaComponent implements OnInit {
               }
               console.clear();
             });
-      } else if(this.modoSalvar == 'post'){
+      } else if (this.modoSalvar == 'post') {
         var pessoaPost = {
-          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: instrutorLogado, 
+          nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: instrutorLogado,
           encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
           regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
           dataNascimento: pessoa.dataNascimento, dataInicio: pessoa.dataInicio,
@@ -333,10 +334,39 @@ export class FichaComponent implements OnInit {
               console.clear();
             });
       }
-      
+
     }
+  }
 
+  /////////////////////////////////////Dados Pessoais/////////////////////////////
+  /////////////////////////////////////Exclusão///////////////////////////////////
+  removerPessoa(modalRemoverPessoa: any, pessoa: Pessoa) {
+    modalRemoverPessoa.show();
+    this.nomePessoa = pessoa.nome;
+  }
 
+  confirmarExclusaoPessoa(modalRemoverPessoa:any, modalAluno:any) {
+    console.log('id pessoa: ', this.idPessoa);
+    if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
+      this.pessoaService.deletarPessoa(this.idPessoa)
+        .subscribe(
+          () => {
+            this.toastr.success('Pessoa deletada com sucesso.');
+            this.listarMusicos('ALUNO');
+            modalRemoverPessoa.hide();
+            modalAluno.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
+    }
+    else {
+      this.toastr.error('Pessoa não localizado na base de dados.')
+    }
   }
 
   ////////////////////////////////////Ocorrências/////////////////////////////////
