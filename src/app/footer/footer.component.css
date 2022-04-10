@@ -6,9 +6,9 @@
     margin-top: 5%;
     margin-left: 0%;
     margin-right: 0%;
-    position:absolute;
-    bottom:0;
-    width:100%;
+    position: inherit;
+    bottom: 0;
+    width: 100%;
 }
 
 .fa {
@@ -20,10 +20,11 @@
     text-decoration: none;
     border-radius: 100%;
 }
-    /* Add a hover effect if you want */
-    .fa:hover {
-        opacity: 0.7;
-    }
+
+/* Add a hover effect if you want */
+.fa:hover {
+    opacity: 0.7;
+}
 
 /* Set a specific color for each brand */
 
@@ -37,6 +38,7 @@
     background: #fe0458;
     color: white;
 }
+
 .fa-instagram:before {
     margin-left: -2px;
 }
