@@ -21,6 +21,10 @@ export class PessoaService {
     return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/por-condicao?${lParametros}`);
   }
 
+  buscarAluno(text: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-aluno?text=${text}`);
+  }
+
   buscarInstrutor(text: string) {
     return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-instrutor?text=${text}`);
   }
@@ -37,11 +41,15 @@ export class PessoaService {
     return this.http.post<Pessoa>(`${this.baseURLPessoa}`, model);
   }
 
+  incluirAlunoNaFicha(model: any){
+    return this.http.put<Pessoa>(`${this.baseURLPessoa}/incluir-aluno-na-ficha`, model);
+  }
+
   atualizarPessoa(model: any){
     return this.http.put<Pessoa>(`${this.baseURLPessoa}`, model);
   }
 
-  deletarPessoa(idPessoa: number) {
-    return this.http.delete(`${this.baseURLPessoa}/${idPessoa}`);
+  excluirPessoaNaFicha(model: any) {
+    return this.http.put(`${this.baseURLPessoa}/excluir-pessoa-na-ficha`, model);
   }
 }

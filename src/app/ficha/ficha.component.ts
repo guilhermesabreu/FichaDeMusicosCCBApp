@@ -101,6 +101,7 @@ export class FichaComponent implements OnInit {
     this.registerFormAluno = this.fb.group({
       id: [''],
       nome: ['', [Validators.required, Validators.minLength(10)]],
+      alunoPesquisado: [''],
       instrutor: [''],
       encarregadoLocal: [''],
       encarregadoRegional: [''],
@@ -135,6 +136,21 @@ export class FichaComponent implements OnInit {
   instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
     'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
     'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+
+  autoCompleteAluno(event: any) {
+    this.pessoaService.buscarAluno(event.query)
+      .subscribe(
+        (res: any) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
 
   autoCompleteInstrutor(event: any) {
     this.pessoaService.buscarInstrutor(event.query)
@@ -216,7 +232,6 @@ export class FichaComponent implements OnInit {
     else {
       var dateParts = date.split("/");
       var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-      // console.log('data a converter: ', this.dateFormatPipe.transform(dateObject, 'dd/MM/yyyy'));
       return dateObject;
     }
   }
@@ -258,6 +273,33 @@ export class FichaComponent implements OnInit {
 
   //////////////////////////////////Dados Pessoais////////////////////////////////
   //////////////////////////////////Adição////////////////////////////////////////
+  inserirPessoaNaFicha(modalDadosPessoais: any) {
+    var alunoPesquisado = this.registerFormAluno.value.alunoPesquisado;
+    this.apelidoPessoaLogada = sessionStorage.getItem('username')!;
+    var model = { apelidoDonoDaFicha : this.apelidoPessoaLogada, nomeAluno: alunoPesquisado};
+
+    console.log('aluno pesquisado: ', model);
+    if (alunoPesquisado !== null && alunoPesquisado !== undefined && alunoPesquisado !== '') {
+      this.pessoaService.incluirAlunoNaFicha(model)
+        .subscribe(
+          (res: Pessoa) => {
+            this.toastr.success('Aluno inserido na sua ficha com sucesso.');
+            this.listarMusicos('ALUNO');
+            modalDadosPessoais.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
+    } else {
+      this.toastr.warning('Encontre um aluno já cadastrado');
+    }
+  }
+
+
   cadastrarPessoa(modalDadosPessoais: any) {
     this.registerFormAluno.reset();
     this.registerFormAluno.patchValue({
@@ -344,10 +386,10 @@ export class FichaComponent implements OnInit {
     this.nomePessoa = pessoa.nome;
   }
 
-  confirmarExclusaoPessoa(modalRemoverPessoa:any, modalAluno:any) {
-    console.log('id pessoa: ', this.idPessoa);
+  confirmarExclusaoPessoa(modalRemoverPessoa: any, modalAluno: any) {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
-      this.pessoaService.deletarPessoa(this.idPessoa)
+      var model = {idPessoa: this.idPessoa, apelidoDonoDaFicha : this.apelidoPessoaLogada};
+      this.pessoaService.excluirPessoaNaFicha(model)
         .subscribe(
           () => {
             this.toastr.success('Pessoa deletada com sucesso.');
