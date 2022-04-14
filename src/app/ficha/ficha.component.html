@@ -238,7 +238,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="registerFormAluno">
-          <div *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno'" class="form-group">
+          <div *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno' && this.modoSalvar === 'post'" class="form-group">
             <div class="form-group required">
               <div class="col-0 offset-0">
                 <p-autoComplete [style]="{'width':'100%'}" formControlName="alunoPesquisado"

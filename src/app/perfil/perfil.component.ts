@@ -195,14 +195,14 @@ export class PerfilComponent implements OnInit {
   editarPessoa() {
     var pessoa = Object.assign({}, this.registerForm.value);
     if (this.registerForm.valid) {
-      console.log('pessoa: ', pessoa);
       var pessoaPut = {
         id: this.idPessoa,
         nome: pessoa.nome, encarregadoLocal: pessoa.encarregadoLocal, instrutor: pessoa.apelidoInstrutor,
         encarregadoRegional: pessoa.encarregadoRegional, regiao: pessoa.regiao,
         regional: pessoa.regional, celular: pessoa.celular, email: pessoa.email,
         dataNascimento: this.transformDate(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
-        comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
+        comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao, userName: pessoa.userName,
+        password: this.registerForm.get('passwords.password')!.value
       };
       this.pessoaService.atualizarPessoa(pessoaPut)
         .subscribe(
