@@ -13,124 +13,74 @@ import { EventEmitterService } from '../event-emmiter/event-emitter.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  
+
   admins: Pessoa[] = [];
   perfil!: string;
-  
+
   constructor(private authService: AuthService
-    ,private eventEmitterService: EventEmitterService
-    ,public router: Router
-    ,private rout: ActivatedRoute
-    ,public pessoaService: PessoaService
-    ,private toastr: ToastrService) { }
-    
-    ngOnInit() {
+    , private eventEmitterService: EventEmitterService
+    , public router: Router
+    , private rout: ActivatedRoute
+    , public pessoaService: PessoaService
+    , private toastr: ToastrService) { }
+
+  ngOnInit() {
+  }
+
+  loggedIn() {
+    return this.authService.loggedIn();
+  }
+
+  logOut() {
+    localStorage.removeItem('token');
+    this.toastr.show('Log Out');
+    this.router.navigate(['/login']);
+  }
+
+  entrar() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
+  userName() {
+    return sessionStorage.getItem('username');
+  }
+
+  showMenu() {
+    return this.router.url !== "/login";
+  }
+
+  showSubItem(): string {
+    return sessionStorage.getItem('role')!.toString();
+  }
+
+  listarInstrutores() {
+    this.eventEmitterService.onFirstComponentButtonClick('INSTRUTOR');
+  }
+
+  listarAlunos() {
+    this.eventEmitterService.onFirstComponentButtonClick('ALUNO');
+  }
+
+  listarEncarregados() {
+    this.eventEmitterService.onFirstComponentButtonClick('ENCARREGADO');
+  }
+
+  fichaPessoa() {
+    this.router.navigate(['/ficha']);
+  }
+
+  perfilPessoa() {
+    this.router.navigate(['/perfil']);
+  }
+
+  showButton() {
+    var urlCorreta = this.router.url.indexOf("agendamentos");
+    if (urlCorreta > 0) {
+      return true;
     }
-    
-    // obterPerfil(){
-    //   let userName = this.userName();
-    //   this.authService.obterPerfilPorUserName(userName).subscribe(
-    //     (role: string)=>{
-    //       this.perfil = role; 
-    //     }, error =>{
-    //       this.toastr.error('Não foi possível obter o perfil deste usuário');
-    //     }
-    //     )
-    //   }
-      
-      // perfilCliente(){
-      //   this.obterPerfil();
-      //   this.perfil == 'Adm' ? false : true;
-      // }
-      
-      loggedIn() {
-        return this.authService.loggedIn();
-      }
-      
-      logOut() {
-        localStorage.removeItem('token');
-        this.toastr.show('Log Out');
-        this.router.navigate(['/login']);
-      }
-      
-      entrar() {
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-      }
-      
-      userName() {
-        return sessionStorage.getItem('username');
-      }
-      
-      showMenu() {
-        return this.router.url !== "/login";
-      }
-
-      showSubItem():string{
-        return sessionStorage.getItem('role')!.toString();
-      }
-
-      listarInstrutores() {
-        this.eventEmitterService.onFirstComponentButtonClick('INSTRUTOR'); 
-      }
-
-      listarAlunos() {
-        this.eventEmitterService.onFirstComponentButtonClick('ALUNO'); 
-      }
-
-      listarEncarregados() {
-        this.eventEmitterService.onFirstComponentButtonClick('ENCARREGADO');
-      }
-
-      
-      // obterUsuarios() {
-      //   this.admService.listaDeAdms().subscribe(
-      //     (_users: any) => {
-      //       this.admins = _users;
-      //       this.atualizarPerfil();
-      //     }, error => {
-      //       this.toastr.error(`Erro ao tentar Carregar Usuários: ${error}`);
-      //     });
-      //   }
-        
-        // atualizarPerfil(){
-        //   if(typeof this.admins === 'object'){
-        //     var userName = sessionStorage.getItem('username');
-        //     const usuarioLogado =  this.admins.filter((adm) => adm.userName == userName);
-        //     const perfilAdm = usuarioLogado.map((perfil) => perfil.company);
-        //     if(perfilAdm == undefined || perfilAdm == null || perfilAdm.toString() == ''){
-        //       this.router.navigate(['/user/perfilCliente']);
-        //     }else{
-        //       this.router.navigate(['/user/perfilAdm']);
-        //     }
-        //   }else{
-        //     this.router.navigate(['/user/perfilCliente']);
-        //   }
-        // }
-        
-        // telaDeAgendamento(){
-        //   if(typeof this.admins === 'object'){
-        //     var userName = sessionStorage.getItem('username');
-        //     const usuarioLogado =  this.admins.filter((adm) => adm.userName == userName);
-        //     const perfilUsuario = usuarioLogado.map((perfil) => perfil.company);
-        //     if(perfilUsuario == undefined || perfilUsuario == null || perfilUsuario.toString() == ''){
-        //       this.router.navigate(['/agendamentosUser']);
-        //     }else{
-        //       this.router.navigate(['/agendamentosAdm']);
-        //     }
-        //   }else{
-        //     this.router.navigate(['/agendamentosUser']);
-        //   }
-        // }
-        
-        showButton(){
-          var urlCorreta = this.router.url.indexOf("agendamentos");
-          if(urlCorreta > 0){
-            return true;
-          }
-          else{
-            return false;
-          }
-        }
-      }
-      
+    else {
+      return false;
+    }
+  }
+}

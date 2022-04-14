@@ -1,0 +1,15 @@
+#toggle2 {
+    position: static;
+    margin-top: -25px;
+    margin-left: 410px;
+    float: right;
+    cursor: pointer;
+}
+
+#toggle1 {
+    position: static;
+    margin-top: -25px;
+    margin-left: 410px;
+    float: right;
+    cursor: pointer;
+}

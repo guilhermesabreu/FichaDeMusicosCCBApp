@@ -10,7 +10,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 import { AppComponent } from './app.component';
-import {PessoasPelaPrimeiraLetraDoNomePipe} from './helps/PessoasPelaPrimeiraLetraDoNome.pipe';
+import { PessoasPelaPrimeiraLetraDoNomePipe } from './helps/PessoasPelaPrimeiraLetraDoNome.pipe';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,6 +31,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormatarDataPipe } from './helps/FormatarData.pipe';
 import { FormatarDataInvertidaPipe } from './helps/FormatarDataInvertida.pipe';
+import { PerfilComponent } from './perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { FormatarDataInvertidaPipe } from './helps/FormatarDataInvertida.pipe';
     FichaComponent,
     PessoasPelaPrimeiraLetraDoNomePipe,
     FormatarDataPipe,
-    FormatarDataInvertidaPipe
+    FormatarDataInvertidaPipe,
+    PerfilComponent
   ],
   imports: [
     AppRoutingModule,

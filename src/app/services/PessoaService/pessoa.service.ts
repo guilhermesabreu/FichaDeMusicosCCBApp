@@ -14,7 +14,7 @@ export class PessoaService {
   constructor(private http: HttpClient) { }
 
   buscarPessoaLogada(lParametro: string) {
-    return this.http.get<Pessoa>(`${this.baseURLPessoa}/buscar-pessoa-logada?apelido=${lParametro}`);
+    return this.http.get<Pessoa>(`${this.baseURLPessoa}/logada?apelido=${lParametro}`);
   }
 
   listaDeMusicos(lParametros: string) {
@@ -22,19 +22,19 @@ export class PessoaService {
   }
 
   buscarAluno(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-aluno?text=${text}`);
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-aluno?text=${text}`);
   }
 
   buscarInstrutor(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-instrutor?text=${text}`);
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-instrutor?text=${text}`);
   }
 
   buscarEncarregadoLocal(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-local?text=${text}`);
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-local?text=${text}`);
   }
 
   buscarEncarregadoRegional(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/buscar-encarregado-regional?text=${text}`);
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-regional?text=${text}`);
   }
 
   registroPessoa(model: any) {
@@ -47,6 +47,10 @@ export class PessoaService {
 
   atualizarPessoa(model: any){
     return this.http.put<Pessoa>(`${this.baseURLPessoa}`, model);
+  }
+
+  excluirPessoa(idPessoa: number) {
+    return this.http.delete(`${this.baseURLPessoa}/${idPessoa}`);
   }
 
   excluirPessoaNaFicha(model: any) {
