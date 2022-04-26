@@ -343,6 +343,7 @@ export class FichaComponent implements OnInit {
           dataNascimento: this.transformDate(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
+        
         this.pessoaService.atualizarPessoa(pessoaPut)
           .subscribe(
             (pessoa: Pessoa) => {
