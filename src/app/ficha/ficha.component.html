@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-row">
+              <div *ngIf="this.condicaoCarousel !== 'ENCARREGADO'" class="form-row">
                 <div class="form-group col-md-12">
                   <div class="text-center">
                     <label><strong style="color:#994803;">Encarregado Local:</strong>
@@ -253,7 +253,7 @@
             </div>
           </div>
           <div class="form-group required">
-            <label for="">Nome Completo:</label>
+            <label for=""><strong style="color:#994803;">Nome Completo:</strong></label>
             <input type="text" class="form-control" formControlName="nome"
               [ngClass]="{'is-invalid': registerFormAluno.get('nome')!.errors && registerFormAluno.get('nome')!.touched }"
               placeholder="Insira o Nome Completo" />
@@ -266,8 +266,8 @@
               Deve conter no mínimo 10 caracters
             </div>
           </div>
-          <div class="form-group required">
-            <label for="">Comum:</label>
+          <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional'" class="form-group required">
+            <label for=""><strong style="color:#994803;">Comum:</strong></label>
             <input class="form-control" type="text" formControlName="comum" [ngClass]="{ 'is-invalid': registerFormAluno.get('comum')!.errors && 
                                          registerFormAluno.get('comum')!.touched}"
               placeholder="Insira a sua Região ex: Brás" />
@@ -277,31 +277,7 @@
             </div>
           </div>
           <div class="form-group required">
-            <label for="">Região:</label>
-            <input class="form-control" type="text" formControlName="regiao" [ngClass]="{ 'is-invalid': registerFormAluno.get('regiao')!.errors && 
-                                         registerFormAluno.get('regiao')!.touched}"
-              placeholder="Insira sua Cidade e UF ex: São Vicente-SP" />
-            <div *ngIf="registerFormAluno.get('regiao')!.hasError('required') &&
-                        registerFormAluno.get('regiao')!.touched" class="invalid-feedback">
-              Região é obrigatória.
-            </div>
-            <div *ngIf="registerFormAluno.get('regiao')!.hasError('pattern') &&
-                registerFormAluno.get('regiao')!.touched" class="invalid-feedback">
-              Cidade e UF devem estar separadas por (-)
-            </div>
-          </div>
-          <div class="form-group required">
-            <label for="">Regional:</label>
-            <input class="form-control" type="text" formControlName="regional" [ngClass]="{'is-invalid': registerFormAluno.get('regional')!.errors &&
-                                        registerFormAluno.get('regional')!.touched}"
-              placeholder="Insira a sua regional ex: (Litoral Paulista)" />
-            <div *ngIf="registerFormAluno.get('regional')!.hasError('required') &&
-                        registerFormAluno.get('regional')!.touched" class="invalid-feedback">
-              Regional é obrigatória.
-            </div>
-          </div>
-          <div class="form-group required">
-            <label for="">Celular:</label>
+            <label for=""><strong style="color:#994803;">Celular:</strong></label>
             <input class="form-control" type="text" formControlName="celular" [ngClass]="{'is-invalid': registerFormAluno.get('celular')!.errors &&
                                         registerFormAluno.get('celular')!.touched}" placeholder="Insira seu celular" />
             <div *ngIf="registerFormAluno.get('celular')!.hasError('required') &&
@@ -311,7 +287,7 @@
           </div>
 
           <div class="form-group required">
-            <label for="">E-mail:</label>
+            <label for=""><strong style="color:#994803;">E-mail:</strong></label>
             <input class="form-control" type="text" formControlName="email" [ngClass]="{'is-invalid': registerFormAluno.get('email')!.errors &&
                                         registerFormAluno.get('email')!.touched}" placeholder="Insira seu e-mail" />
             <div *ngIf="registerFormAluno.get('email')!.hasError('required') &&
@@ -325,7 +301,7 @@
           </div>
 
           <div class="form-group required">
-            <label>Data de Nascimento:</label>
+            <label><strong style="color:#994803;">Data de Nascimento:</strong></label>
             <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormAluno.get('dataNascimento')!.errors 
                && registerFormAluno.get('dataNascimento')!.touched}" formControlName="dataNascimento">
 
@@ -336,7 +312,7 @@
           </div>
 
           <div class="form-group required">
-            <label>Data de Início na aulinha</label><br>
+            <label><strong style="color:#994803;">Data de Início na aulinha:</strong></label><br>
             <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormAluno.get('dataInicio')!.errors 
             && registerFormAluno.get('dataInicio')!.touched}" formControlName="dataInicio" placeholder="">
 
@@ -347,9 +323,9 @@
           </div>
 
           <div class="form-group required">
-            <div *ngIf="this.condicaoCarousel.toLowerCase() !== 'encarregado' 
-            && this.condicaoCarousel.toLowerCase() !== 'regional'" class="form-group">
-              <label>Encarregado Local:</label><br>
+            <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional' 
+            && this.condicaoCarousel !== 'ENCARREGADO'" class="form-group">
+              <label><strong style="color:#994803;">Encarregado Local:</strong></label><br>
               <p-autoComplete formControlName="encarregadoLocal" placeholder="Insira um encarregado local"
                 [suggestions]="results" [style]="{height:'40px'}"
                 (completeMethod)="autoCompleteEncarregadoLocal($event)">
@@ -358,17 +334,7 @@
           </div>
 
           <div class="form-group required">
-            <div *ngIf="this.condicaoCarousel.toLowerCase() !== 'regional'" class="form-group">
-              <label>Encarregado Regional:</label><br>
-              <p-autoComplete formControlName="encarregadoRegional" [style]="{height:'40px'}"
-                placeholder="Insira um encarregado regional" [suggestions]="results"
-                (completeMethod)="autoCompleteEncarregadoRegional($event)">
-              </p-autoComplete>
-            </div>
-          </div>
-
-          <div class="form-group required">
-            <label for="">Instrumento:</label>
+            <label for=""><strong style="color:#994803;">Instrumento:</strong></label>
             <select class="form-control" type="text" formControlName="instrumento" [ngClass]="{'is-invalid': registerFormAluno.get('instrumento')!.errors &&
                                       registerFormAluno.get('instrumento')!.touched}"
               placeholder="Escolha seu instrumento">

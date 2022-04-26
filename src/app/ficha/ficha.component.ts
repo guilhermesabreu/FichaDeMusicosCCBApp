@@ -46,6 +46,7 @@ export class FichaComponent implements OnInit {
   modoSalvar = 'post';
   condicaoCarousel!: string;
   apelidoPessoaLogada!: string;
+  condicaoPessoaLogada = '';
 
   datePickerConfig!: Partial<BsDatepickerConfig>;
 
@@ -111,7 +112,7 @@ export class FichaComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', Validators.required],
       dataInicio: ['', Validators.required],
-      comum: ['', Validators.required],
+      comum: [''],
       instrumento: ['', Validators.required],
       condicao: ['', Validators.required],
       ocorrencias: [''],
@@ -202,6 +203,7 @@ export class FichaComponent implements OnInit {
       .subscribe(
         (res: Pessoa) => {
           this.pessoaLogada = res;
+          this.condicaoPessoaLogada = res.condicao;
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -302,9 +304,14 @@ export class FichaComponent implements OnInit {
 
   cadastrarPessoa(modalDadosPessoais: any) {
     this.registerFormAluno.reset();
+    var condicaoLogada = Object.values(this.pessoaLogada)[13];
+    var encarregadoLocal = Object.values(this.pessoaLogada)[3];
+    var encarregadoRegional = Object.values(this.pessoaLogada)[4];
     this.registerFormAluno.patchValue({
-      encarregadoLocal: this.pessoaLogada.apelidoEncarregado,
-      encarregadoRegional: this.pessoaLogada.apelidoEncRegional,
+      encarregadoLocal: condicaoLogada.toLocaleLowerCase() === 'encarregado' 
+      && encarregadoLocal === '' ? this.pessoaLogada.nome : encarregadoLocal,
+      encarregadoRegional: condicaoLogada.toLocaleLowerCase() === 'regional' 
+      && encarregadoRegional === '' ? this.pessoaLogada.nome : encarregadoRegional,
       condicao: this.condicaoCarousel,
       comum: this.pessoaLogada.comum,
       regiao: this.pessoaLogada.regiao,
@@ -336,6 +343,7 @@ export class FichaComponent implements OnInit {
           dataNascimento: this.transformDate(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
+        console.log('atualizar pessoa: ', pessoaPut);
         this.pessoaService.atualizarPessoa(pessoaPut)
           .subscribe(
             (pessoa: Pessoa) => {
