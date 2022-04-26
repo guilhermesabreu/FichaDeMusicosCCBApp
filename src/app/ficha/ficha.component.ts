@@ -278,9 +278,8 @@ export class FichaComponent implements OnInit {
   inserirPessoaNaFicha(modalDadosPessoais: any) {
     var alunoPesquisado = this.registerFormAluno.value.alunoPesquisado;
     this.apelidoPessoaLogada = sessionStorage.getItem('username')!;
-    var model = { apelidoDonoDaFicha : this.apelidoPessoaLogada, nomeAluno: alunoPesquisado};
+    var model = { apelidoDonoDaFicha: this.apelidoPessoaLogada, nomeAluno: alunoPesquisado };
 
-    console.log('aluno pesquisado: ', model);
     if (alunoPesquisado !== null && alunoPesquisado !== undefined && alunoPesquisado !== '') {
       this.pessoaService.incluirAlunoNaFicha(model)
         .subscribe(
@@ -308,10 +307,10 @@ export class FichaComponent implements OnInit {
     var encarregadoLocal = Object.values(this.pessoaLogada)[3];
     var encarregadoRegional = Object.values(this.pessoaLogada)[4];
     this.registerFormAluno.patchValue({
-      encarregadoLocal: condicaoLogada.toLocaleLowerCase() === 'encarregado' 
-      && encarregadoLocal === '' ? this.pessoaLogada.nome : encarregadoLocal,
-      encarregadoRegional: condicaoLogada.toLocaleLowerCase() === 'regional' 
-      && encarregadoRegional === '' ? this.pessoaLogada.nome : encarregadoRegional,
+      encarregadoLocal: condicaoLogada.toLocaleLowerCase() === 'encarregado'
+        && encarregadoLocal === '' ? this.pessoaLogada.nome : encarregadoLocal,
+      encarregadoRegional: condicaoLogada.toLocaleLowerCase() === 'regional'
+        && encarregadoRegional === '' ? this.pessoaLogada.nome : encarregadoRegional,
       condicao: this.condicaoCarousel,
       comum: this.pessoaLogada.comum,
       regiao: this.pessoaLogada.regiao,
@@ -328,6 +327,7 @@ export class FichaComponent implements OnInit {
     modalDadosPessoais.show();
   }
 
+  
   salvarPessoa(modalDadosPessoais: any, modalAluno: any) {
     var pessoa = Object.assign({}, this.registerFormAluno.value);
     if (this.registerFormAluno.valid) {
@@ -343,7 +343,6 @@ export class FichaComponent implements OnInit {
           dataNascimento: this.transformDate(pessoa.dataNascimento), dataInicio: this.transformDate(pessoa.dataInicio),
           comum: pessoa.comum, instrumento: pessoa.instrumento, condicao: pessoa.condicao
         };
-        console.log('atualizar pessoa: ', pessoaPut);
         this.pessoaService.atualizarPessoa(pessoaPut)
           .subscribe(
             (pessoa: Pessoa) => {
@@ -396,7 +395,7 @@ export class FichaComponent implements OnInit {
 
   confirmarExclusaoPessoa(modalRemoverPessoa: any, modalAluno: any) {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
-      var model = {idPessoa: this.idPessoa, apelidoDonoDaFicha : this.apelidoPessoaLogada};
+      var model = { idPessoa: this.idPessoa, apelidoDonoDaFicha: this.apelidoPessoaLogada };
       this.pessoaService.excluirPessoaNaFicha(model)
         .subscribe(
           () => {
