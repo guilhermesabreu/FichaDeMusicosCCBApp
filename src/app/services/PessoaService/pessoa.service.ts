@@ -21,20 +21,20 @@ export class PessoaService {
     return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/por-condicao?${lParametros}`);
   }
 
-  buscarAluno(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-aluno?text=${text}`);
+  buscarAluno(input?: string, pessoaLogada?: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-aluno?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
-  buscarInstrutor(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-instrutor?text=${text}`);
+  buscarInstrutor(input?: string, pessoaLogada?: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-instrutor?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
-  buscarEncarregadoLocal(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-local?text=${text}`);
+  buscarEncarregadoLocal(input?: string, pessoaLogada?: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-local?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
-  buscarEncarregadoRegional(text: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-regional?text=${text}`);
+  buscarEncarregadoRegional(input?: string, pessoaLogada?: string) {
+    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-regional?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
   registroPessoa(model: any) {

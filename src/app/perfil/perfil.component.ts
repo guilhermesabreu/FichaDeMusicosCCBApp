@@ -102,7 +102,7 @@ export class PerfilComponent implements OnInit {
   }
 
   autoCompleteEncarregadoLocal(event: any) {
-    this.pessoaService.buscarEncarregadoLocal(event.query)
+    this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -117,7 +117,7 @@ export class PerfilComponent implements OnInit {
   }
 
   autoCompleteEncarregadoRegional(event: any) {
-    this.pessoaService.buscarEncarregadoRegional(event.query)
+    this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;

@@ -7,7 +7,7 @@
   <div class="col-md-6">
     <form [formGroup]="registerForm">
       <div class="form-group required">
-        <label for="">Nome Completo:</label>
+        <label for=""><strong style="color:#994803;">Nome Completo:</strong></label>
         <input type="text" class="form-control" formControlName="nome"
         [ngClass]="{'is-invalid': registerForm.get('nome')!.errors && registerForm.get('nome')!.touched }"
           placeholder="Insira o Nome Completo"/>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="form-group required"> 
-        <label for="">Comum:</label>
+        <label for=""><strong style="color:#994803;">Comum:</strong></label>
         <input class="form-control" type="text" formControlName="comum"
           [ngClass]="{ 'is-invalid': registerForm.get('comum')!.errors && 
                                      registerForm.get('comum')!.touched}"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="form-group required"> 
-        <label for="">Região:</label>
+        <label for=""><strong style="color:#994803;">Região:</strong></label>
         <input class="form-control" type="text" formControlName="regiao"
           [ngClass]="{ 'is-invalid': registerForm.get('regiao')!.errors && 
                                      registerForm.get('regiao')!.touched}"
@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="">Regional:</label>
+        <label for=""><strong style="color:#994803;">Regional:</strong></label>
         <input class="form-control" type="text" formControlName="regional"
           [ngClass]="{'is-invalid': registerForm.get('regional')!.errors &&
                                     registerForm.get('regional')!.touched}"
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="">Celular:</label>
+        <label for=""><strong style="color:#994803;">Celular:</strong></label>
         <input class="form-control" type="text" formControlName="celular"
           [ngClass]="{'is-invalid': registerForm.get('celular')!.errors &&
                                     registerForm.get('celular')!.touched}"
@@ -77,7 +77,7 @@
       </div>
       
       <div class="form-group">
-        <label for="">E-mail:</label>
+        <label for=""><strong style="color:#994803;">E-mail:</strong></label>
         <input class="form-control" type="text" formControlName="email"
           [ngClass]="{'is-invalid': registerForm.get('email')!.errors &&
                                     registerForm.get('email')!.touched}"
@@ -95,7 +95,7 @@
       </div>
 
       <div class="form-group">
-        <label>Data de Nascimento:</label>
+        <label><strong style="color:#994803;">Data de Nascimento:</strong></label>
         <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" 
         [ngClass]="{'is-invalid': registerForm.get('dataNascimento')!.errors 
            && registerForm.get('dataNascimento')!.touched}" formControlName="dataNascimento">
@@ -107,7 +107,7 @@
       </div>
 
       <div class="form-group">
-        <label>Data de Início na aulinha</label><br>
+        <label><strong style="color:#994803;">Data de Início na aulinha:</strong></label><br>
         <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig"  
         [ngClass]="{'is-invalid': registerForm.get('dataInicio')!.errors 
         && registerForm.get('dataInicio')!.touched}" formControlName="dataInicio" placeholder="">
@@ -119,7 +119,7 @@
       </div>
 
       <div class="form-group">
-        <label for="">Condição:</label>
+        <label for=""><strong style="color:#994803;">Condição:</strong></label>
         <select class="form-control" id="select" 
         formControlName="condicao" [(ngModel)]="condicaoSelecionada"
         [ngClass]="{'is-invalid': registerForm.get('condicao')!.errors &&
@@ -137,7 +137,7 @@
       </div>
 
       <div *ngIf="mostraEncarregadoLocal" class="form-group">
-          <label>Encarregado Local:</label><br>
+          <label><strong style="color:#994803;">Encarregado Local:</strong></label><br>
           <p-autoComplete formControlName="encarregadoLocal" 
           placeholder="Insira um encarregado local" [suggestions]="results" 
           [style]="{height:'40px'}"
@@ -145,14 +145,14 @@
       </div>
         
       <div *ngIf="mostraEncarregadoRegional" class="form-group">
-        <label>Encarregado Regional:</label><br>
+        <label><strong style="color:#994803;">Encarregado Regional:</strong></label><br>
         <p-autoComplete formControlName="encarregadoRegional" [style]="{height:'40px'}"
         placeholder="Insira um encarregado regional" [suggestions]="results" (completeMethod)="autoCompleteEncarregadoRegional($event)">
         </p-autoComplete> 
       </div>
 
     <div class="form-group">
-      <label for="">Instrumento:</label>
+      <label for=""><strong style="color:#994803;">Instrumento:</strong></label>
       <select class="form-control" type="text" formControlName="instrumento"
         [ngClass]="{'is-invalid': registerForm.get('instrumento')!.errors &&
                                   registerForm.get('instrumento')!.touched}"
@@ -171,7 +171,7 @@
     </div>
 
       <div class="form-group">
-        <label for="">Usuario:</label>
+        <label for=""><strong style="color:#994803;">Usuário:</strong></label>
         <input class="form-control" type="text" formControlName="userName"
           [ngClass]="{'is-invalid': registerForm.get('userName')!.errors &&
                                     registerForm.get('userName')!.touched}"
@@ -185,7 +185,7 @@
 
       <div formGroupName="passwords">
         <div class="form-group senha1">
-          <label for="">Senha:</label>
+          <label for=""><strong style="color:#994803;">Senha:</strong></label>
           <input class="form-control" id="senha1" type="password" formControlName="password"
             [ngClass]="{ 'is-invalid': registerForm.get('passwords.password')!.errors &&
                                        registerForm.get('passwords.password')!.touched}"
@@ -204,7 +204,7 @@
           </div>
         </div>
         <div class="form-group senha2">
-          <label for="">Confirmar Senha:</label>
+          <label for=""><strong style="color:#994803;">Confirmar Senha:</strong></label>
           <input class="form-control" id="senha2" type="password" formControlName="confirmPassword"
             [ngClass]="{ 'is-invalid': registerForm.get('passwords.confirmPassword')!.errors 
                          && registerForm.get('passwords.confirmPassword')!.touched 

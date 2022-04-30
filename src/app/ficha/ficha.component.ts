@@ -139,7 +139,7 @@ export class FichaComponent implements OnInit {
     'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
 
   autoCompleteAluno(event: any) {
-    this.pessoaService.buscarAluno(event.query)
+    this.pessoaService.buscarAluno(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -154,7 +154,7 @@ export class FichaComponent implements OnInit {
   }
 
   autoCompleteInstrutor(event: any) {
-    this.pessoaService.buscarInstrutor(event.query)
+    this.pessoaService.buscarInstrutor(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -169,7 +169,7 @@ export class FichaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoLocal(event: any) {
-    this.pessoaService.buscarEncarregadoLocal(event.query)
+    this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -184,7 +184,7 @@ export class FichaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoRegional(event: any) {
-    this.pessoaService.buscarEncarregadoRegional(event.query)
+    this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;

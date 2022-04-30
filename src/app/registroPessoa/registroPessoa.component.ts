@@ -25,8 +25,9 @@ export class RegistroPessoaComponent implements OnInit {
   _condicaoSelecionada = '';
   mostraEncarregadoLocal = false;
   mostraEncarregadoRegional = false;
-
+  apelidoPessoaLogada!: string;
   results!: string[];
+
   constructor(
     public authService: AuthService,
     private localeService: BsLocaleService,
@@ -41,6 +42,7 @@ export class RegistroPessoaComponent implements OnInit {
   ngOnInit() {
     this.despertarServidor();
     this.validation();
+    this.apelidoPessoaLogada = sessionStorage.getItem('username')!;
   }
 
   despertarServidor(){
@@ -68,7 +70,7 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoLocal(event: any) {
-    this.pessoaService.buscarEncarregadoLocal(event.query)
+    this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -83,7 +85,7 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoRegional(event: any) {
-    this.pessoaService.buscarEncarregadoRegional(event.query)
+    this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
       .subscribe(
         (res: any) => {
           this.results = res;
