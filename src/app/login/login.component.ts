@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserLogin } from 'src/app/models/UserLogin';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/AuthService/auth.service';
+import { PessoaService } from '../services/PessoaService/pessoa.service';
+import { Pessoa } from '../models/Pessoa';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +19,11 @@ export class LoginComponent implements OnInit {
   id!: string;
   public idValue: any;
   registerForm!: FormGroup;
+  registerFormSenha!: FormGroup;
 
   constructor(
     public authService: AuthService,
+    public pessoaService: PessoaService,
     public router: Router
     , private toastr: ToastrService
     , public fb: FormBuilder) { }
@@ -32,13 +36,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  despertarServidor(){
+  despertarServidor() {
     this.authService.despertarServidor()
-    .subscribe(
-      () => {
-      }, error => {
+      .subscribe(
+        () => {
+        }, error => {
           this.toastr.error('Servidor indisponível !');
-      });
+        });
   }
 
   visualizarSenha() {
@@ -55,6 +59,33 @@ export class LoginComponent implements OnInit {
       userName: ['', Validators.required],
       password: ['', Validators.required]
     });
+    this.registerFormSenha = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    })
+  }
+
+  recuperarSenha(modalRecuperarEmail: any) {
+    modalRecuperarEmail.show();
+  }
+
+  recuperarSenhaPorEmail(registerFormSenha: any) {
+    var pessoa = Object.assign({}, this.registerFormSenha.value);
+    if (this.registerFormSenha.valid) {
+      var recuperarSenhaPost = { email: pessoa.email };
+      this.pessoaService.recuperarSenha(recuperarSenhaPost)
+        .subscribe(
+          (pessoa: Pessoa) => {
+            this.toastr.success('Usuário e Senha enviada no seu e-mail.');
+            registerFormSenha.hide();
+          }, error => {
+            if (error.status === 400) {
+              this.toastr.warning(error.error);
+            } else {
+              this.toastr.error(error.error);
+            }
+            console.clear();
+          });
+    }
   }
 
   login() {
@@ -65,9 +96,9 @@ export class LoginComponent implements OnInit {
           this.toastr.success('Logado com sucesso !');
           this.router.navigate(['/ficha']);
         }, error => {
-          if(error.status === 400){
-            this.toastr.warning(error.error);  
-          }else{
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
             this.toastr.error(error.error);
           }
           console.clear();

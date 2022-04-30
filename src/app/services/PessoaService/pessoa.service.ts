@@ -37,6 +37,10 @@ export class PessoaService {
     return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-regional?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
+  recuperarSenha(model: any) {
+    return this.http.post<Pessoa>(`${this.baseURLPessoa}/recuperar-senha`, model);
+  }
+
   registroPessoa(model: any) {
     return this.http.post<Pessoa>(`${this.baseURLPessoa}`, model);
   }

@@ -331,7 +331,6 @@ export class FichaComponent implements OnInit {
   salvarPessoa(modalDadosPessoais: any, modalAluno: any) {
     var pessoa = Object.assign({}, this.registerFormAluno.value);
     if (this.registerFormAluno.valid) {
-      var pessoa = Object.assign({}, this.registerFormAluno.value);
       var condicaoLogada = sessionStorage.getItem('role');
       var instrutorLogado = condicaoLogada !== 'INSTRUTOR' ? '' : sessionStorage.getItem('username')!;
       if (this.modoSalvar == 'put') {

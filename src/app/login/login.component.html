@@ -17,5 +17,45 @@
     <button [disabled]="!loginForm.valid" style="background-color: #e67e22; color:#000000;" class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
     <p class="mt-5 mb-3 text-muted">Não tem login? Cadastre-se abaixo</p>
     <button class="btn btn-lg btn-link btn-block" style="color:#e67e22!important" (click)="router.navigate(['/registroPessoa'])">Cadastre-se</button>
+    <button class="btn btn-lg btn-link btn-block" style="color:#e67e22!important; size: 20px;" (click)="recuperarSenha(modalRecuperarEmail)">Esqueci meu usuário e senha</button>
   </form>  
 </body>
+
+<div bsModal #modalRecuperarEmail="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Recuperação de usuário e senha através do seu e-mail
+        </h6>
+        <button type="button" class="close pull-right" (click)="modalRecuperarEmail.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerFormSenha">
+          <div class="form-group required">
+            <label for=""><strong style="color:#994803;">E-mail:</strong></label>
+            <input class="form-control" type="text" formControlName="email" [ngClass]="{'is-invalid': registerFormSenha.get('email')!.errors &&
+            registerFormSenha.get('email')!.touched}" placeholder="Insira seu e-mail" />
+            <div *ngIf="registerFormSenha.get('email')!.hasError('required') &&
+            registerFormSenha.get('email')!.touched" class="invalid-feedback">
+              E-mail é obrigatório.
+            </div>
+            <div *ngIf="registerFormSenha.get('email')!.hasError('email') &&
+            registerFormSenha.get('email')!.touched" class="invalid-feedback">
+              E-mail com formato inválido
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+              <button class="btn btn-lg btn-success btn-block" [disabled]="!registerFormSenha.valid"
+                (click)="recuperarSenhaPorEmail(registerFormSenha)">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
