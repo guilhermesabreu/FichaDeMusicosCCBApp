@@ -70,7 +70,7 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoLocal(event: any) {
-    this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
+    this.pessoaService.buscarEncarregadoLocal(event.query, '')
       .subscribe(
         (res: any) => {
           this.results = res;
@@ -85,7 +85,7 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   autoCompleteEncarregadoRegional(event: any) {
-    this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
+    this.pessoaService.buscarEncarregadoRegional(event.query, '')
       .subscribe(
         (res: any) => {
           this.results = res;

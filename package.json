@@ -28,6 +28,7 @@
     "@auth0/angular-jwt": "^5.0.2",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "bootstrap": "^4.6.1",
+    "country-state-city": "^3.0.1",
     "express": "^4.17.2",
     "ngx-bootstrap": "^8.0.0",
     "ngx-toastr": "^14.2.1",
