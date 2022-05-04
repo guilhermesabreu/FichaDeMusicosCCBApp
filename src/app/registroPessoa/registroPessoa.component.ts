@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Pessoa } from '../models/Pessoa';
 import { AuthService } from '../services/AuthService/auth.service';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
+
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
