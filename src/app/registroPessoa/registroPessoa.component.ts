@@ -18,6 +18,7 @@ defineLocale('pt-br', ptBrLocale);
 export class RegistroPessoaComponent implements OnInit {
 
   pessoa!: Pessoa;
+  pessoaPesquisada!: Pessoa;
   datePickerConfig!: Partial<BsDatepickerConfig>;
   registerForm!: FormGroup;
   instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
@@ -26,6 +27,9 @@ export class RegistroPessoaComponent implements OnInit {
   _condicaoSelecionada = '';
   mostraEncarregadoLocal = false;
   mostraEncarregadoRegional = false;
+  mostraComum = false;
+  mostraRegiao = false;
+  mostraRegional = false;
   apelidoPessoaLogada!: string;
   results!: string[];
 
@@ -46,13 +50,13 @@ export class RegistroPessoaComponent implements OnInit {
     this.apelidoPessoaLogada = sessionStorage.getItem('username')!;
   }
 
-  despertarServidor(){
+  despertarServidor() {
     this.authService.despertarServidor()
-    .subscribe(
-      () => {
-      }, error => {
+      .subscribe(
+        () => {
+        }, error => {
           this.toastr.error('Servidor indisponível !');
-      });
+        });
   }
 
   get condicaoSelecionada(): string {
@@ -60,21 +64,75 @@ export class RegistroPessoaComponent implements OnInit {
   }
 
   set condicaoSelecionada(value: string) {
+    this.exibirOuEsconderCampos(value);
+  }
+
+  exibirOuEsconderCampos(value: string) {
+    this.registerForm.patchValue({ encarregadoLocal: '', encarregadoRegional: '', comum: '', regiao: '', regional: '' });
     switch (value) {
-      case 'instrutor': 
-      this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = true; break;
-      case 'encarregado': this.registerForm.patchValue({encarregadoLocal: '' });
-      this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false; break;
-      case 'regional': this.registerForm.patchValue({encarregadoLocal: '', encarregadoRegional: '' });
-      this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false; break;
+      case 'instrutor':
+        this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = false;
+        this.mostraComum = false; this.mostraRegiao = false; this.mostraRegional = false;
+        break;
+      case 'encarregado':
+        this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false;
+        this.mostraComum = true; this.mostraRegiao = false; this.mostraRegional = false;
+        break;
+      case 'regional':
+        this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false;
+        this.mostraComum = false; this.mostraRegiao = true; this.mostraRegional = true;
+        break;
     }
+  }
+
+  preencherCampos(pessoa: Pessoa){
+    switch(pessoa.condicao.toLocaleLowerCase()){
+      case 'encarregado':
+        this.registerForm.patchValue({ encarregadoRegional: pessoa.apelidoEncRegional, comum: pessoa.comum, regiao: pessoa.regiao, regional: pessoa.regional });
+        break;
+      case 'regional':
+        this.registerForm.patchValue({ regiao: pessoa.regiao, regional: pessoa.regional });
+        break;
+    }  
+  }
+
+  obterInformacoesEncarregado(event: any) {
+    this.pessoaService.buscarEncarregadoLocal(event, '')
+      .subscribe(
+        (res: Pessoa[]) => {
+          this.pessoaPesquisada = res[0];
+          this.preencherCampos(this.pessoaPesquisada);
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  obterInformacoesEncarregadoRegional(event: any) {
+    this.pessoaService.buscarEncarregadoRegional(event, '')
+      .subscribe(
+        (res: Pessoa[]) => {
+          this.pessoaPesquisada = res[0];
+          this.preencherCampos(this.pessoaPesquisada);
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
   }
 
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query, '')
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -88,8 +146,8 @@ export class RegistroPessoaComponent implements OnInit {
   autoCompleteEncarregadoRegional(event: any) {
     this.pessoaService.buscarEncarregadoRegional(event.query, '')
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -111,7 +169,7 @@ export class RegistroPessoaComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', Validators.required],
       dataInicio: ['', Validators.required],
-      comum: ['', Validators.required],
+      comum: [''],
       instrumento: ['', Validators.required],
       condicao: ['', Validators.required],
       userName: ['', Validators.required],
@@ -121,12 +179,11 @@ export class RegistroPessoaComponent implements OnInit {
       }, { validator: this.compararSenhas })
     });
   }
-  
+
   registrarPessoa() {
     if (this.registerForm.valid) {
       var dadosForm = Object.assign({}, this.registerForm.value);
       this.pessoa = dadosForm;
-      this.pessoa.apelidoInstrutor = dadosForm.condicao === 'instrutor' ? dadosForm.userName : '';
       this.pessoa.password = dadosForm.passwords.password;
       this.pessoaService.registroPessoa(this.pessoa)
         .subscribe(

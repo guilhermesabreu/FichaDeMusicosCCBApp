@@ -27,6 +27,10 @@ export class PerfilComponent implements OnInit {
   _condicaoSelecionada = '';
   mostraEncarregadoLocal = false;
   mostraEncarregadoRegional = false;
+  mostraComum = false;
+  mostraRegiao = false;
+  mostraRegional = false;
+  pessoaPesquisada!: Pessoa;
 
   results!: string[];
   constructor(
@@ -60,14 +64,7 @@ export class PerfilComponent implements OnInit {
   }
 
   set condicaoSelecionada(value: string) {
-    switch (value) {
-      case 'instrutor':
-        this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = true; break;
-      case 'encarregado': this.registerForm.patchValue({ encarregadoLocal: '' });
-        this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false; break;
-      case 'regional': this.registerForm.patchValue({ encarregadoLocal: '', encarregadoRegional: '' });
-        this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false; break;
-    }
+    this.exibirOuEsconderCampos(value);
   }
 
   obterPessoaLogada() {
@@ -77,6 +74,7 @@ export class PerfilComponent implements OnInit {
         (res: Pessoa) => {
           this.nomePessoaLogada = res.nome;
           this.idPessoa = res.id;
+          console.log('pessoa logada: ',res);
           this.registerForm.patchValue({
             nome: res.nome,
             encarregadoLocal: res.apelidoEncarregado,
@@ -101,11 +99,72 @@ export class PerfilComponent implements OnInit {
         });
   }
 
+  exibirOuEsconderCampos(value: string) {
+    this.registerForm.patchValue({ encarregadoLocal: '', encarregadoRegional: '', comum: '', regiao: '', regional: '' });
+    switch (value) {
+      case 'instrutor':
+        this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = false;
+        this.mostraComum = false; this.mostraRegiao = false; this.mostraRegional = false;
+        break;
+      case 'encarregado':
+        this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false;
+        this.mostraComum = true; this.mostraRegiao = false; this.mostraRegional = false;
+        break;
+      case 'regional':
+        this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false;
+        this.mostraComum = false; this.mostraRegiao = true; this.mostraRegional = true;
+        break;
+    }
+  }
+
+  preencherCampos(pessoa: Pessoa){
+    switch(pessoa.condicao.toLocaleLowerCase()){
+      case 'encarregado':
+        this.registerForm.patchValue({ encarregadoRegional: pessoa.apelidoEncRegional, comum: pessoa.comum, regiao: pessoa.regiao, regional: pessoa.regional });
+        break;
+      case 'regional':
+        this.registerForm.patchValue({ regiao: pessoa.regiao, regional: pessoa.regional });
+        break;
+    }  
+  }
+
+  obterInformacoesEncarregado(event: any) {
+    this.pessoaService.buscarEncarregadoLocal(event, '')
+      .subscribe(
+        (res: Pessoa[]) => {
+          this.pessoaPesquisada = res[0];
+          this.preencherCampos(this.pessoaPesquisada);
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  obterInformacoesEncarregadoRegional(event: any) {
+    this.pessoaService.buscarEncarregadoRegional(event, '')
+      .subscribe(
+        (res: Pessoa[]) => {
+          this.pessoaPesquisada = res[0];
+          this.preencherCampos(this.pessoaPesquisada);
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -119,8 +178,8 @@ export class PerfilComponent implements OnInit {
   autoCompleteEncarregadoRegional(event: any) {
     this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);

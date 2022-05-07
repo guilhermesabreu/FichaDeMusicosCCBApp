@@ -156,8 +156,8 @@ export class FichaComponent implements OnInit {
   autoCompleteInstrutor(event: any) {
     this.pessoaService.buscarInstrutor(event.query, this.apelidoPessoaLogada)
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -171,8 +171,8 @@ export class FichaComponent implements OnInit {
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
@@ -186,8 +186,8 @@ export class FichaComponent implements OnInit {
   autoCompleteEncarregadoRegional(event: any) {
     this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
       .subscribe(
-        (res: any) => {
-          this.results = res;
+        (res: Pessoa[]) => {
+          this.results = res.map(item => item.nome);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);

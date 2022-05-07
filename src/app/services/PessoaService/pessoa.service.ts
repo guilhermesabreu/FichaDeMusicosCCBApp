@@ -26,15 +26,15 @@ export class PessoaService {
   }
 
   buscarInstrutor(input?: string, pessoaLogada?: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-instrutor?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
+    return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/instrutor-por-nome?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
   buscarEncarregadoLocal(input?: string, pessoaLogada?: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-local?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
+    return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/encarregado-local-por-nome?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
   buscarEncarregadoRegional(input?: string, pessoaLogada?: string) {
-    return this.http.get<string[]>(`${this.baseURLPessoa}/nome-encarregado-regional?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
+    return this.http.get<Pessoa[]>(`${this.baseURLPessoa}/encarregado-regional-por-nome?Input=${input}&ApelidoPessoaLogada=${pessoaLogada}`);
   }
 
   recuperarSenha(model: any) {
