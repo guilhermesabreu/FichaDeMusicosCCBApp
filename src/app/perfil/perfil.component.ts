@@ -100,17 +100,19 @@ export class PerfilComponent implements OnInit {
   }
 
   exibirOuEsconderCampos(value: string) {
-    this.registerForm.patchValue({ encarregadoLocal: '', encarregadoRegional: '', comum: '', regiao: '', regional: '' });
     switch (value) {
       case 'instrutor':
+        this.registerForm.patchValue({comum: '', regional: '', regiao: '', encarregadoRegional: ''});
         this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = false;
         this.mostraComum = false; this.mostraRegiao = false; this.mostraRegional = false;
         break;
       case 'encarregado':
+        this.registerForm.patchValue({regional: '', regiao: '', mostraEncarregadoLocal: ''});
         this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false;
         this.mostraComum = true; this.mostraRegiao = false; this.mostraRegional = false;
         break;
       case 'regional':
+        this.registerForm.patchValue({comum: '', mostraEncarregadoLocal: '', encarregadoRegional: ''});
         this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false;
         this.mostraComum = false; this.mostraRegiao = true; this.mostraRegional = true;
         break;

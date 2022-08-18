@@ -133,7 +133,7 @@
         <input class="form-control" type="text" formControlName="comum"
           [ngClass]="{ 'is-invalid': registerForm.get('comum')!.errors && 
                                      registerForm.get('comum')!.touched}"
-          placeholder="Insira a sua Região ex: Brás" />
+          placeholder="Insira a sua Comum ex: Brás" />
         <div *ngIf="registerForm.get('comum')!.hasError('required') &&
                     registerForm.get('comum')!.touched"
           class="invalid-feedback">
