@@ -74,7 +74,6 @@ export class PerfilComponent implements OnInit {
         (res: Pessoa) => {
           this.nomePessoaLogada = res.nome;
           this.idPessoa = res.id;
-          console.log('pessoa logada: ',res);
           this.registerForm.patchValue({
             nome: res.nome,
             encarregadoLocal: res.apelidoEncarregado,
@@ -102,17 +101,14 @@ export class PerfilComponent implements OnInit {
   exibirOuEsconderCampos(value: string) {
     switch (value) {
       case 'instrutor':
-        this.registerForm.patchValue({comum: '', regional: '', regiao: '', encarregadoRegional: ''});
         this.mostraEncarregadoLocal = true; this.mostraEncarregadoRegional = false;
         this.mostraComum = false; this.mostraRegiao = false; this.mostraRegional = false;
         break;
       case 'encarregado':
-        this.registerForm.patchValue({regional: '', regiao: '', mostraEncarregadoLocal: ''});
         this.mostraEncarregadoRegional = true; this.mostraEncarregadoLocal = false;
         this.mostraComum = true; this.mostraRegiao = false; this.mostraRegional = false;
         break;
       case 'regional':
-        this.registerForm.patchValue({comum: '', mostraEncarregadoLocal: '', encarregadoRegional: ''});
         this.mostraEncarregadoLocal = false; this.mostraEncarregadoRegional = false;
         this.mostraComum = false; this.mostraRegiao = true; this.mostraRegional = true;
         break;
@@ -227,7 +223,6 @@ export class PerfilComponent implements OnInit {
 
   removerPessoa(modalRemoverPessoa: any) {
     modalRemoverPessoa.show();
-    console.log('id: ', this.idPessoa);
   }
 
   confirmarExclusaoPessoa(modalRemoverPessoa: any) {
