@@ -303,6 +303,8 @@ export class FichaComponent implements OnInit {
 
   cadastrarPessoa(modalDadosPessoais: any) {
     this.registerFormAluno.reset();
+    this.registerFormHino.reset();
+    this.registerFormOcorrencia.reset();
     var condicaoLogada = Object.values(this.pessoaLogada)[13];
     var encarregadoLocal = Object.values(this.pessoaLogada)[3];
     var encarregadoRegional = Object.values(this.pessoaLogada)[4];
@@ -620,13 +622,12 @@ export class FichaComponent implements OnInit {
 
   adicionarHinoAoCombo(hinoCriado: Hino) {
     if (this.registerFormHino.valid) {
-      this.hino = Object.assign({}, this.registerFormHino.value);
-      var selectElement = (document.getElementById('hinoSelecionado')) as HTMLSelectElement;
-      selectElement.add(new Option(this.hino.numeroHino + ' - ' + this.hino.vozHino, hinoCriado.idHino.toString()));
+      this.pessoa.hinos.push(hinoCriado);
     }
   }
 
   abrirModalAluno(pessoa: Pessoa, modalAluno: any) {
+    this.listarMusicos('ALUNO');
     this.idPessoa = pessoa.id;
     modalAluno.show();
     this.registerFormAluno.patchValue({
