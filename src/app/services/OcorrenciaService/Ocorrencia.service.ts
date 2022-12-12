@@ -7,7 +7,7 @@ import { Ocorrencia } from 'src/app/models/Ocorrencia';
 })
 export class OcorrenciaService {
 
-  baseURLOcorrencia = 'https://fichademusicosccbapi.herokuapp.com/api/v1/ocorrencias';
+  baseURLOcorrencia = 'https://fichademusicosccbapi.fly.dev/api/v1/ocorrencias';
   
   constructor(private http: HttpClient) { }
 

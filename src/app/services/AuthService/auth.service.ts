@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  baseURLPessoa = 'https://fichademusicosccbapi.herokuapp.com/api/v1/pessoas';
+  baseURLPessoa = 'https://fichademusicosccbapi.fly.dev/api/v1/pessoas';
   decodedToken: any;
   jwtHelper = new JwtHelperService();
   constructor(private http: HttpClient

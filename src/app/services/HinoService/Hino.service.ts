@@ -7,7 +7,7 @@ import { Hino } from 'src/app/models/Hino';
 })
 export class HinoService {
 
-  baseURLHino = 'https://fichademusicosccbapi.herokuapp.com/api/v1/hinos';
+  baseURLHino = 'https://fichademusicosccbapi.fly.dev/api/v1/hinos';
   
   constructor(private http: HttpClient) { }
 

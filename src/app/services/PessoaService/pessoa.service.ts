@@ -8,7 +8,7 @@ import { Pessoa } from 'src/app/models/Pessoa';
 })
 export class PessoaService {
 
-  baseURLPessoa = 'https://fichademusicosccbapi.herokuapp.com/api/v1/pessoas';
+  baseURLPessoa = 'https://fichademusicosccbapi.fly.dev/api/v1/pessoas';
   
 
   constructor(private http: HttpClient) { }
