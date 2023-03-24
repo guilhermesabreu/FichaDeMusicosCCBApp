@@ -55,14 +55,23 @@ export class NavComponent implements OnInit {
   }
 
   listarInstrutores() {
+    if(this.router.url != '/ficha'){
+      this.fichaPessoa();
+    }
     this.eventEmitterService.onFirstComponentButtonClick('INSTRUTOR');
   }
 
   listarAlunos() {
+    if(this.router.url != '/ficha'){
+      this.fichaPessoa();
+    }
     this.eventEmitterService.onFirstComponentButtonClick('ALUNO');
   }
 
   listarEncarregados() {
+    if(this.router.url != '/ficha'){
+      this.fichaPessoa();
+    }
     this.eventEmitterService.onFirstComponentButtonClick('ENCARREGADO');
   }
 

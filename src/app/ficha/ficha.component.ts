@@ -627,7 +627,7 @@ export class FichaComponent implements OnInit {
   }
 
   abrirModalAluno(pessoa: Pessoa, modalAluno: any) {
-    this.listarMusicos('ALUNO');
+    //this.listarMusicos('ALUNO');
     this.idPessoa = pessoa.id;
     modalAluno.show();
     this.registerFormAluno.patchValue({
