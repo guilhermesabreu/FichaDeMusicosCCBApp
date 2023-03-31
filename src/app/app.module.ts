@@ -32,9 +32,12 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormatarDataPipe } from './helps/FormatarData.pipe';
 import { FormatarDataInvertidaPipe } from './helps/FormatarDataInvertida.pipe';
 import { PerfilComponent } from './perfil/perfil.component';
+import { FichaAlunosComponent } from './ficha-alunos/ficha-alunos.component';
+import { FichaInstrutoresComponent } from './ficha-instrutores/ficha-instrutores.component';
+import { FichaEncarregadosComponent } from './ficha-encarregados/ficha-encarregados.component';
 
 @NgModule({
-  declarations: [
+  declarations: [			
     AppComponent,
     LoginComponent,
     NavComponent,
@@ -44,8 +47,11 @@ import { PerfilComponent } from './perfil/perfil.component';
     PessoasPelaPrimeiraLetraDoNomePipe,
     FormatarDataPipe,
     FormatarDataInvertidaPipe,
-    PerfilComponent
-  ],
+    PerfilComponent,
+    FichaAlunosComponent,
+    FichaInstrutoresComponent,
+      FichaEncarregadosComponent
+   ],
   imports: [
     AppRoutingModule,
     ReactiveFormsModule,

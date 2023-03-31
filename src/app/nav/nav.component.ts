@@ -54,29 +54,16 @@ export class NavComponent implements OnInit {
     return sessionStorage.getItem('role')!.toString();
   }
 
-  listarInstrutores() {
-    if(this.router.url != '/ficha'){
-      this.fichaPessoa();
-    }
-    this.eventEmitterService.onFirstComponentButtonClick('INSTRUTOR');
+  fichaInstrutores() {
+    this.router.navigate(['/ficha-instrutores']);
   }
 
-  listarAlunos() {
-    if(this.router.url != '/ficha'){
-      this.fichaPessoa();
-    }
-    this.eventEmitterService.onFirstComponentButtonClick('ALUNO');
+  fichaAlunos() {
+    this.router.navigate(['/ficha-alunos']);
   }
 
-  listarEncarregados() {
-    if(this.router.url != '/ficha'){
-      this.fichaPessoa();
-    }
-    this.eventEmitterService.onFirstComponentButtonClick('ENCARREGADO');
-  }
-
-  fichaPessoa() {
-    this.router.navigate(['/ficha']);
+  fichaEncarregados() {
+    this.router.navigate(['/ficha-encarregados']);
   }
 
   perfilPessoa() {

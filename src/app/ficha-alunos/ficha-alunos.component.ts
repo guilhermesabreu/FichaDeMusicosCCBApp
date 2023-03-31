@@ -17,12 +17,12 @@ defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-ficha',
-  templateUrl: './ficha.component.html',
-  styleUrls: ['./ficha.component.css']
+  templateUrl: './ficha-alunos.component.html',
+  styleUrls: ['./ficha-alunos.component.css']
 })
 
 @Injectable()
-export class FichaComponent implements OnInit {
+export class FichaAlunosComponent implements OnInit {
 
   nomePessoa!: string;
   condicaoTitulo!: string;
@@ -70,19 +70,6 @@ export class FichaComponent implements OnInit {
   ngOnInit() {
     this.validation();
     this.condicaoCarousel = 'ALUNO';
-    if (this.eventEmitterService.subsVar == undefined) {
-      this.eventEmitterService.subsVar = this.eventEmitterService.
-        invokeFirstComponentFunction.subscribe((opcaoRole: string) => {
-          if (opcaoRole !== undefined && opcaoRole !== null && opcaoRole !== '') {
-            this.listarMusicos(opcaoRole);
-            switch (opcaoRole) {
-              case 'ALUNO': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Alunos'; break;
-              case 'INSTRUTOR': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Instrutores'; break;
-              case 'ENCARREGADO': this.condicaoCarousel = opcaoRole; this.condicaoTitulo = 'Encarregados Locais'; break;
-            }
-          }
-        });
-    }
     this.condicaoTitulo = 'Alunos';
     this.listarMusicos('');
     this.obterPessoaLogada();
@@ -652,3 +639,4 @@ export class FichaComponent implements OnInit {
     });
   }
 }
+

@@ -1,0 +1,303 @@
+<div class="tab">
+  <div class="text-right">
+    <input width="50" type="image" src="../../assets/add.png" (click)="cadastrarPessoa(modalDadosPessoais)"
+      title="Cadastrar" tooltip="Cadastrar">
+  </div>
+  <h1 style="color: #994803!important; text-align: center;">{{condicaoTitulo}}</h1>
+  <tabset [justified]="true">
+    <tab customClass="customClass" *ngIf="pessoas !== undefined && pessoas !== null && pessoas.length < 1">
+      <carousel [interval]="0">
+        <slide style="background-color: #faeadb;">
+          <div class="text-center wrapper">
+            <h1 style="color:#994803;">Sua ficha ainda não possui encarregado local</h1>
+          </div>
+        </slide>
+      </carousel>
+    </tab>
+    <tab customClass="customClass" *ngIf="pessoas === undefined || pessoas === null">
+      <carousel [interval]="0">
+        <slide style="background-color: #faeadb;">
+          <div class="text-center wrapper">
+            <img class="photo" src="../../assets/loading.gif" style="display: block; width: 20%; margin-left: 40%;">
+          </div>
+        </slide>
+      </carousel>
+    </tab>
+    <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
+      <carousel [interval]="0">
+        <div *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf">
+          <slide *ngIf="pes.nome.substring(0,1) === alf" style="background-color: #faeadb;">
+            <div class="text-center wrapper">
+             <img *ngIf="pes.condicao.toLowerCase() === 'encarregado'" (click)="abrirModalEncarregado(pes, modalEncarregadoLocal)"
+                class="photo" src="../../assets/encarregado.jpg" style="display: block; width: 20%; margin-left: 40%;">
+              <h3 style="color:#994803;">{{pes.nome}}</h3>
+            </div>
+          </slide>
+        </div>
+      </carousel>
+    </tab>
+  </tabset>
+</div>
+
+<div bsModal #modalEncarregadoLocal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #994803 !important; text-align: center;">
+          Encarregado Local
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalEncarregadoLocal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <accordion>
+          <form [formGroup]="registerFormEncarregadoLocal">
+            <accordion-group heading="Dados Pessoais">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Nome Completo:</strong>
+                      {{registerFormEncarregadoLocal.value.nome}}</label>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="this.condicaoCarousel !== 'ENCARREGADO'" class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Encarregado Local:</strong>
+                      {{registerFormEncarregadoLocal.value.encarregadoLocal}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Encarregado Regional:</strong>
+                      {{registerFormEncarregadoLocal.value.encarregadoRegional}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Região:</strong> {{registerFormEncarregadoLocal.value.regiao}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Regional:</strong>
+                      {{registerFormEncarregadoLocal.value.regional}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Celular:</strong> {{registerFormEncarregadoLocal.value.celular}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">E-mail:</strong> {{registerFormEncarregadoLocal.value.email}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Data de Nascimento:</strong>
+                      {{registerFormEncarregadoLocal.value.dataNascimento | FormatarDataInvertida }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Data de Início:</strong>
+                      {{registerFormEncarregadoLocal.value.dataInicio | FormatarDataInvertida}} </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Comum:</strong> {{registerFormEncarregadoLocal.value.comum}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <label><strong style="color:#994803;">Instrumento:</strong>
+                      {{registerFormEncarregadoLocal.value.instrumento}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="text-center">
+                    <i class="fa fa-edit" tooltip="Editar"
+                      style="color: seagreen; cursor: pointer; font-size: xx-large;"
+                      (click)="editarDadosPessoais(registerFormEncarregadoLocal.value, modalDadosPessoais)"></i>
+                    <i class="fa fa-eraser" tooltip="Excluir"
+                      (click)="removerPessoa(modalRemoverPessoa,registerFormEncarregadoLocal.value)"
+                      style="color: #ff5151; cursor: pointer; font-size: xx-large; margin-left: 20px;"></i>
+                  </div>
+                </div>
+              </div>
+            </accordion-group>
+          </form>
+        </accordion>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalDadosPessoais="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left text-center" style="color: #994803 !important; text-align: center;">
+          Dados Pessoais
+        </h5>
+        <button type="button" class="close pull-right" (click)="modalDadosPessoais.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerFormEncarregadoLocal">
+          <div class="form-group required">
+            <label for=""><strong style="color:#994803;">Nome Completo:</strong></label>
+            <input type="text" class="form-control" formControlName="nome"
+              [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('nome')!.errors && registerFormEncarregadoLocal.get('nome')!.touched }"
+              placeholder="Insira o Nome Completo" />
+            <div *ngIf="registerFormEncarregadoLocal.get('nome')!.hasError('required') &&
+                        registerFormEncarregadoLocal.get('nome')!.touched" class="invalid-feedback">
+              Nome Completo é obrigatório.
+            </div>
+            <div *ngIf="registerFormEncarregadoLocal.get('nome')!.hasError('minlength') &&
+                registerFormEncarregadoLocal.get('nome')!.touched" class="invalid-feedback">
+              Deve conter no mínimo 10 caracters
+            </div>
+          </div>
+          <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional'" class="form-group required">
+            <label for=""><strong style="color:#994803;">Comum:</strong></label>
+            <input class="form-control" type="text" formControlName="comum" [ngClass]="{ 'is-invalid': registerFormEncarregadoLocal.get('comum')!.errors && 
+                                         registerFormEncarregadoLocal.get('comum')!.touched}"
+              placeholder="Insira a sua Região ex: Brás" />
+            <div *ngIf="registerFormEncarregadoLocal.get('comum')!.hasError('required') &&
+                        registerFormEncarregadoLocal.get('comum')!.touched" class="invalid-feedback">
+              Comum é obrigatória.
+            </div>
+          </div>
+          <div class="form-group required">
+            <label for=""><strong style="color:#994803;">Celular:</strong></label>
+            <input class="form-control" type="text" formControlName="celular" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('celular')!.errors &&
+                                        registerFormEncarregadoLocal.get('celular')!.touched}" placeholder="Insira seu celular" />
+            <div *ngIf="registerFormEncarregadoLocal.get('celular')!.hasError('required') &&
+                        registerFormEncarregadoLocal.get('celular')!.touched" class="invalid-feedback">
+              Celular é obrigatório.
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label for=""><strong style="color:#994803;">E-mail:</strong></label>
+            <input class="form-control" type="text" formControlName="email" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('email')!.errors &&
+                                        registerFormEncarregadoLocal.get('email')!.touched}" placeholder="Insira seu e-mail" />
+            <div *ngIf="registerFormEncarregadoLocal.get('email')!.hasError('required') &&
+                        registerFormEncarregadoLocal.get('email')!.touched" class="invalid-feedback">
+              E-mail é obrigatório.
+            </div>
+            <div *ngIf="registerFormEncarregadoLocal.get('email')!.hasError('email') &&
+                registerFormEncarregadoLocal.get('email')!.touched" class="invalid-feedback">
+              E-mail com formato inválido
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label><strong style="color:#994803;">Data de Nascimento:</strong></label>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('dataNascimento')!.errors 
+               && registerFormEncarregadoLocal.get('dataNascimento')!.touched}" formControlName="dataNascimento">
+
+            <div *ngIf="registerFormEncarregadoLocal.get('dataNascimento')!.hasError('required')
+            && registerFormEncarregadoLocal.get('dataNascimento')!.touched" class="invalid-feedback">
+              Data de nascimento é obrigatória.
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label><strong style="color:#994803;">Data de Início na aulinha:</strong></label><br>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('dataInicio')!.errors 
+            && registerFormEncarregadoLocal.get('dataInicio')!.touched}" formControlName="dataInicio" placeholder="">
+
+            <div *ngIf="registerFormEncarregadoLocal.get('dataInicio')!.hasError('required')
+            && registerFormEncarregadoLocal.get('dataInicio')!.touched" class="invalid-feedback">
+              Data de início na aulinha é obrigatória.
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional' 
+            && this.condicaoCarousel !== 'ENCARREGADO'" class="form-group">
+              <label><strong style="color:#994803;">Encarregado Local:</strong></label><br>
+              <p-autoComplete formControlName="encarregadoLocal" placeholder="Insira um encarregado local"
+                [suggestions]="results" [style]="{height:'40px'}"
+                (completeMethod)="autoCompleteEncarregadoLocal($event)">
+              </p-autoComplete>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label for=""><strong style="color:#994803;">Instrumento:</strong></label>
+            <select class="form-control" type="text" formControlName="instrumento" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('instrumento')!.errors &&
+                                      registerFormEncarregadoLocal.get('instrumento')!.touched}"
+              placeholder="Escolha seu instrumento">
+              <option>nenhum</option>
+              <option [value]="obj" *ngFor="let obj of instrumentos">
+                {{obj}}
+              </option>
+            </select>
+            <div *ngIf="registerFormEncarregadoLocal.get('instrumento')!.hasError('required') &&
+                      registerFormEncarregadoLocal.get('instrumento')!.touched" class="invalid-feedback">
+              Instrumento é obrigatório.
+            </div>
+          </div>
+          <div class="form-row required">
+            <div class="form-group col-md-8 offset-md-2">
+              <button class="btn btn-lg btn-success btn-block" (click)="salvarPessoa(modalDadosPessoais, modalEncarregadoLocal)"
+                [disabled]="!registerFormEncarregadoLocal.valid">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalRemoverPessoa="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left text-center" style="color: #2aaae2 !important; text-align: center;">
+          Tem certeza que deseja remover <strong style="color:#994803;">{{nomePessoa}}</strong> da sua ficha?
+        </h6>
+        <button type="button" class="close pull-right" (click)="modalRemoverPessoa.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-md-8 offset-md-2">
+          <button class="btn btn-lg btn-danger btn-block"
+            (click)="confirmarExclusaoPessoa(modalRemoverPessoa, modalEncarregadoLocal)">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

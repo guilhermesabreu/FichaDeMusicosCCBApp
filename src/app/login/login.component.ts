@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         () => {
           this.toastr.success('Logado com sucesso !');
-          this.router.navigate(['/ficha']);
+          this.router.navigate(['/ficha-alunos']);
         }, error => {
           if (error.status === 400) {
             this.toastr.warning(error.error);
