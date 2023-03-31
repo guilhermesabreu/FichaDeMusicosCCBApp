@@ -251,6 +251,7 @@ export class FichaAlunosComponent implements OnInit {
       .subscribe(
         (res: Pessoa[]) => {
           this.pessoas = res.sort((a, b) => a.nome > b.nome ? 1 : -1);
+          console.log('pessoas: ',this.pessoas.length);
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {

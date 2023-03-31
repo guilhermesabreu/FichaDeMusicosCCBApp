@@ -5,20 +5,20 @@
   </div>
   <h1 style="color: #994803!important; text-align: center;">{{condicaoTitulo}}</h1>
   <tabset [justified]="true">
-    <tab customClass="customClass" *ngIf="pessoas !== undefined && pessoas !== null && pessoas.length < 1">
-      <carousel [interval]="0">
-        <slide style="background-color: #faeadb;">
-          <div class="text-center wrapper">
-            <h1 style="color:#994803;">Sua ficha ainda não possui encarregado local</h1>
-          </div>
-        </slide>
-      </carousel>
-    </tab>
     <tab customClass="customClass" *ngIf="pessoas === undefined || pessoas === null">
       <carousel [interval]="0">
         <slide style="background-color: #faeadb;">
           <div class="text-center wrapper">
             <img class="photo" src="../../assets/loading.gif" style="display: block; width: 20%; margin-left: 40%;">
+          </div>
+        </slide>
+      </carousel>
+    </tab>
+    <tab customClass="customClass" *ngIf="pessoas?.length === 0">
+      <carousel [interval]="0">
+        <slide style="background-color: #faeadb;">
+          <div class="text-center wrapper">
+            <h3 style="color:#994803;">Sua ficha ainda não possui encarregado local</h3>
           </div>
         </slide>
       </carousel>
