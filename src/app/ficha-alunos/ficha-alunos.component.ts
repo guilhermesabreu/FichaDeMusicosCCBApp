@@ -216,6 +216,11 @@ export class FichaAlunosComponent implements OnInit {
     return `${MM}/${DD}/${YYYY}`;
   }
 
+  transformDateObject(date: any) {
+    const dat = new Date(date).toLocaleDateString('pt-BR');
+    return dat;
+  }
+
   transformDate(date: any) {
     if (typeof date === 'object') {
       return date;
@@ -251,7 +256,6 @@ export class FichaAlunosComponent implements OnInit {
       .subscribe(
         (res: Pessoa[]) => {
           this.pessoas = res.sort((a, b) => a.nome > b.nome ? 1 : -1);
-          console.log('pessoas: ',this.pessoas.length);
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {
@@ -439,7 +443,7 @@ export class FichaAlunosComponent implements OnInit {
             nomeMetodo: this.ocorrencia.nomeMetodo,
             numeroLicao: this.ocorrencia.numeroLicao,
             observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
-            dataOcorrencia: this.ocorrencia.dataOcorrencia,
+            dataOcorrencia: this.transformDateObject(this.ocorrencia.dataOcorrencia),
             idPessoa: this.idPessoa
           };
           this.ocorrenciaService.editarOcorrencia(ocorrenciaPut)
