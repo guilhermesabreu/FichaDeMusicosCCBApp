@@ -217,8 +217,15 @@ export class FichaAlunosComponent implements OnInit {
   }
 
   transformDateObject(date: any) {
-    const dat = new Date(date).toLocaleDateString('pt-BR');
-    return dat;
+    if (typeof date === 'object') {
+      const dat = new Date(date).toLocaleDateString('pt-BR');
+      return dat;
+    }else{
+      var dateParts = date.split("/");
+      var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+      const dat = new Date(dateObject).toLocaleDateString('pt-BR');
+      return dat;
+    }
   }
 
   transformDate(date: any) {
