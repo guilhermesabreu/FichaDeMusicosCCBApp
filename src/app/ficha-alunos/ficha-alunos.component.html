@@ -213,7 +213,7 @@
                     <label><strong style="color:#994803;">Hinos aprovados:</strong></label>
                     <select id="hinoSelecionado" class="form-control" type="text">
                       <option [value]="obj.idHino" *ngFor="let obj of listarHinosPorAluno(registerFormAluno.value)">
-                        {{obj.numeroHino+" - "+obj.vozHino+ obj.dataHino !== null ? " - "+obj.dataHino : ""}}
+                        {{obj.numeroHino+" - "+obj.vozHino +" - " + obj.dataHino}}
                       </option>
                     </select>
                   </div>
