@@ -151,7 +151,7 @@
                 </div>
               </div>
             </accordion-group>
-            <accordion-group *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno'" heading="Ocorrências">
+            <accordion-group *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno'" heading="Métodos">
               <div class="table-responsive">
                 <div class="container">
                   <div class="row">
@@ -161,7 +161,7 @@
                           <th style="display: none;"></th>
                           <th>Método</th>
                           <th>Lição</th>
-                          <th>Data Ocorrência</th>
+                          <th>Data</th>
                           <th>Observação</th>
                           <th>Ações</th>
                         </tr>
@@ -213,7 +213,7 @@
                     <label><strong style="color:#994803;">Hinos aprovados:</strong></label>
                     <select id="hinoSelecionado" class="form-control" type="text">
                       <option [value]="obj.idHino" *ngFor="let obj of listarHinosPorAluno(registerFormAluno.value)">
-                        {{obj.numeroHino+" - "+obj.vozHino}}
+                        {{obj.numeroHino+" - "+obj.vozHino+" - "+obj.dataHino}}
                       </option>
                     </select>
                   </div>
@@ -425,7 +425,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left text-center" style="color: #994803 !important; text-align: center;">
-          Ocorrência
+          Método
         </h5>
         <button type="button" class="close pull-right" (click)="modalOcorrencia.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -463,7 +463,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label style="color:#994803;">Data da Ocorrência:</label>
+            <label style="color:#994803;">Data:</label>
             <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormOcorrencia.get('dataOcorrencia')!.errors 
            && registerFormOcorrencia.get('dataOcorrencia')!.touched}" formControlName="dataOcorrencia">
             <div *ngIf="registerFormOcorrencia.get('dataOcorrencia')!.hasError('required')
@@ -519,6 +519,15 @@
             <div *ngIf="registerFormHino.get('numeroHino')!.hasError('required') &&
             registerFormHino.get('numeroHino')!.touched" class="invalid-feedback">
               Número é obrigatório.
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="color:#994803;">Data:</label>
+            <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormHino.get('dataHino')!.errors 
+           && registerFormHino.get('dataHino')!.touched}" formControlName="dataHino">
+            <div *ngIf="registerFormHino.get('dataHino')!.hasError('required')
+        && registerFormHino.get('dataHino')!.touched" class="invalid-feedback">
+              Data do hino é obrigatória.
             </div>
           </div>
           <div class="form-row">

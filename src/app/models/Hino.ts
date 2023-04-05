@@ -3,4 +3,5 @@ export class Hino {
     idHino!: number;
     numeroHino!: number;
     vozHino!: string;
+    dataHino!: string;
 }

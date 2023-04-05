@@ -119,6 +119,7 @@ export class FichaAlunosComponent implements OnInit {
     this.registerFormHino = this.fb.group({
       numeroHino: ['', Validators.required],
       vozHino: ['', Validators.required],
+      dataHino: ['', Validators.required],
     });
   }
 
@@ -220,12 +221,17 @@ export class FichaAlunosComponent implements OnInit {
     if (typeof date === 'object') {
       const dat = new Date(date).toLocaleDateString('pt-BR');
       return dat;
-    }else{
+    } else {
       var dateParts = date.split("/");
       var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
       const dat = new Date(dateObject).toLocaleDateString('pt-BR');
       return dat;
     }
+  }
+
+  separateDatafromTime(date: any) {
+    var dateParts = date.split(" ");
+    return dateParts[0];
   }
 
   transformDate(date: any) {
@@ -598,13 +604,14 @@ export class FichaAlunosComponent implements OnInit {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
       if (this.registerFormHino.valid) {
         this.hino = Object.assign({}, this.registerFormHino.value);
-        var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa };
+        var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa, data: this.transformDateObject(this.hino.dataHino) };
         this.hinoService.salvarHino(hinoPost)
           .subscribe(
             (hino: Hino) => {
+              var hinoResponse = { numeroHino: hino.numeroHino, vozHino: hino.vozHino, idHino: hino.idHino, dataHino: this.separateDatafromTime(hino.dataHino) };
               this.toastr.success('Hino cadastrado com sucesso.');
               this.listarMusicos('ALUNO');
-              this.adicionarHinoAoCombo(hino);
+              this.adicionarHinoAoCombo(hinoResponse);
               modalNovoHino.hide();
             }, error => {
               if (error.status === 400) {
