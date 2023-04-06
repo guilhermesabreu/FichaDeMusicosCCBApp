@@ -604,11 +604,11 @@ export class FichaAlunosComponent implements OnInit {
     if (this.idPessoa !== null && this.idPessoa !== undefined && this.idPessoa > 0) {
       if (this.registerFormHino.valid) {
         this.hino = Object.assign({}, this.registerFormHino.value);
-        var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa, data: this.transformDateObject(this.hino.dataHino) };
+        var hinoPost = { numero: this.hino.numeroHino, voz: this.hino.vozHino, idPessoa: this.idPessoa, data: this.hino.dataHino };
         this.hinoService.salvarHino(hinoPost)
           .subscribe(
             (hino: Hino) => {
-              var hinoResponse = { numeroHino: hino.numeroHino, vozHino: hino.vozHino, idHino: hino.idHino, dataHino: this.separateDatafromTime(hino.dataHino) };
+              var hinoResponse = { numeroHino: hino.numeroHino, vozHino: hino.vozHino, idHino: hino.idHino, dataHino: hino.dataHino };
               this.toastr.success('Hino cadastrado com sucesso.');
               this.listarMusicos('ALUNO');
               this.adicionarHinoAoCombo(hinoResponse);
