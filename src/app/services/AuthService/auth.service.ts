@@ -4,13 +4,14 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { map, Observable } from 'rxjs';
 import { Pessoa } from 'src/app/models/Pessoa';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  baseURLPessoa = 'https://fichademusicosccbapi.fly.dev/api/v1/pessoas';
+  baseURLPessoa = environment.BASE_URL+'pessoas';
   decodedToken: any;
   jwtHelper = new JwtHelperService();
   constructor(private http: HttpClient

@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Hino } from 'src/app/models/Hino';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HinoService {
 
-  baseURLHino = 'https://fichademusicosccbapi.fly.dev/api/v1/hinos';
-  
+  baseURLHino = environment.BASE_URL+'hinos';
+
   constructor(private http: HttpClient) { }
 
   salvarHino(hino: any){

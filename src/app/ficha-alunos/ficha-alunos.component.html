@@ -279,17 +279,6 @@
               Deve conter no mínimo 10 caracters
             </div>
           </div>
-          <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional'"
-            class="form-group required">
-            <label for=""><strong style="color:#994803;">Comum:</strong></label>
-            <input class="form-control" type="text" formControlName="comum" [ngClass]="{ 'is-invalid': registerFormAluno.get('comum')!.errors && 
-                                         registerFormAluno.get('comum')!.touched}"
-              placeholder="Insira a sua Região ex: Brás" />
-            <div *ngIf="registerFormAluno.get('comum')!.hasError('required') &&
-                        registerFormAluno.get('comum')!.touched" class="invalid-feedback">
-              Comum é obrigatória.
-            </div>
-          </div>
           <div class="form-group required">
             <label for=""><strong style="color:#994803;">Celular:</strong></label>
             <input class="form-control" type="text" formControlName="celular" [ngClass]="{'is-invalid': registerFormAluno.get('celular')!.errors &&

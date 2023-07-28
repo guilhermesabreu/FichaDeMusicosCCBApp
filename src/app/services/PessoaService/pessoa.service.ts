@@ -2,15 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Pessoa } from 'src/app/models/Pessoa';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PessoaService {
 
-  baseURLPessoa = 'https://fichademusicosccbapi.fly.dev/api/v1/pessoas';
+  baseURLPessoa = environment.BASE_URL+'pessoas';
   
-
   constructor(private http: HttpClient) { }
 
   buscarPessoaLogada(lParametro: string) {
