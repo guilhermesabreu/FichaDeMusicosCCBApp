@@ -6,6 +6,7 @@ import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { Pessoa } from '../models/Pessoa';
 import { AuthService } from '../services/AuthService/auth.service';
+import { LocalidadeService } from '../services/LocalidadeService/Localidade.service';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
 
 @Component({
@@ -37,6 +38,7 @@ export class PerfilComponent implements OnInit {
     public authService: AuthService,
     private localeService: BsLocaleService,
     public pessoaService: PessoaService,
+    public localidadeService: LocalidadeService,
     public router: Router
     , private toastr: ToastrService
     , public fb: FormBuilder) {
@@ -188,18 +190,63 @@ export class PerfilComponent implements OnInit {
         });
   }
 
+  autoCompleteRegiao(event: any) {
+    this.localidadeService.buscarRegioes(event.query)
+      .subscribe(
+        (res: string[]) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  autoCompleteRegional(event: any) {
+    this.localidadeService.buscarRegionais(event.query)
+      .subscribe(
+        (res: string[]) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
+  autoCompleteComum(event: any) {
+    this.localidadeService.buscarComuns(event.query)
+      .subscribe(
+        (res: string[]) => {
+          this.results = res;
+        }, error => {
+          if (error.status === 400) {
+            this.toastr.warning(error.error);
+          } else {
+            this.toastr.error(error.error);
+          }
+          console.clear();
+        });
+  }
+
   validation() {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(10)]],
       encarregadoLocal: [''],
       encarregadoRegional: [''],
-      regiao: ['', [Validators.required, Validators.pattern('^.*\- ?[a-zA-Z]*')]],
-      regional: ['', Validators.required],
+      regiao: [''],
+      regional: [''],
       celular: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', Validators.required],
       dataInicio: ['', Validators.required],
-      comum: ['', Validators.required],
+      comum: [''],
       instrumento: ['', Validators.required],
       condicao: ['', Validators.required],
       userName: ['', Validators.required],

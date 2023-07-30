@@ -129,11 +129,11 @@
       </div>
 
       <div *ngIf="mostraComum" class="form-group required"> 
-        <label for=""><strong style="color:#994803;">Comum:</strong></label>
-        <input class="form-control" type="text" formControlName="comum"
-          [ngClass]="{ 'is-invalid': registerForm.get('comum')!.errors && 
-                                     registerForm.get('comum')!.touched}"
-          placeholder="Insira a sua Comum ex: Brás" />
+        <label for=""><strong style="color:#994803;">Comum:</strong></label><br>
+        <p-autoComplete formControlName="comum" [style]="{height:'40px'}" 
+        placeholder="Insira a sua Região ex: Brás" [suggestions]="results" 
+        (completeMethod)="autoCompleteComum($event)">
+        </p-autoComplete> 
         <div *ngIf="registerForm.get('comum')!.hasError('required') &&
                     registerForm.get('comum')!.touched"
           class="invalid-feedback">
@@ -142,11 +142,11 @@
       </div>
 
       <div *ngIf="mostraRegiao" class="form-group required"> 
-        <label for=""><strong style="color:#994803;">Região:</strong></label>
-        <input class="form-control" type="text" formControlName="regiao"
-          [ngClass]="{ 'is-invalid': registerForm.get('regiao')!.errors && 
-                                     registerForm.get('regiao')!.touched}"
-          placeholder="Insira sua Cidade e UF ex: São Vicente-SP" />
+        <label for=""><strong style="color:#994803;">Região:</strong></label><br>
+        <p-autoComplete formControlName="regiao" [style]="{height:'40px'}" 
+        placeholder="Insira sua Cidade e UF ex: São Vicente-SP" [suggestions]="results" 
+        (completeMethod)="autoCompleteRegiao($event)">
+        </p-autoComplete> 
         <div *ngIf="registerForm.get('regiao')!.hasError('required') &&
                     registerForm.get('regiao')!.touched"
           class="invalid-feedback">
@@ -160,11 +160,11 @@
       </div>
 
       <div *ngIf="mostraRegional" class="form-group">
-        <label for=""><strong style="color:#994803;">Regional:</strong></label>
-        <input class="form-control" type="text" formControlName="regional"
-          [ngClass]="{'is-invalid': registerForm.get('regional')!.errors &&
-                                    registerForm.get('regional')!.touched}"
-          placeholder="Insira a sua regional ex: (Litoral Paulista)"/>
+        <label for=""><strong style="color:#994803;">Regional:</strong></label><br>
+        <p-autoComplete formControlName="regional" [style]="{height:'40px'}" 
+        placeholder="Insira a sua regional ex: (Litoral Paulista)" [suggestions]="results" 
+        (completeMethod)="autoCompleteRegional($event)">
+        </p-autoComplete> 
         <div *ngIf="registerForm.get('regional')!.hasError('required') &&
                     registerForm.get('regional')!.touched"
           class="invalid-feedback">
