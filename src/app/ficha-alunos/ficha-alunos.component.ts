@@ -123,6 +123,22 @@ export class FichaAlunosComponent implements OnInit {
     });
   }
 
+
+  /////////////////////////////////////INTEGRAÇÕES////////////////////////////////////////
+  solicitar(aluno: any, ocorrencia: Ocorrencia) {
+    var msg = `*Olá aluno ${aluno.nome} !!! Segue a ocorrência do dia: ${ocorrencia.dataOcorrencia}* \r\n 
+    Método: ${ocorrencia.nomeMetodo} \r\n 
+    Lição: ${ocorrencia.numeroLicao}  \r\n 
+    Observação: ${ocorrencia.observacaoInstrutor}`;
+    this.envioWhatsApp(msg, aluno.celular);
+  }
+
+  envioWhatsApp(msg: string, number: number){
+    let target = `https://api.whatsapp.com/send?phone=${encodeURIComponent(number)}&text=${encodeURIComponent(msg)}`;
+        
+    window.open(target,"_blank");
+  }
+
   ////////////////////////////////////Listas///////////////////////////////////////
   instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
     'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',

@@ -177,10 +177,12 @@
                             <div class="btn-group">
                               <i class="fa fa-edit" tooltip="Editar"
                                 (click)="preencherModalEdicaoOcorrencia(oco, modalOcorrencia)"
-                                style="color: seagreen; cursor: pointer; font-size: larger;"></i>
+                                style="color: seagreen; cursor: pointer; font-size: x-large;"></i>
                               <i class="fa fa-eraser" tooltip="Excluir"
                                 (click)="excluirOcorrencia(oco, modalRemoverOcorrencia)"
-                                style="color: #ff5151; cursor: pointer; font-size: larger; margin-left: 10px;"></i>
+                                style="color: #ff5151; cursor: pointer; font-size: x-large; margin-left: 10px;"></i>
+                                <i (click)="solicitar(registerFormAluno.value, oco)" class="fa fa-whatsapp" 
+                                style="font-size:24px; cursor: pointer; color: #25d366; margin-left: 10px;"></i>
                             </div>
                           </td>
                         </tr>
