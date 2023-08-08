@@ -23,9 +23,10 @@ export class RegistroPessoaComponent implements OnInit {
   pessoaPesquisada!: Pessoa;
   datePickerConfig!: Partial<BsDatepickerConfig>;
   registerForm!: FormGroup;
-  instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
-    'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
-    'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+
+  instrumentos = ['baritono', 'clarinete', 'eufonio', 'clarinete alto', 'clarinete baixo', 'corne ingês', 'fagote', 'flauta',
+    'flugelhorn', 'oboé', 'oboe d` amore', 'saxofone alto', 'saxofone baixo', 'saxofone barítono', 'saxofone tenor',
+    'trombone', 'trompa', 'trompete', 'tuba', 'violino', 'viola', 'violoncelo'];
   _condicaoSelecionada = '';
   mostraEncarregadoLocal = false;
   mostraEncarregadoRegional = false;
@@ -88,15 +89,15 @@ export class RegistroPessoaComponent implements OnInit {
     }
   }
 
-  preencherCampos(pessoa: Pessoa){
-    switch(pessoa.condicao.toLocaleLowerCase()){
+  preencherCampos(pessoa: Pessoa) {
+    switch (pessoa.condicao.toLocaleLowerCase()) {
       case 'encarregado':
         this.registerForm.patchValue({ encarregadoRegional: pessoa.apelidoEncRegional, comum: pessoa.comum, regiao: pessoa.regiao, regional: pessoa.regional });
         break;
       case 'regional':
         this.registerForm.patchValue({ regiao: pessoa.regiao, regional: pessoa.regional });
         break;
-    }  
+    }
   }
 
 

@@ -123,9 +123,9 @@ export class FichaEncarregadosComponent implements OnInit {
   }
 
   ////////////////////////////////////Listas///////////////////////////////////////
-  instrumentos = ['viola', 'violino', 'violoncelo', 'saxofone baixo', 'saxofone tenor', 'saxofone barítono', 'saxofone alto',
-    'clarinete', 'clarinete alto', 'clarinete baixo', 'fagote', 'corne ingês', 'oboe d` amore', 'flauta', 'oboé',
-    'trompa', 'trombone', 'trompete', 'tuba', 'eufonio', 'flugelhorn', 'baritono'];
+  instrumentos = ['baritono', 'clarinete', 'eufonio', 'clarinete alto', 'clarinete baixo', 'corne ingês', 'fagote', 'flauta',
+  'flugelhorn', 'oboé', 'oboe d` amore', 'saxofone alto', 'saxofone baixo', 'saxofone barítono', 'saxofone tenor',
+  'trombone', 'trompa', 'trompete', 'tuba', 'violino', 'viola', 'violoncelo'];
 
   autoCompleteAluno(event: any) {
     this.pessoaService.buscarAluno(event.query, this.apelidoPessoaLogada)
