@@ -507,6 +507,7 @@
             <input style="width:90px" formControlName="numeroHino" [ngClass]="{'is-invalid': registerFormHino.get('numeroHino')!.errors &&
             registerFormHino.get('numeroHino')!.touched}" placeholder="1 ao 480" type="number" min="1" step="1"
               max="480">
+
             <div *ngIf="registerFormHino.get('numeroHino')!.hasError('required') &&
             registerFormHino.get('numeroHino')!.touched" class="invalid-feedback">
               Número é obrigatório.

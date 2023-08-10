@@ -284,7 +284,7 @@ export class FichaAlunosComponent implements OnInit {
     this.pessoaService.listaDeMusicos(lParametros)
       .subscribe(
         (res: Pessoa[]) => {
-          this.pessoas = res.sort((a, b) => a.nome > b.nome ? 1 : -1);
+          this.pessoas = res;
           this.alfabetoPessoas = this.pessoas.map(item => item.nome.substring(0, 1)).filter((value, index, self) => self.indexOf(value) === index);
         }, error => {
           if (error.status === 400) {
