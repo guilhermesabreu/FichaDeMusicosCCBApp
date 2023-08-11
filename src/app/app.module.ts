@@ -21,7 +21,6 @@ import { PessoaService } from './services/PessoaService/pessoa.service';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { DatePipe } from '@angular/common';
-import { FichaComponent } from './ficha/ficha.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { EventEmitterService } from './event-emmiter/event-emitter.service';
@@ -43,7 +42,6 @@ import { FichaEncarregadosComponent } from './ficha-encarregados/ficha-encarrega
     NavComponent,
     FooterComponent,
     RegistroPessoaComponent,
-    FichaComponent,
     PessoasPelaPrimeiraLetraDoNomePipe,
     FormatarDataPipe,
     FormatarDataInvertidaPipe,

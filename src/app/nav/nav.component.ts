@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/AuthService/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Pessoa } from '../models/Pessoa';
 import { PessoaService } from '../services/PessoaService/pessoa.service';
-import { FichaComponent } from '../ficha/ficha.component';
-import { EventEmitterService } from '../event-emmiter/event-emitter.service';
 
 @Component({
   selector: 'app-nav',
@@ -18,9 +16,7 @@ export class NavComponent implements OnInit {
   perfil!: string;
 
   constructor(private authService: AuthService
-    , private eventEmitterService: EventEmitterService
     , public router: Router
-    , private rout: ActivatedRoute
     , public pessoaService: PessoaService
     , private toastr: ToastrService) { }
 
