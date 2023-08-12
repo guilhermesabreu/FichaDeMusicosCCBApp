@@ -127,36 +127,6 @@ export class FichaEncarregadosComponent implements OnInit {
   'flugelhorn', 'oboé', 'oboe d` amore', 'saxofone alto', 'saxofone baixo', 'saxofone barítono', 'saxofone tenor',
   'trombone', 'trompa', 'trompete', 'tuba', 'violino', 'viola', 'violoncelo'];
 
-  autoCompleteAluno(event: any) {
-    this.pessoaService.buscarAluno(event.query, this.apelidoPessoaLogada)
-      .subscribe(
-        (res: any) => {
-          this.results = res;
-        }, error => {
-          if (error.status === 400) {
-            this.toastr.warning(error.error);
-          } else {
-            this.toastr.error(error.error);
-          }
-          console.clear();
-        });
-  }
-
-  autoCompleteInstrutor(event: any) {
-    this.pessoaService.buscarInstrutor(event.query, this.apelidoPessoaLogada)
-      .subscribe(
-        (res: Pessoa[]) => {
-          this.results = res.map(item => item.nome);
-        }, error => {
-          if (error.status === 400) {
-            this.toastr.warning(error.error);
-          } else {
-            this.toastr.error(error.error);
-          }
-          console.clear();
-        });
-  }
-
   autoCompleteEncarregadoLocal(event: any) {
     this.pessoaService.buscarEncarregadoLocal(event.query, this.apelidoPessoaLogada)
       .subscribe(
@@ -172,20 +142,6 @@ export class FichaEncarregadosComponent implements OnInit {
         });
   }
 
-  autoCompleteEncarregadoRegional(event: any) {
-    this.pessoaService.buscarEncarregadoRegional(event.query, this.apelidoPessoaLogada)
-      .subscribe(
-        (res: Pessoa[]) => {
-          this.results = res.map(item => item.nome);
-        }, error => {
-          if (error.status === 400) {
-            this.toastr.warning(error.error);
-          } else {
-            this.toastr.error(error.error);
-          }
-          console.clear();
-        });
-  }
 
   obterPessoaLogada() {
     this.pessoaService.buscarPessoaLogada(this.apelidoPessoaLogada)
