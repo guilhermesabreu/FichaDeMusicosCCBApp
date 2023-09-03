@@ -25,18 +25,15 @@
     </tab>
 
     <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
-      <carousel [interval]="0">
-        <div *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf">
-          <slide *ngIf="pes.nome.substring(0,1) === alf" style="background-color: #faeadb;">
-            <div class="text-center wrapper">
-              <img *ngIf="pes.condicao.toLowerCase() === 'instrutor'" (click)="abrirModalInstrutor(pes, modalInstrutor)"
-                class="photo" src="../../assets/instrutor.png" alt="first slide"
-                style="display: block; width: 20%; margin-left: 40%;">
-                <h3 style="color:#994803;">{{pes.nome}}</h3>
-            </div>
-          </slide>
-        </div>
-      </carousel>
+      <table class="table table-bordered text-center">
+        <tbody *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf" >
+          <tr *ngIf="pes.nome.substring(0,1) === alf">
+            <td style="color:#994803;background-color: #faeadb; cursor: pointer;" *ngIf="pes.condicao.toLowerCase() === 'instrutor'" (click)="abrirModalInstrutor(pes, modalInstrutor)">
+              {{pes.nome}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </tab>
   </tabset>
 </div>
