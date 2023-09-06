@@ -18,7 +18,7 @@ defineLocale('pt-br', ptBrLocale);
 @Component({
   selector: 'app-ficha',
   templateUrl: './ficha-alunos.component.html',
-  styleUrls: ['./ficha-alunos.component.css']
+  styleUrls: ['./ficha-alunos.component.css'],
 })
 
 @Injectable()
