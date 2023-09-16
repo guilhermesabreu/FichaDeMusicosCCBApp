@@ -23,17 +23,18 @@
         </slide>
       </carousel>
     </tab>
-      <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
-        <table class="table table-bordered text-center">
-          <tbody *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf" >
-            <tr *ngIf="pes.nome.substring(0,1) === alf">
-              <td style="color:#994803;background-color: #faeadb; cursor: pointer; font-size: medium;" *ngIf="pes.condicao.toLowerCase() === 'aluno'" (click)="abrirModalAluno(pes, modalAluno)">
-                {{pes.nome}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </tab>
+    <tab customClass="customClass" *ngFor="let alf of alfabetoPessoas;" heading="{{alf}}">
+      <table class="table table-bordered text-center">
+        <tbody *ngFor="let pes of pessoas | PessoasPelaPrimeiraLetraDoNome:alf">
+          <tr *ngIf="pes.nome.substring(0,1) === alf">
+            <td style="color:#994803;background-color: #faeadb; cursor: pointer; font-size: medium;"
+              *ngIf="pes.condicao.toLowerCase() === 'aluno'" (click)="abrirModalAluno(pes, modalAluno)">
+              {{pes.nome}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </tab>
   </tabset>
 </div>
 
@@ -179,7 +180,7 @@
                               <i class="fa fa-eraser" tooltip="Excluir"
                                 (click)="excluirOcorrencia(oco, modalRemoverOcorrencia)"
                                 style="color: #ff5151; cursor: pointer; font-size: x-large; margin-left: 10px;"></i>
-                                <i (click)="solicitar(registerFormAluno.value, oco)" class="fa fa-whatsapp" 
+                              <i (click)="solicitar(registerFormAluno.value, oco)" class="fa fa-whatsapp"
                                 style="font-size:24px; cursor: pointer; color: #25d366; margin-left: 10px;"></i>
                             </div>
                           </td>
