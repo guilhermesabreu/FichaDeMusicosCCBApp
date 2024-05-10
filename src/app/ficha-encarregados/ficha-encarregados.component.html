@@ -171,7 +171,7 @@
       <div class="modal-body">
         <form [formGroup]="registerFormEncarregadoLocal">
           <div class="form-group required">
-            <label for=""><strong style="color:#994803;">Nome Completo:</strong></label>
+            <label for=""><strong style="color:#994803;">Nome Completo*</strong></label>
             <input type="text" class="form-control" formControlName="nome"
               [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('nome')!.errors && registerFormEncarregadoLocal.get('nome')!.touched }"
               placeholder="Insira o Nome Completo" />
@@ -185,7 +185,7 @@
             </div>
           </div>
           <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional'" class="form-group required">
-            <label for=""><strong style="color:#994803;">Comum:</strong></label>
+            <label for=""><strong style="color:#994803;">Comum*</strong></label>
             <input class="form-control" type="text" formControlName="comum" [ngClass]="{ 'is-invalid': registerFormEncarregadoLocal.get('comum')!.errors && 
                                          registerFormEncarregadoLocal.get('comum')!.touched}"
               placeholder="Insira a sua Região ex: Brás" />
@@ -195,7 +195,7 @@
             </div>
           </div>
           <div class="form-group required">
-            <label for=""><strong style="color:#994803;">Celular:</strong></label>
+            <label for=""><strong style="color:#994803;">Celular*</strong></label>
             <input class="form-control" type="text" formControlName="celular" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('celular')!.errors &&
                                         registerFormEncarregadoLocal.get('celular')!.touched}" placeholder="Insira seu celular" />
             <div *ngIf="registerFormEncarregadoLocal.get('celular')!.hasError('required') &&
@@ -205,7 +205,7 @@
           </div>
 
           <div class="form-group required">
-            <label for=""><strong style="color:#994803;">E-mail:</strong></label>
+            <label for=""><strong style="color:#994803;">E-mail*</strong></label>
             <input class="form-control" type="text" formControlName="email" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('email')!.errors &&
                                         registerFormEncarregadoLocal.get('email')!.touched}" placeholder="Insira seu e-mail" />
             <div *ngIf="registerFormEncarregadoLocal.get('email')!.hasError('required') &&
@@ -219,7 +219,7 @@
           </div>
 
           <div class="form-group required">
-            <label><strong style="color:#994803;">Data de Nascimento:</strong></label>
+            <label><strong style="color:#994803;">Data de Nascimento</strong></label>
             <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('dataNascimento')!.errors 
                && registerFormEncarregadoLocal.get('dataNascimento')!.touched}" formControlName="dataNascimento">
 
@@ -230,7 +230,7 @@
           </div>
 
           <div class="form-group required">
-            <label><strong style="color:#994803;">Data de Início na aulinha:</strong></label><br>
+            <label><strong style="color:#994803;">Data de Início na aulinha</strong></label><br>
             <input type="text" class="form-control" readonly bsDatepicker [bsConfig]="datePickerConfig" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('dataInicio')!.errors 
             && registerFormEncarregadoLocal.get('dataInicio')!.touched}" formControlName="dataInicio" placeholder="">
 
@@ -243,7 +243,7 @@
           <div class="form-group required">
             <div *ngIf="this.condicaoPessoaLogada !== undefined && this.condicaoPessoaLogada.toLowerCase() === 'regional' 
             && this.condicaoCarousel !== 'ENCARREGADO'" class="form-group">
-              <label><strong style="color:#994803;">Encarregado Local:</strong></label><br>
+              <label><strong style="color:#994803;">Encarregado Local*</strong></label><br>
               <p-autoComplete formControlName="encarregadoLocal" placeholder="Insira um encarregado local"
                 [suggestions]="results" [style]="{height:'40px'}"
                 (completeMethod)="autoCompleteEncarregadoLocal($event)">
@@ -252,7 +252,7 @@
           </div>
 
           <div class="form-group required">
-            <label for=""><strong style="color:#994803;">Instrumento:</strong></label>
+            <label for=""><strong style="color:#994803;">Instrumento*</strong></label>
             <select class="form-control" type="text" formControlName="instrumento" [ngClass]="{'is-invalid': registerFormEncarregadoLocal.get('instrumento')!.errors &&
                                       registerFormEncarregadoLocal.get('instrumento')!.touched}"
               placeholder="Escolha seu instrumento">
