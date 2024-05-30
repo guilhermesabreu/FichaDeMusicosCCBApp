@@ -109,7 +109,9 @@
               <div class="form-row">
                 <div class="form-group col-md-12">
                   <div class="text-center">
-                    <label><strong style="color:#994803;">Data de Nascimento:</strong>
+                    <label *ngIf="registerFormInstrutor.value.dataNascimento === ''"><strong style="color:#994803;">Data de Nascimento:</strong>
+                      <p class="fa fa-exclamation-triangle"> Importante preencher</p></label>
+                    <label *ngIf="registerFormInstrutor.value.dataNascimento !== ''"><strong style="color:#994803;">Data de Nascimento:</strong>
                       {{registerFormInstrutor.value.dataNascimento | FormatarDataInvertida }}</label>
                   </div>
                 </div>
@@ -117,8 +119,10 @@
               <div class="form-row">
                 <div class="form-group col-md-12">
                   <div class="text-center">
-                    <label><strong style="color:#994803;">Data de Início:</strong>
-                      {{registerFormInstrutor.value.dataInicio | FormatarDataInvertida}} </label>
+                    <label *ngIf="registerFormInstrutor.value.dataInicio === ''"><strong style="color:#994803;">Data de Nascimento:</strong>
+                      <p class="fa fa-exclamation-triangle"> Importante preencher</p></label>
+                    <label *ngIf="registerFormInstrutor.value.dataInicio !== ''"><strong style="color:#994803;">Data de Nascimento:</strong>
+                      {{registerFormInstrutor.value.dataInicio | FormatarDataInvertida }}</label>
                   </div>
                 </div>
               </div>
