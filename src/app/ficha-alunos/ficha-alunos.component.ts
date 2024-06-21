@@ -111,7 +111,6 @@ export class FichaAlunosComponent implements OnInit {
     this.registerFormOcorrencia = this.fb.group({
       idOcorrencia: [''],
       dataOcorrencia: ['', Validators.required],
-      numeroLicao: ['', Validators.required],
       nomeMetodo: ['', Validators.required],
       observacaoInstrutor: ['', Validators.required]
     });
@@ -128,7 +127,6 @@ export class FichaAlunosComponent implements OnInit {
   solicitar(aluno: any, ocorrencia: Ocorrencia) {
     var msg = `*Olá aluno ${aluno.nome} !!! Segue a ocorrência do dia: ${ocorrencia.dataOcorrencia}* \r\n 
     Método: ${ocorrencia.nomeMetodo} \r\n 
-    Lição: ${ocorrencia.numeroLicao}  \r\n 
     Observação: ${ocorrencia.observacaoInstrutor}`;
     this.envioWhatsApp(msg, aluno.celular);
   }
@@ -456,7 +454,6 @@ export class FichaAlunosComponent implements OnInit {
     this.registerFormOcorrencia.patchValue({
       idOcorrencia: ocorrencia.idOcorrencia,
       nomeMetodo: ocorrencia.nomeMetodo,
-      numeroLicao: ocorrencia.numeroLicao,
       observacaoInstrutor: ocorrencia.observacaoInstrutor,
       dataOcorrencia: ocorrencia.dataOcorrencia
     });
@@ -470,7 +467,6 @@ export class FichaAlunosComponent implements OnInit {
           var ocorrenciaPut = {
             idOcorrencia: this.ocorrencia.idOcorrencia,
             nomeMetodo: this.ocorrencia.nomeMetodo,
-            numeroLicao: this.ocorrencia.numeroLicao,
             observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
             dataOcorrencia: this.transformDateObject(this.ocorrencia.dataOcorrencia),
             idPessoa: this.idPessoa
@@ -494,7 +490,6 @@ export class FichaAlunosComponent implements OnInit {
         } else {
           var ocorrenciaPost = {
             nomeMetodo: this.ocorrencia.nomeMetodo,
-            numeroLicao: this.ocorrencia.numeroLicao,
             observacaoInstrutor: this.ocorrencia.observacaoInstrutor,
             dataOcorrencia: this.transformDate(new Date(this.ocorrencia.dataOcorrencia)),
             idPessoa: this.idPessoa

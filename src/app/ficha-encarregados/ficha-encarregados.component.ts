@@ -111,7 +111,6 @@ export class FichaEncarregadosComponent implements OnInit {
     this.registerFormOcorrencia = this.fb.group({
       idOcorrencia: [''],
       dataOcorrencia: ['', Validators.required],
-      numeroLicao: ['', Validators.required],
       nomeMetodo: ['', Validators.required],
       observacaoInstrutor: ['', Validators.required]
     });

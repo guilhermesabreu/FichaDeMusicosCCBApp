@@ -154,7 +154,7 @@
                 </div>
               </div>
             </accordion-group>
-            <accordion-group *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno'" heading="Métodos">
+            <accordion-group *ngIf="this.condicaoCarousel.toLowerCase() === 'aluno'" heading="Aulas">
               <div class="table-responsive">
                 <div class="container">
                   <div class="row">
@@ -162,9 +162,8 @@
                       <thead class="thead-light">
                         <tr>
                           <th style="display: none;"></th>
-                          <th>Método</th>
-                          <th>Lição</th>
                           <th>Data</th>
+                          <th>Método</th>
                           <th>Observação</th>
                           <th>Ações</th>
                         </tr>
@@ -172,9 +171,8 @@
                       <tbody>
                         <tr *ngFor="let oco of listarOcorrenciasPorAluno(registerFormAluno.value)">
                           <td style="display: none;">{{oco.idOcorrencia}}</td>
-                          <td>{{oco.nomeMetodo}}</td>
-                          <td>{{oco.numeroLicao}}</td>
                           <td>{{oco.dataOcorrencia}}</td>
+                          <td>{{oco.nomeMetodo}}</td>
                           <td>{{oco.observacaoInstrutor}}</td>
                           <td>
                             <div class="btn-group">
@@ -420,7 +418,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left text-center" style="color: #994803 !important; text-align: center;">
-          Método
+          Aula
         </h5>
         <button type="button" class="close pull-right" (click)="modalOcorrencia.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -436,15 +434,6 @@
             <div *ngIf="registerFormOcorrencia.get('nomeMetodo')!.hasError('required') &&
             registerFormOcorrencia.get('nomeMetodo')!.touched" class="invalid-feedback">
               Método é obrigatório.
-            </div>
-          </div>
-          <div class="form-group">
-            <label style="margin-right:20px; color:#994803;" for="">Número da Lição:</label>
-            <input style="width:90px" formControlName="numeroLicao" [ngClass]="{'is-invalid': registerFormOcorrencia.get('numeroLicao')!.errors &&
-            registerFormOcorrencia.get('numeroLicao')!.touched}" placeholder="Nº" type="number" min="1" step="1">
-            <div *ngIf="registerFormOcorrencia.get('numeroLicao')!.hasError('required') &&
-            registerFormOcorrencia.get('numeroLicao')!.touched" class="invalid-feedback">
-              Número da lição é obrigatório.
             </div>
           </div>
           <div class="form-group">
